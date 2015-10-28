@@ -1,0 +1,3 @@
+- Open Qt creator
+- press Ctrl+O
+- Choose "logicsim.pro"
