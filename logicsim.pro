@@ -12,8 +12,10 @@ TARGET = logicsim
 TEMPLATE = app
 
 SOURCES += src/main.cpp \
-           src/mainwindow.cpp
+           src/mainwindow.cpp \
+    src/node.cpp
 
-HEADERS += src/mainwindow.h
+HEADERS += src/mainwindow.h \
+    src/node.h
 
 FORMS += src/mainwindow.ui
