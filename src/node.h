@@ -12,7 +12,6 @@ private:
     string name;
 public:
     Node();
-    ~Node();
     void setName(string n);
     void setValue(bool v);
     string getName();

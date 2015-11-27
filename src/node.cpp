@@ -1,8 +1,10 @@
 #include "node.h"
-namespace Logicsim{
+namespace Logicsim
+{
 Node::Node()
 {
-
+    value = 0;
+    name = "n";
 }
 string Node::getName()
 {
@@ -20,4 +22,5 @@ void Node::setName(string n)
 {
     name = n;
 }
-}
+
+} //namespace Logicsim
