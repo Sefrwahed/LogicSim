@@ -73,17 +73,17 @@ Logicsim::Gate::Gate(QGraphicsItem *parent)
     QGraphicsObject *in2 = new Input(gate);
     QGraphicsObject *out1 = new Output(gate);
 
-    QGraphicsObject *Li1 = new ConnectingLine(gate);
-    QGraphicsObject *Li2 = new ConnectingLine(gate);
-    QGraphicsObject *Lo1 = new ConnectingLine(gate);
+    QGraphicsObject *Li1 = new ConnectingLine(in1);
+    QGraphicsObject *Li2 = new ConnectingLine(in2);
+    QGraphicsObject *Lo1 = new ConnectingLine(out1);
 
     gate->setPos(50,50);
     in1->setPos(-15,15);
     in2->setPos(-15,35);
     out1->setPos(50,25);
-    Li1->setPos(-10,17.5);
-    Li2->setPos(-10,37.5);
-    Lo1->setPos(40,27.5);
+    Li1->setPos(5,2.5);
+    Li2->setPos(5,2.5);
+    Lo1->setPos(-10,2.5);
 }
 
 QRectF Logicsim::Gate::boundingRect() const
