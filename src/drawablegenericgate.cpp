@@ -1,72 +1,74 @@
 #include <QtWidgets>
 #include "drawablegenericgate.h"
 
-Logicsim::Part::Part(QGraphicsItem *parent): QGraphicsObject(parent)
+namespace Logicsim
+{
+Part::Part(QGraphicsItem *parent): QGraphicsObject(parent)
 {}
 
-Logicsim::GateBody::GateBody(QGraphicsItem *parent):Part(parent)
+GateBody::GateBody(QGraphicsItem *parent):Part(parent)
 {}
 
-void Logicsim::GateBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void GateBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
      Q_UNUSED(event);
 }
 
-QRectF Logicsim::GateBody::boundingRect() const
+QRectF GateBody::boundingRect() const
 {
     return QRectF(0,0,40,50);
 }
 
-void Logicsim::GateBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GateBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawRect(0,0,40,50);
 }
 
-Logicsim::Input::Input(QGraphicsItem *parent):Part(parent)
+Input::Input(QGraphicsItem *parent):Part(parent)
 {}
 
-void Logicsim::Input::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Input::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     qDebug()<<"Input Clicked";
 }
 
-QRectF Logicsim::Input::boundingRect() const
+QRectF Input::boundingRect() const
 {
     return QRectF(0,0,5,5);
 }
 
-void Logicsim::Input::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Input::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawEllipse(0,0,5,5);
 }
 
-Logicsim::Output::Output(QGraphicsItem *parent):Part(parent)
+Output::Output(QGraphicsItem *parent):Part(parent)
 {}
 
-void Logicsim::Output::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Output::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     qDebug()<<"Output Clicked";
 }
 
-QRectF Logicsim::Output::boundingRect() const
+QRectF Output::boundingRect() const
 {
     return QRectF(0,0,5,5);
 }
 
-void Logicsim::Output::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Output::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawEllipse(0,0,5,5);
 }
 
-Logicsim::Gate::Gate(QGraphicsItem *parent)
+Gate::Gate(QGraphicsItem *parent)
 {
     QGraphicsObject *gate = new GateBody(this);
     QGraphicsObject *in1 = new Input(gate);
@@ -86,29 +88,30 @@ Logicsim::Gate::Gate(QGraphicsItem *parent)
     Lo1->setPos(-10,2.5);
 }
 
-QRectF Logicsim::Gate::boundingRect() const
+QRectF Gate::boundingRect() const
 {
     return QRectF();
 }
 
-void Logicsim::Gate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Gate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(painter);
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
 
-Logicsim::ConnectingLine::ConnectingLine(QGraphicsItem *parent):Part(parent)
+ConnectingLine::ConnectingLine(QGraphicsItem *parent):Part(parent)
 {}
 
-QRectF Logicsim::ConnectingLine::boundingRect() const
+QRectF ConnectingLine::boundingRect() const
 {
     return QRectF(0,0,10,0);
 }
 
-void Logicsim::ConnectingLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ConnectingLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawLine(0,0,10,0);
+}
 }
