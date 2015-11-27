@@ -62,7 +62,7 @@ void OrGate::calcOutput()
     outputNode()->setValue(out);
 
 }
-
+// ===================== NotGate ===================
 NotGate::NotGate()
 {
     setMaxInput(1);
