@@ -4,7 +4,11 @@
 namespace Logicsim
 {
 Part::Part(QGraphicsItem *parent): QGraphicsObject(parent)
-{}
+{
+    setFlag(QGraphicsItem::ItemIsSelectable);
+    setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+}
 
 GateBody::GateBody(QGraphicsItem *parent):Part(parent)
 {}
