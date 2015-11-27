@@ -48,6 +48,13 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };
 
+class ConnectingLine : public Part
+{
+public:
+    ConnectingLine(QGraphicsItem *parent = 0);
+    QRectF boundingRect() const;
+    void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+};
 
 }
 

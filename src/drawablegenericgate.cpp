@@ -73,10 +73,17 @@ Logicsim::Gate::Gate(QGraphicsItem *parent)
     QGraphicsObject *in2 = new Input(gate);
     QGraphicsObject *out1 = new Output(gate);
 
+    QGraphicsObject *Li1 = new ConnectingLine(gate);
+    QGraphicsObject *Li2 = new ConnectingLine(gate);
+    QGraphicsObject *Lo1 = new ConnectingLine(gate);
+
     gate->setPos(50,50);
-    in1->setPos(-10,15);
-    in2->setPos(-10,35);
+    in1->setPos(-15,15);
+    in2->setPos(-15,35);
     out1->setPos(50,25);
+    Li1->setPos(-10,17.5);
+    Li2->setPos(-10,37.5);
+    Lo1->setPos(40,27.5);
 }
 
 QRectF Logicsim::Gate::boundingRect() const
@@ -89,4 +96,19 @@ void Logicsim::Gate::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     Q_UNUSED(painter);
     Q_UNUSED(option);
     Q_UNUSED(widget);
+}
+
+Logicsim::ConnectingLine::ConnectingLine(QGraphicsItem *parent):Part(parent)
+{}
+
+QRectF Logicsim::ConnectingLine::boundingRect() const
+{
+    return QRectF(0,0,10,0);
+}
+
+void Logicsim::ConnectingLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+    painter->drawLine(0,0,10,0);
 }
