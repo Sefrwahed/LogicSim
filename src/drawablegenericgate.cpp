@@ -4,14 +4,14 @@
 namespace Logicsim
 {
 Part::Part(QGraphicsItem *parent): QGraphicsObject(parent)
+{}
+
+GateBody::GateBody(QGraphicsItem *parent):Part(parent)
 {
-    setFlag(QGraphicsItem::ItemIsSelectable);
+    //setFlag(QGraphicsItem::ItemIsSelectable); //item must be selected first before dragging
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 }
-
-GateBody::GateBody(QGraphicsItem *parent):Part(parent)
-{}
 
 void GateBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -74,6 +74,7 @@ void Output::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 Gate::Gate(QGraphicsItem *parent)
 {
+    Q_UNUSED(parent);
     QGraphicsObject *gate = new GateBody(this);
     QGraphicsObject *in1 = new Input(gate);
     QGraphicsObject *in2 = new Input(gate);
