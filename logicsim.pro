@@ -14,7 +14,8 @@ TEMPLATE = app
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/node.cpp \
-    src/gate.cpp
+    src/gate.cpp\
+    src/drawablegenericgate.cpp
 
 HEADERS += src/mainwindow.h \
     src/node.h \

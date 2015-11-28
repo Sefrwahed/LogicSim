@@ -40,10 +40,10 @@ public:
     void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };
 
-class Gate : public Part
+class GraphicGate : public Part
 {
 public:
-    Gate(QGraphicsItem *parent = 0);
+    GraphicGate(QGraphicsItem *parent = 0);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };

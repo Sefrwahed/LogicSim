@@ -72,7 +72,7 @@ void Output::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawEllipse(0,0,5,5);
 }
 
-Gate::Gate(QGraphicsItem *parent)
+GraphicGate::GraphicGate(QGraphicsItem *parent)
 {
     Q_UNUSED(parent);
     QGraphicsObject *gate = new GateBody(this);
@@ -93,12 +93,12 @@ Gate::Gate(QGraphicsItem *parent)
     Lo1->setPos(-10,2.5);
 }
 
-QRectF Gate::boundingRect() const
+QRectF GraphicGate::boundingRect() const
 {
     return QRectF();
 }
 
-void Gate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(painter);
     Q_UNUSED(option);
