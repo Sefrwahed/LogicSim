@@ -13,13 +13,13 @@ public:
     Gate();
     ~Gate();
     virtual void calcOutput() = 0;
-    void setMaxInput(qint16 mi);
     qint16 getMaxInput();
-    void setInput(QList<Node*>& n);
     Node* outputNode();
+    void setInput(QList<Node*>& n);
+
 
 protected:
-
+    void setMaxInput(qint16 mi);
     QList<Node*> inputList() const;
 
 private:
@@ -30,7 +30,7 @@ private:
 // ===================== AndGate ===================
 class AndGate: public Gate
  {
- public:
+public:
     void calcOutput();
 
 };
@@ -38,7 +38,7 @@ class AndGate: public Gate
 // ===================== OrGate ===================
 class OrGate: public Gate
  {
- public:
+public:
     void calcOutput();
 
 };
