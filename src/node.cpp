@@ -6,7 +6,7 @@ Node::Node()
     value = 0;
     name = "n";
 }
-string Node::getName()
+QString Node::getName()
 {
     return name;
 }
@@ -18,7 +18,7 @@ void Node::setValue(bool v)
 {
     value = v;
 }
-void Node::setName(string n)
+void Node::setName(QString n)
 {
     name = n;
 }

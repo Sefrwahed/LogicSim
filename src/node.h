@@ -1,20 +1,18 @@
-#include <string>
-using namespace std;
-
 #ifndef NODE_H
 #define NODE_H
+#include <QCoreApplication>
 namespace Logicsim {
 
 class Node
 {
 private:
     bool value;
-    string name;
+    QString name;
 public:
     Node();
-    void setName(string n);
+    void setName(QString n);
     void setValue(bool v);
-    string getName();
+    QString getName();
     bool getValue();
 
 };
