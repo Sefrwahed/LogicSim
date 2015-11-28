@@ -1,5 +1,9 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <qdebug.h>
+#include "gate.h"
+
+using namespace Logicsim;
 
 
 int main(int argc, char *argv[])
