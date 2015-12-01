@@ -18,27 +18,27 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label_and->setPixmap(pix1);
    // ui->label_and->setDragEnabled(true);
 
-   QPixmap pix2 ("C:/Users/Z.50/Desktop/nand.png");  //nand
+   QPixmap pix2 ("e.qrc:/nand.png");  //nand
     ui->label_nand->setPixmap(pix2);
     //ui->label_nand->setDragEnabled(true);
 
-   QPixmap pix3("C:/Users/Z.50/Desktop/or.png");  //or
+   QPixmap pix3("e.qrc:/or.png");  //or
     ui->label_or->setPixmap(pix3);
     //ui->label_or->setDragEnabled(true);
 
-   QPixmap pix4("C:/Users/Z.50/Desktop/nor.png");  //nor
+   QPixmap pix4("e.qrc:/nor.png");  //nor
     ui->label_nor->setPixmap(pix4);
     //ui->label_nor->setDragEnabled(true);
 
-   QPixmap pix5("C:/Users/Z.50/Desktop/xor.png");  //xor
+   QPixmap pix5("e.qrc:/xor.png");  //xor
     ui->label_xor->setPixmap(pix5);
     //ui->label_xor->setDragEnabled(true);
 
-   QPixmap pix6("C:/Users/Z.50/Desktop/xnor.png");  //xnor
+   QPixmap pix6("e.qrc:/xnor.png");  //xnor
     ui->label_xnor->setPixmap(pix6);
    // ui->label_xnor->setDragEnabled(true);
 
-   QPixmap pix7("C:/Users/Z.50/Desktop/not.png");  //not
+   QPixmap pix7("e.qrc:/not.png");  //not
     ui->label_not->setPixmap(pix7);
    // ui->label_not->setDragEnabled(true);
 
