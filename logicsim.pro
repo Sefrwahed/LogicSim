@@ -4,24 +4,22 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QMAKE_LFLAGS += /NODEFAULTLIB:MSVCRT?
 
 TARGET = logicsim
 TEMPLATE = app
 
 SOURCES += src/main.cpp \
-    src/mainwindow.cpp \
-    src/node.cpp \
-    src/gate.cpp\
-    src/drawablegenericgate.cpp
+           src/mainwindow.cpp
 
 HEADERS += src/mainwindow.h \
-    src/node.h \
-    src/gate.h \
-    src/drawablegenericgate.h
-
-
+    src/componentstable.h
 
 FORMS += src/mainwindow.ui
+
+DISTFILES += \
+    ../../../../Program Files (x86)/Windows Kits/8.1/Lib/winv6.3/um/x64/GlU32.Lib
+
+RESOURCES += \
+    src/e.qrc
