@@ -10,15 +10,19 @@
 namespace Logicsim
 {
 
+const int MAX_TABS_COUNT = 10;
+
 class MainWindow::Private
 {
 public:
     Private() :
+        tabsCount(0),
         tabWidget(0)
     {}
 
-    QTabWidget*         tabWidget;
-    QHash<int, Canvas*> canvases;
+    int            tabsCount;
+    QTabWidget*    tabWidget;
+    QList<Canvas*> canvases;
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -33,13 +37,16 @@ MainWindow::MainWindow(QWidget *parent)
     // Connection
     connect(ui->actionNew, SIGNAL(triggered(bool)),
             this, SLOT(newFile()));
+
+    connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
+            this, SLOT(closeTab(int)));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 
-    foreach (Canvas* const c, d->canvases.values())
+    foreach (Canvas* c, d->canvases)
     {
         delete c;
     }
@@ -49,36 +56,34 @@ MainWindow::~MainWindow()
 
 void MainWindow::newFile()
 {
+    if(d->tabsCount >= 10) return;
     Canvas* c = new Canvas(d->tabWidget);
-    int tabIndex = d->tabWidget->addTab(c->view(), "New File");
+    d->tabsCount++;
+    int tabIndex = d->tabWidget->addTab(c->view(), "New File " + QString::number(d->tabsCount));
     c->setTabIndex(tabIndex);
-    d->canvases.insert(tabIndex, c);
-
-    connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
-            c, SLOT(tabAboutToBeClosed(int)));
-
-    connect(c, SIGNAL(confirmTabClose(int)),
-            this, SLOT(closeTab(int)));
+    d->canvases << c;
 }
 
 void MainWindow::closeTab(int tabIndex)
 {
     qDebug() << "Tab is closing: " << tabIndex;
-    QHash<int, Canvas*>::iterator it = d->canvases.find(tabIndex);
-    if(it != d->canvases.end())
-    {
-        delete it.value();
-        d->canvases.erase(it);
 
-        QHash<int, Canvas*>::iterator it2 = d->canvases.find(tabIndex+1);
-        int tmp = tabIndex;
-        while (it2 != d->canvases.end())
-        {
-            it2.value()->setTabIndex(tmp++);
-            ++it2;
-        }
-        d->tabWidget->removeTab(tabIndex);
+    int tmp = tabIndex;
+
+//    if(d->canvases.at(tabIndex)->isOKToClose())
+//    {
+//         TODO
+//    }
+
+    d->tabWidget->removeTab(tabIndex);
+
+    for (int i = tabIndex+1; i < d->canvases.length(); ++i)
+    {
+        d->canvases.at(i)->setTabIndex(tmp++);
     }
+
+    d->canvases.removeAt(tabIndex);
+    d->tabsCount--;
 }
 
 } // namespace Logicsim

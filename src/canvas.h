@@ -16,13 +16,11 @@ public:
 
     QGraphicsView* view();
 
+    int tabIndex() const;
     void setTabIndex(int index);
 
 public Q_SLOTS:
     void tabAboutToBeClosed(int index);
-
-Q_SIGNALS:
-    void confirmTabClose(int index);
 
 private:
     class Private;

@@ -34,6 +34,11 @@ QGraphicsView* Canvas::view()
     return d->view;
 }
 
+int Canvas::tabIndex() const
+{
+    return d->tabIndex;
+}
+
 void Canvas::setTabIndex(int index)
 {
     qDebug() << "I am: " << this << " My new tab index: " << index;
@@ -45,7 +50,6 @@ void Canvas::tabAboutToBeClosed(int index)
     if (index == d->tabIndex)
     {
         // Saving stuff
-        emit confirmTabClose(index);
     }
 }
 
