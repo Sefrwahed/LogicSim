@@ -7,51 +7,45 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    ui->tableWidget->verticalHeader()->setVisible(false);
-//    ui->tableWidget->horizontalHeader()->setVisible(false);
-//    ui->tableWidget->setRowCount(10);
-//    ui->tableWidget->setColumnCount(2);
-//    ui->tableWidget->setShowGrid(true);
-//    ui->tableWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    ui->tableWidget->verticalHeader()->setVisible(false);
+    ui->tableWidget->horizontalHeader()->setVisible(false);
+    ui->tableWidget->setRowCount(10);
+    ui->tableWidget->setColumnCount(2);
+    ui->tableWidget->setShowGrid(true);
+    ui->tableWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+  //  ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget->setDragEnabled(true);
+    QPixmap gatePixmap[GATES_TYPES_NUMBER];
+    QIcon gateIcon[GATES_TYPES_NUMBER];
+    QTableWidgetItem* gateItem[GATES_TYPES_NUMBER];
+    gatePixmap[0] = QPixmap(":/gates/assets/gates/and.png");
+    gatePixmap[1] = QPixmap(":/gates/assets/gates/nand.png");
+    gatePixmap[2] = QPixmap(":/gates/assets/gates/nor.png");
+    gatePixmap[3] = QPixmap(":/gates/assets/gates/not.png");
+    gatePixmap[4] = QPixmap(":/gates/assets/gates/or.png");
+    gatePixmap[5] = QPixmap(":/gates/assets/gates/xnor.png");
+    gatePixmap[6] = QPixmap(":/gates/assets/gates/xor.png");
 
-   QPixmap pix1("e.qrc:/and.png");   // and
-    ui->label_and->setPixmap(pix1);
-   // ui->label_and->setDragEnabled(true);
-
-   QPixmap pix2 ("e.qrc:/nand.png");  //nand
-    ui->label_nand->setPixmap(pix2);
-    //ui->label_nand->setDragEnabled(true);
-
-   QPixmap pix3("e.qrc:/or.png");  //or
-    ui->label_or->setPixmap(pix3);
-    //ui->label_or->setDragEnabled(true);
-
-   QPixmap pix4("e.qrc:/nor.png");  //nor
-    ui->label_nor->setPixmap(pix4);
-    //ui->label_nor->setDragEnabled(true);
-
-   QPixmap pix5("e.qrc:/xor.png");  //xor
-    ui->label_xor->setPixmap(pix5);
-    //ui->label_xor->setDragEnabled(true);
-
-   QPixmap pix6("e.qrc:/xnor.png");  //xnor
-    ui->label_xnor->setPixmap(pix6);
-   // ui->label_xnor->setDragEnabled(true);
-
-   QPixmap pix7("e.qrc:/not.png");  //not
-    ui->label_not->setPixmap(pix7);
-   // ui->label_not->setDragEnabled(true);
-
-
-
-
+    for(int i = 0; i < GATES_TYPES_NUMBER; i++)
+    {
+        gateIcon[i] = QIcon(gatePixmap[i]);
+        gateItem[i] = new QTableWidgetItem(gateIcon[i], "");
+    }
+    for(int item_no = 0; item_no < GATES_TYPES_NUMBER; item_no += 2)
+    {
+        ui->tableWidget->setItem(item_no/2, 0, gateItem[item_no]);
+    }
+    for(int item_no = 1; item_no < GATES_TYPES_NUMBER; item_no += 2)
+    {
+        ui->tableWidget->setItem(item_no/2, 1, gateItem[item_no]);
+    }
 
 
     // ui->tableWidget->setItem(0,0,item1);
    //QTableWidgetItem* item1 = new QTableWidgetItem(pix);
    //ui->tableWidget->setSelectionBehavior(QAbstracts);
 
-      //ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     //ui->tableWidget->show();
 
 }

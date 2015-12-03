@@ -1,5 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
+#define GATES_TYPES_NUMBER 7
+
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QtCore>
