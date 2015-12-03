@@ -8,6 +8,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QGraphicsItem>
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
