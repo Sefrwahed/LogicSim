@@ -70,10 +70,6 @@ void MainWindow::closeTab(int tabIndex)
 
     int tmp = tabIndex;
 
-//    if(d->canvases.at(tabIndex)->isOKToClose())
-//    {
-//         TODO
-//    }
 
     d->tabWidget->removeTab(tabIndex);
 
@@ -82,6 +78,7 @@ void MainWindow::closeTab(int tabIndex)
         d->canvases.at(i)->setTabIndex(tmp++);
     }
 
+    delete d->canvases.at(tabIndex);
     d->canvases.removeAt(tabIndex);
     d->tabsCount--;
 }

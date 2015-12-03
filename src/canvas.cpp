@@ -2,6 +2,7 @@
 
 // Qt includes
 #include <QDebug>
+#include <QMessageBox>
 
 namespace Logicsim
 {
@@ -45,12 +46,20 @@ void Canvas::setTabIndex(int index)
     d->tabIndex = index;
 }
 
-void Canvas::tabAboutToBeClosed(int index)
+bool Canvas::tabAboutToBeClosed(int index)
 {
     if (index == d->tabIndex)
     {
-        // Saving stuff
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(d->view, "Test", "Quit?",
+                                      QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+        {
+            qDebug() << "Yes was clicked";
+            return true;
+        }
     }
+    return false;
 }
 
 } // namespace Logicsim

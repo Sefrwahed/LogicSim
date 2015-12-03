@@ -20,7 +20,7 @@ public:
     void setTabIndex(int index);
 
 public Q_SLOTS:
-    void tabAboutToBeClosed(int index);
+    bool tabAboutToBeClosed(int index);
 
 private:
     class Private;
