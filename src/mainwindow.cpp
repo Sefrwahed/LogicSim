@@ -25,7 +25,7 @@ void MainWindow::initComponentsTab()
         ui->tableWidget->setRowCount(GATES_TYPES_NUMBER/2);
 
     ui->tableWidget->setColumnCount(2);
-    ui->tableWidget->setShowGrid(true);
+    ui->tableWidget->setShowGrid(false);
 
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
