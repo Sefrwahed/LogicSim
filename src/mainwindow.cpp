@@ -6,7 +6,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    initComponentsTab();
+}
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::initComponentsTab()
+{
     ui->tableWidget->verticalHeader()->setVisible(false);
     ui->tableWidget->horizontalHeader()->setVisible(false);
 
@@ -18,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setColumnCount(2);
     ui->tableWidget->setShowGrid(true);
 
-    ui->tableWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     ui->tableWidget->setDragEnabled(true);
 
@@ -50,9 +59,4 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->resizeRowsToContents();
 
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
