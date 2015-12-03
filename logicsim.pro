@@ -15,12 +15,14 @@ SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/node.cpp \
     src/gate.cpp\
-    src/drawablegenericgate.cpp
+    src/drawablegenericgate.cpp \
+    src/canvas.cpp
 
 HEADERS += src/mainwindow.h \
     src/node.h \
     src/gate.h \
-    src/drawablegenericgate.h
+    src/drawablegenericgate.h \
+    src/canvas.h
 
 
 
