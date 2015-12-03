@@ -91,6 +91,7 @@ void MainWindow::initComponentsTab()
     {
         gateItem[i] = new QLabel();
         gateItem[i]->setPixmap(gatePixmap[i]);
+
     }
     for(int item_no = 0; item_no < GATES_TYPES_COUNT; item_no += 2)
     {

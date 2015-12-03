@@ -1,4 +1,5 @@
 #include "canvas.h"
+#include "drawablegenericgate.h"
 
 // Qt includes
 #include <QDebug>
@@ -63,9 +64,16 @@ bool Canvas::tabAboutToBeClosed(int index)
     return false;
 }
 
+
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
+
     event->acceptProposedAction();
+    double x = event->scenePos().x();
+    double y = event->scenePos().y();
+    GraphicGate* gate = new GraphicGate(x, y);
+    this->addItem(gate);
+
     qDebug() << "I am dropped ";
 
 }
@@ -85,7 +93,7 @@ void Canvas::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
 void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 {
     event->acceptProposedAction();
-    qDebug() << "I am leaved ";
+    qDebug() << "I am left ";
 
 }
 

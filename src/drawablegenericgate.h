@@ -44,6 +44,7 @@ class GraphicGate : public Part
 {
 public:
     GraphicGate(QGraphicsItem *parent = 0);
+    GraphicGate(double xPos, double yPos, QGraphicsItem *parent = 0);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };
