@@ -24,6 +24,7 @@ HEADERS += src/mainwindow.h \
     src/drawablegenericgate.h \
     src/canvas.h
 
-
-
 FORMS += src/mainwindow.ui
+
+RESOURCES += \
+    logicsim.qrc
