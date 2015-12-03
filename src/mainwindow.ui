@@ -61,8 +61,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
+<<<<<<< HEAD
      <width>1280</width>
      <height>21</height>
+=======
+     <width>660</width>
+     <height>26</height>
+>>>>>>> LS7
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -101,8 +106,8 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
    <property name="icon">
-    <iconset theme="document-new">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset resource="resources.qrc">
+     <normaloff>:/LogicSim/new</normaloff>:/LogicSim/new</iconset>
    </property>
    <property name="text">
     <string>&amp;New</string>
@@ -110,8 +115,8 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset theme="document-open">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset resource="resources.qrc">
+     <normaloff>:/LogicSim/open</normaloff>:/LogicSim/open</iconset>
    </property>
    <property name="text">
     <string>&amp;Open</string>
@@ -120,7 +125,8 @@
   <action name="actionSimulate">
    <property name="icon">
     <iconset theme="do">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Simulate</string>
@@ -129,7 +135,8 @@
   <action name="actionKMap_Turth_table">
    <property name="icon">
     <iconset theme="application-table">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;KMap and Turth table</string>
@@ -137,8 +144,8 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset theme="document-save">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset resource="resources.qrc">
+     <normaloff>:/LogicSim/save</normaloff>:/LogicSim/save</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -146,8 +153,13 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
+<<<<<<< HEAD
     <iconset theme="application-exit">
      <normaloff>.</normaloff>.</iconset>
+=======
+    <iconset resource="resources.qrc">
+     <normaloff>:/LogicSim/close</normaloff>:/LogicSim/close</iconset>
+>>>>>>> LS7
    </property>
    <property name="text">
     <string>Quit</string>
@@ -155,6 +167,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

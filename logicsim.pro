@@ -27,5 +27,12 @@ FORMS += src/mainwindow.ui
 DISTFILES += \
     ../../../../Program Files (x86)/Windows Kits/8.1/Lib/winv6.3/um/x64/GlU32.Lib
 
+<<<<<<< HEAD
 RESOURCES += \
     myres.qrc
+=======
+FORMS += src/mainwindow.ui
+
+RESOURCES += \
+    src/resources.qrc
+>>>>>>> LS7
