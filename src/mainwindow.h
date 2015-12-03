@@ -4,15 +4,14 @@
 #define GATES_TYPES_NUMBER 7
 
 #include <QMainWindow>
-#include <QGraphicsScene>
-#include <QtCore>
-#include <QtGui>
-#include <QGraphicsItem>
 #include <QLabel>
 
 namespace Ui {
 class MainWindow;
 }
+
+namespace Logicsim
+{
 
 class MainWindow : public QMainWindow
 {
@@ -21,12 +20,19 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
     void initComponentsTab();
+
+public Q_SLOTS:
+    void newFile();
+    void closeTab(int tabIndex);
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *scene;
 
-    };
+    class Private;
+    Private* const d;
+};
+
+} // namespace Logicsim
+
 #endif // MAINWINDOW_H
