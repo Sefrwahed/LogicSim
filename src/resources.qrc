@@ -1,2 +1,8 @@
-<RCC/>
-
+<RCC>
+    <qresource prefix="/LogicSim">
+        <file>assets/icons/default-document-open.svg</file>
+        <file>assets/icons/document-close.svg</file>
+        <file>assets/icons/document-new.svg</file>
+        <file>assets/icons/document-save.svg</file>
+    </qresource>
+</RCC>
