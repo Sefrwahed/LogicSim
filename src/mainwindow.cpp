@@ -11,6 +11,7 @@ namespace Logicsim
 {
 
 const int MAX_TABS_COUNT = 10;
+const int GATES_TYPES_COUNT = 7;
 
 class MainWindow::Private
 {
@@ -64,10 +65,10 @@ void MainWindow::initComponentsTab()
     ui->tableWidget->verticalHeader()->setVisible(false);
     ui->tableWidget->horizontalHeader()->setVisible(false);
 
-    if(GATES_TYPES_NUMBER % 2 != 0)
-        ui->tableWidget->setRowCount(GATES_TYPES_NUMBER/2 + 1);
+    if(GATES_TYPES_COUNT % 2 != 0)
+        ui->tableWidget->setRowCount(GATES_TYPES_COUNT/2 + 1);
     else
-        ui->tableWidget->setRowCount(GATES_TYPES_NUMBER/2);
+        ui->tableWidget->setRowCount(GATES_TYPES_COUNT/2);
 
     ui->tableWidget->setColumnCount(2);
     ui->tableWidget->setShowGrid(false);
@@ -76,8 +77,8 @@ void MainWindow::initComponentsTab()
 
     ui->tableWidget->setDragEnabled(true);
 
-    QPixmap gatePixmap[GATES_TYPES_NUMBER];
-    QLabel* gateItem[GATES_TYPES_NUMBER];
+    QPixmap gatePixmap[GATES_TYPES_COUNT];
+    QLabel* gateItem[GATES_TYPES_COUNT];
     gatePixmap[0] = QPixmap(":/gates/and");
     gatePixmap[1] = QPixmap(":/gates/nand");
     gatePixmap[2] = QPixmap(":/gates/nor");
@@ -86,16 +87,16 @@ void MainWindow::initComponentsTab()
     gatePixmap[5] = QPixmap(":/gates/xnor");
     gatePixmap[6] = QPixmap(":/gates/xor");
 
-    for(int i = 0; i < GATES_TYPES_NUMBER; i++)
+    for(int i = 0; i < GATES_TYPES_COUNT; i++)
     {
         gateItem[i] = new QLabel();
         gateItem[i]->setPixmap(gatePixmap[i]);
     }
-    for(int item_no = 0; item_no < GATES_TYPES_NUMBER; item_no += 2)
+    for(int item_no = 0; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
         ui->tableWidget->setCellWidget(item_no/2, 0, gateItem[item_no]);
     }
-    for(int item_no = 1; item_no < GATES_TYPES_NUMBER; item_no += 2)
+    for(int item_no = 1; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
         ui->tableWidget->setCellWidget(item_no/2, 1, gateItem[item_no]);
     }
