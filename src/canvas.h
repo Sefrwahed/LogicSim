@@ -2,6 +2,8 @@
 #define CANVAS_H
 
 #include <QGraphicsView>
+#include <QGraphicsSceneDragDropEvent>
+#include <QMimeData>
 
 namespace Logicsim
 {
@@ -18,6 +20,10 @@ public:
 
     int tabIndex() const;
     void setTabIndex(int index);
+    void dropEvent(QGraphicsSceneDragDropEvent * event);
+    void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
+    void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
+    void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
 
 public Q_SLOTS:
     bool tabAboutToBeClosed(int index);

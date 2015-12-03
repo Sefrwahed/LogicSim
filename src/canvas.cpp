@@ -17,6 +17,7 @@ public:
 
     int            tabIndex;
     QGraphicsView* view;
+
 };
 
 Canvas::Canvas(QObject *parent)
@@ -60,6 +61,32 @@ bool Canvas::tabAboutToBeClosed(int index)
         }
     }
     return false;
+}
+
+void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
+{
+    event->acceptProposedAction();
+    qDebug() << "I am dropped ";
+
+}
+void Canvas::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
+{
+
+    event->acceptProposedAction();
+    qDebug() << "I am dragged ";
+
+
+}
+void Canvas::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
+{
+    event->acceptProposedAction();
+}
+
+void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
+{
+    event->acceptProposedAction();
+    qDebug() << "I am leaved ";
+
 }
 
 } // namespace Logicsim
