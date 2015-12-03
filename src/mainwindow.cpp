@@ -78,13 +78,13 @@ void MainWindow::initComponentsTab()
 
     QPixmap gatePixmap[GATES_TYPES_NUMBER];
     QLabel* gateItem[GATES_TYPES_NUMBER];
-    gatePixmap[0] = QPixmap(":/gates/assets/gates/and.png");
-    gatePixmap[1] = QPixmap(":/gates/assets/gates/nand.png");
-    gatePixmap[2] = QPixmap(":/gates/assets/gates/nor.png");
-    gatePixmap[3] = QPixmap(":/gates/assets/gates/not.png");
-    gatePixmap[4] = QPixmap(":/gates/assets/gates/or.png");
-    gatePixmap[5] = QPixmap(":/gates/assets/gates/xnor.png");
-    gatePixmap[6] = QPixmap(":/gates/assets/gates/xor.png");
+    gatePixmap[0] = QPixmap(":/gates/and");
+    gatePixmap[1] = QPixmap(":/gates/nand");
+    gatePixmap[2] = QPixmap(":/gates/nor");
+    gatePixmap[3] = QPixmap(":/gates/not");
+    gatePixmap[4] = QPixmap(":/gates/or");
+    gatePixmap[5] = QPixmap(":/gates/xnor");
+    gatePixmap[6] = QPixmap(":/gates/xor");
 
     for(int i = 0; i < GATES_TYPES_NUMBER; i++)
     {
@@ -121,7 +121,6 @@ void MainWindow::closeTab(int tabIndex)
     qDebug() << "Tab is closing: " << tabIndex;
 
     int tmp = tabIndex;
-
 
     d->tabWidget->removeTab(tabIndex);
 

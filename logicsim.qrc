@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/gates">
+        <file alias="and">assets/gates/and.png</file>
+        <file alias="nand">assets/gates/nand.png</file>
+        <file alias="nor">assets/gates/nor.png</file>
+        <file alias="not">assets/gates/not.png</file>
+        <file alias="or">assets/gates/or.png</file>
+        <file alias="xnor">assets/gates/xnor.png</file>
+        <file alias="xor">assets/gates/xor.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file alias="open">assets/icons/default-document-open.svg</file>
+        <file alias="close">assets/icons/document-close.svg</file>
+        <file alias="new">assets/icons/document-new.svg</file>
+        <file alias="save">assets/icons/document-save.svg</file>
+    </qresource>
+</RCC>

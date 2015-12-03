@@ -27,4 +27,4 @@ HEADERS += src/mainwindow.h \
 FORMS += src/mainwindow.ui
 
 RESOURCES += \
-    myres.qrc
+    logicsim.qrc
