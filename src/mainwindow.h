@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsSceneDragDropEvent>
 #include <QLabel>
+#include "componentstab.h"
 
 namespace Ui {
 class MainWindow;

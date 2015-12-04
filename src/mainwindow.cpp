@@ -62,20 +62,23 @@ MainWindow::~MainWindow()
 
 void MainWindow::initComponentsTab()
 {
-    ui->tableWidget->verticalHeader()->setVisible(false);
-    ui->tableWidget->horizontalHeader()->setVisible(false);
+    ComponentsTab* components = new ComponentsTab();
+    ui->tabWidget->addTab(components, "Components");
+
+    components->verticalHeader()->setVisible(false);
+    components->horizontalHeader()->setVisible(false);
 
     if(GATES_TYPES_COUNT % 2 != 0)
-        ui->tableWidget->setRowCount(GATES_TYPES_COUNT/2 + 1);
+        components->setRowCount(GATES_TYPES_COUNT/2 + 1);
     else
-        ui->tableWidget->setRowCount(GATES_TYPES_COUNT/2);
+        components->setRowCount(GATES_TYPES_COUNT/2);
 
-    ui->tableWidget->setColumnCount(2);
-    ui->tableWidget->setShowGrid(false);
+    components->setColumnCount(2);
+    components->setShowGrid(false);
 
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    components->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    ui->tableWidget->setDragEnabled(true);
+    components->setDragEnabled(true);
 
     QPixmap gatePixmap[GATES_TYPES_COUNT];
     QLabel* gateItem[GATES_TYPES_COUNT];
@@ -91,21 +94,22 @@ void MainWindow::initComponentsTab()
     {
         gateItem[i] = new QLabel();
         gateItem[i]->setPixmap(gatePixmap[i]);
-
+        gateItem[i]->setObjectName("gate");
     }
     for(int item_no = 0; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
-        ui->tableWidget->setCellWidget(item_no/2, 0, gateItem[item_no]);
+        components->setCellWidget(item_no/2, 0, gateItem[item_no]);
     }
     for(int item_no = 1; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
-        ui->tableWidget->setCellWidget(item_no/2, 1, gateItem[item_no]);
+        components->setCellWidget(item_no/2, 1, gateItem[item_no]);
     }
+    components->resizeColumnsToContents();
+    components->resizeRowsToContents();
 
-    ui->tableWidget->resizeColumnsToContents();
-    ui->tableWidget->resizeRowsToContents();
+    components->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tabWidget->setCurrentIndex(1);
 }
 
 void MainWindow::newFile()

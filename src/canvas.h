@@ -20,6 +20,8 @@ public:
 
     int tabIndex() const;
     void setTabIndex(int index);
+
+protected:
     void dropEvent(QGraphicsSceneDragDropEvent * event);
     void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
     void dragMoveEvent(QGraphicsSceneDragDropEvent * event);

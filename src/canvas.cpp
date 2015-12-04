@@ -1,6 +1,7 @@
 #include "canvas.h"
 #include "drawablegenericgate.h"
 
+#include <QTableWidgetItem>
 // Qt includes
 #include <QDebug>
 #include <QMessageBox>
@@ -67,34 +68,38 @@ bool Canvas::tabAboutToBeClosed(int index)
 
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
+    if(event->mimeData()->objectName().compare("gate") == 0)
+    {
+        event->acceptProposedAction();
 
-    event->acceptProposedAction();
-    double x = event->scenePos().x();
-    double y = event->scenePos().y();
-    GraphicGate* gate = new GraphicGate(x, y);
-    this->addItem(gate);
-
-    qDebug() << "I am dropped ";
+        double x = event->scenePos().x();
+        double y = event->scenePos().y();
+        GraphicGate* gate = new GraphicGate(x, y);
+        this->addItem(gate);
+    }
 
 }
 void Canvas::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {
-
-    event->acceptProposedAction();
-    qDebug() << "I am dragged ";
-
-
+    if(event->mimeData()->objectName().compare("gate") == 0)
+    {
+        event->acceptProposedAction();
+    }
 }
 void Canvas::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
 {
-    event->acceptProposedAction();
+    if(event->mimeData()->objectName().compare("gate") == 0)
+    {
+        event->acceptProposedAction();
+    }
 }
 
 void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 {
-    event->acceptProposedAction();
-    qDebug() << "I am left ";
-
+    if(event->mimeData()->objectName().compare("gate") == 0)
+    {
+        event->acceptProposedAction();
+    }
 }
 
 } // namespace Logicsim

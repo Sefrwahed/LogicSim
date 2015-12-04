@@ -16,13 +16,15 @@ SOURCES += src/main.cpp \
     src/node.cpp \
     src/gate.cpp\
     src/drawablegenericgate.cpp \
-    src/canvas.cpp
+    src/canvas.cpp \
+    src/componentstab.cpp
 
 HEADERS += src/mainwindow.h \
     src/node.h \
     src/gate.h \
     src/drawablegenericgate.h \
-    src/canvas.h
+    src/canvas.h \
+    src/componentstab.h
 
 FORMS += src/mainwindow.ui
 
