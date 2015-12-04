@@ -131,6 +131,8 @@ GraphicGate::GraphicGate(double xPos, double yPos, QGraphicsItem *parent)
     QGraphicsObject *Li1 = new ConnectingLine(in1);
     QGraphicsObject *Li2 = new ConnectingLine(in2);
     QGraphicsObject *Lo1 = new ConnectingLine(out1);
+    xPos -= gate->boundingRect().width()/2;
+    yPos -= gate->boundingRect().height()/2;
     gate->setPos(xPos, yPos);
     in1->setPos(-15,15);
     in2->setPos(-15,35);
