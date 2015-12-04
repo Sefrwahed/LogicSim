@@ -3,6 +3,9 @@
 
 namespace Logicsim
 {
+const int X_MARGIN = 20;
+const int CANVAS_WIDTH = 1500;
+const int CANVAS_HEIGHT = 1500;
 Part::Part(QGraphicsItem *parent): QGraphicsObject(parent)
 {}
 
@@ -16,6 +19,28 @@ GateBody::GateBody(QGraphicsItem *parent):Part(parent)
 void GateBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
      Q_UNUSED(event);
+}
+
+void GateBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsObject::mouseMoveEvent(event);
+    if(x() - X_MARGIN < 0)
+    {
+        setPos(X_MARGIN, y());
+    }
+    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
+    {
+        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
+    }
+
+    if(y() < 0)
+    {
+        setPos(x(), 0);
+    }
+    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
+    {
+        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
+    }
 }
 
 QRectF GateBody::boundingRect() const
@@ -95,6 +120,8 @@ GraphicGate::GraphicGate(QGraphicsItem *parent)
 
 GraphicGate::GraphicGate(double xPos, double yPos, QGraphicsItem *parent)
 {
+
+    qDebug() << xPos << "," << yPos;
     Q_UNUSED(parent);
     QGraphicsObject *gate = new GateBody(this);
     QGraphicsObject *in1 = new Input(gate);
@@ -104,7 +131,6 @@ GraphicGate::GraphicGate(double xPos, double yPos, QGraphicsItem *parent)
     QGraphicsObject *Li1 = new ConnectingLine(in1);
     QGraphicsObject *Li2 = new ConnectingLine(in2);
     QGraphicsObject *Lo1 = new ConnectingLine(out1);
-
     gate->setPos(xPos, yPos);
     in1->setPos(-15,15);
     in2->setPos(-15,35);

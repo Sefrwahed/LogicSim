@@ -3,7 +3,8 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsObject>
-#include <qdebug.h>
+#include <QDebug>
+#include <QGraphicsSceneMouseEvent>
 
 namespace Logicsim
 {
@@ -18,6 +19,7 @@ class GateBody : public Part
 public:
    GateBody(QGraphicsItem *parent = 0);
    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+   void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
    QRectF boundingRect() const;
    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };

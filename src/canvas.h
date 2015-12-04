@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsSceneDragDropEvent>
+#include <QGraphicsSceneMouseEvent>
 #include <QMimeData>
 
 namespace Logicsim

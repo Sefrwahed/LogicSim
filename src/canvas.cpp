@@ -26,6 +26,7 @@ Canvas::Canvas(QObject *parent)
     : QGraphicsScene(parent), d(new Private)
 {
     d->view = new QGraphicsView(this);
+    d->view->setSceneRect(0,0,1500,1500);
 }
 
 Canvas::~Canvas()
@@ -71,7 +72,6 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
     if(event->mimeData()->objectName().compare("gate") == 0)
     {
         event->acceptProposedAction();
-
         double x = event->scenePos().x();
         double y = event->scenePos().y();
         GraphicGate* gate = new GraphicGate(x, y);
