@@ -4,7 +4,6 @@
 #include <QTableWidget>
 #include <QDebug>
 #include <QMimeData>
-#include <QLabel>
 #include <QHeaderView>
 
 namespace Logicsim

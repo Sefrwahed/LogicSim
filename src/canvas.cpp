@@ -69,7 +69,12 @@ bool Canvas::tabAboutToBeClosed(int index)
 
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+    QString object = event->mimeData()->objectName();
+    qDebug() << object; //we can use the object name to determine which gate to draw
+    if(object.compare("andGate") == 0 || object.compare("nandGate") == 0
+       || object.compare("norGate") == 0 || object.compare("notGate") == 0
+       || object.compare("orGate") == 0 || object.compare("xnorGate") == 0
+       || object.compare("xorGate") == 0)
     {
         event->acceptProposedAction();
         double x = event->scenePos().x();
@@ -77,7 +82,6 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
         GraphicGate* gate = new GraphicGate(x, y);
         this->addItem(gate);
     }
-
 }
 void Canvas::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {
