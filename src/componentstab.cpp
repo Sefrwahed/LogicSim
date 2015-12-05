@@ -15,17 +15,17 @@ public:
 ComponentsTab::ComponentsTab(QWidget* parent)
     : QTableWidget(parent), d(new Private)
 {
-    this->verticalHeader()->setVisible(false);
-    this->horizontalHeader()->setVisible(false);
+    verticalHeader()->setVisible(false);
+    horizontalHeader()->setVisible(false);
 
     if(GATES_TYPES_COUNT % 2 != 0)
-        this->setRowCount(GATES_TYPES_COUNT/2 + 1);
+        setRowCount(GATES_TYPES_COUNT/2 + 1);
     else
-        this->setRowCount(GATES_TYPES_COUNT/2);
+        setRowCount(GATES_TYPES_COUNT/2);
 
-    this->setColumnCount(2);
-    this->setShowGrid(false);
-    this->setDragEnabled(true);
+    setColumnCount(2);
+    setShowGrid(false);
+    setDragEnabled(true);
 
     QPixmap gatePixmap[GATES_TYPES_COUNT];
     gatePixmap[0] = QPixmap(":/gates/and");
@@ -38,38 +38,46 @@ ComponentsTab::ComponentsTab(QWidget* parent)
 
     QTableWidgetItem *gateItem[GATES_TYPES_COUNT];
 
+    gateItem[0] = new QTableWidgetItem(AndGate);
+    gateItem[1] = new QTableWidgetItem(NandGate);
+    gateItem[2] = new QTableWidgetItem(NorGate);
+    gateItem[3] = new QTableWidgetItem(NotGate);
+    gateItem[4] = new QTableWidgetItem(OrGate);
+    gateItem[5] = new QTableWidgetItem(XnorGate);
+    gateItem[6] = new QTableWidgetItem(XorGate);
+
     for(int i = 0; i < GATES_TYPES_COUNT; i++)
     {
-        gateItem[i] = new QTableWidgetItem();
         gateItem[i]->setData(Qt::DecorationRole, gatePixmap[i]
                            .scaled(120, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
-    //names to detect which item was dragged
-    gateItem[0]->setWhatsThis("andGate");
-    gateItem[1]->setWhatsThis("nandGate");
-    gateItem[2]->setWhatsThis("norGate");
-    gateItem[3]->setWhatsThis("notGate");
-    gateItem[4]->setWhatsThis("orGate");
-    gateItem[5]->setWhatsThis("xnorGate");
-    gateItem[6]->setWhatsThis("xorGate");
+
+ /*   //names to detect which item was dragged
+    gateItem[0]->setData(Qt::UserRole, AndGate);
+    gateItem[1]->setData(Qt::UserRole, NandGate);
+    gateItem[2]->settData(Qt::UserRole, NorGate);
+    gateItem[3]->setData(Qt::UserRole, NotGate);
+    gateItem[4]->setData(Qt::UserRole, OrGate);
+    gateItem[5]->setData(Qt::UserRole, XnorGate);
+    gateItem[6]->setData(Qt::UserRole, XorGate);*/
 
     for(int item_no = 0; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
-        this->setItem(item_no/2, 0, gateItem[item_no]);
+        setItem(item_no/2, 0, gateItem[item_no]);
     }
     for(int item_no = 1; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
-        this->setItem(item_no/2, 1, gateItem[item_no]);
+        setItem(item_no/2, 1, gateItem[item_no]);
     }
-    this->resizeColumnsToContents();
-    this->resizeRowsToContents();
-    this->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    resizeColumnsToContents();
+    resizeRowsToContents();
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 QMimeData* ComponentsTab::mimeData(const QList<QTableWidgetItem *> items) const
 {
     QMimeData *data = QTableWidget::mimeData(items);
-    data->setObjectName(items.at(0)->whatsThis());
+    data->setProperty("type", items.at(0)->type());
     return data;
 }
 

@@ -1,5 +1,6 @@
 #include "canvas.h"
 #include "drawablegenericgate.h"
+#include "componentstab.h"
 
 #include <QTableWidgetItem>
 // Qt includes
@@ -69,12 +70,14 @@ bool Canvas::tabAboutToBeClosed(int index)
 
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
-    QString object = event->mimeData()->objectName();
-    qDebug() << object; //we can use the object name to determine which gate to draw
-    if(object.compare("andGate") == 0 || object.compare("nandGate") == 0
-       || object.compare("norGate") == 0 || object.compare("notGate") == 0
-       || object.compare("orGate") == 0 || object.compare("xnorGate") == 0
-       || object.compare("xorGate") == 0)
+    qDebug() << event->mimeData()->property("type"); //we can use the object name to determine which gate to draw
+    if(event->mimeData()->property("type") == ComponentsTab::AndGate
+       || event->mimeData()->property("type") == ComponentsTab::NandGate
+       || event->mimeData()->property("type") == ComponentsTab::NorGate
+       || event->mimeData()->property("type") == ComponentsTab::NotGate
+       || event->mimeData()->property("type") == ComponentsTab::OrGate
+       || event->mimeData()->property("type") == ComponentsTab::XnorGate
+       || event->mimeData()->property("type") == ComponentsTab::XorGate)
     {
         event->acceptProposedAction();
         double x = event->scenePos().x();
