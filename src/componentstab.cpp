@@ -53,6 +53,17 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     {
         setItem(item_no/2, 1, gateItem[item_no]);
     }
+    if(GATES_TYPES_COUNT % 2 != 0)
+    {
+        //create a transperent pixmap and set it to the empty item
+        QPixmap pixmap(16, 16);
+        pixmap.fill(QColor("white"));
+        QTableWidgetItem *emptySlot = new QTableWidgetItem();
+        emptySlot->setData(Qt::DecorationRole, pixmap);
+        //make the item selectable which makes the pixmap not selectable
+        emptySlot->setFlags(Qt::ItemIsSelectable);
+        setItem((GATES_TYPES_COUNT)/2, 1,emptySlot);
+    }
     resizeColumnsToContents();
     resizeRowsToContents();
     setEditTriggers(QAbstractItemView::NoEditTriggers);
