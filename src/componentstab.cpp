@@ -25,7 +25,6 @@ ComponentsTab::ComponentsTab(QWidget* parent)
 
     this->setColumnCount(2);
     this->setShowGrid(false);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     this->setDragEnabled(true);
 
     QPixmap gatePixmap[GATES_TYPES_COUNT];
