@@ -66,7 +66,7 @@ bool Canvas::tabAboutToBeClosed(int index)
 
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
-    qDebug() << event->mimeData()->property("type"); //we can use the object name to determine which gate to draw
+    qDebug() << event->mimeData()->property("type");
     if(event->mimeData()->property("type") == Gate::AndGate
        || event->mimeData()->property("type") == Gate::NandGate
        || event->mimeData()->property("type") == Gate::NorGate
