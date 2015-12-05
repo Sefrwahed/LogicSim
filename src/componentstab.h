@@ -6,6 +6,8 @@
 #include <QMimeData>
 #include <QHeaderView>
 
+#include "gate.h"
+
 namespace Logicsim
 {
 
@@ -14,16 +16,6 @@ class ComponentsTab : public QTableWidget
     Q_OBJECT
 
 public:
-    enum GateType{
-        AndGate,
-        NandGate,
-        NorGate,
-        NotGate,
-        OrGate,
-        XnorGate,
-        XorGate
-    };
-
     ComponentsTab(QWidget* parent = 0);
 
 protected:

@@ -31,13 +31,13 @@ ComponentsTab::ComponentsTab(QWidget* parent)
 
     QTableWidgetItem *gateItem[GATES_TYPES_COUNT];
 
-    gateItem[0] = new QTableWidgetItem(AndGate);
-    gateItem[1] = new QTableWidgetItem(NandGate);
-    gateItem[2] = new QTableWidgetItem(NorGate);
-    gateItem[3] = new QTableWidgetItem(NotGate);
-    gateItem[4] = new QTableWidgetItem(OrGate);
-    gateItem[5] = new QTableWidgetItem(XnorGate);
-    gateItem[6] = new QTableWidgetItem(XorGate);
+    gateItem[0] = new QTableWidgetItem(Gate::AndGate);
+    gateItem[1] = new QTableWidgetItem(Gate::NandGate);
+    gateItem[2] = new QTableWidgetItem(Gate::NorGate);
+    gateItem[3] = new QTableWidgetItem(Gate::NotGate);
+    gateItem[4] = new QTableWidgetItem(Gate::OrGate);
+    gateItem[5] = new QTableWidgetItem(Gate::XnorGate);
+    gateItem[6] = new QTableWidgetItem(Gate::XorGate);
 
     for(int i = 0; i < GATES_TYPES_COUNT; i++)
     {
