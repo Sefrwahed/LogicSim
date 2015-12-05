@@ -19,6 +19,7 @@ InputComponentBody::InputComponentBody(QGraphicsItem *parent):Part(parent)
 void InputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
      Q_UNUSED(event);
+    qDebug()<<"Body clicked";
 }
 
 void InputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -89,8 +90,8 @@ InputComponent::InputComponent(QGraphicsItem *parent)
     QGraphicsObject *Li = new ConnectingLine(inN);
 
     inB->setPos(50,50);
-    inN->setPos(-15,15);
-    Li->setPos(5,2.5);
+    inN->setPos(40,15);
+    Li->setPos(-10,2.5);
 }
 
 InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent)
@@ -103,8 +104,8 @@ InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent)
     xPos -= inB->boundingRect().width()/2;
     yPos -= inB->boundingRect().height()/2;
     inB->setPos(xPos,yPos);
-    inN->setPos(-15,15);
-    Li->setPos(5,2.5);
+    inN->setPos(40,15);
+    Li->setPos(-10,2.5);
 }
 
 QRectF InputComponent::boundingRect() const
