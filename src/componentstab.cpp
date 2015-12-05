@@ -62,6 +62,7 @@ QMimeData* ComponentsTab::mimeData(const QList<QTableWidgetItem *> items) const
 {
     QMimeData *data = QTableWidget::mimeData(items);
     data->setProperty("type", items.at(0)->type());
+    data->setProperty("acceptable", true);
     return data;
 }
 

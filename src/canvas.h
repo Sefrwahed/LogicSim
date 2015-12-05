@@ -3,6 +3,7 @@
 
 #include "drawablegenericgate.h"
 #include "gate.h"
+#include "componentstab.h"
 
 #include <QTableWidgetItem>
 #include <QGraphicsView>

@@ -18,6 +18,7 @@ class ComponentsTab : public QTableWidget
 public:
     ComponentsTab(QWidget* parent = 0);
 
+
 protected:
     QMimeData* mimeData(const QList<QTableWidgetItem *> items) const;
 

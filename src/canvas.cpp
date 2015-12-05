@@ -67,41 +67,61 @@ bool Canvas::tabAboutToBeClosed(int index)
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
     qDebug() << event->mimeData()->property("type");
-    if(event->mimeData()->property("type") == Gate::AndGate
-       || event->mimeData()->property("type") == Gate::NandGate
-       || event->mimeData()->property("type") == Gate::NorGate
-       || event->mimeData()->property("type") == Gate::NotGate
-       || event->mimeData()->property("type") == Gate::OrGate
-       || event->mimeData()->property("type") == Gate::XnorGate
-       || event->mimeData()->property("type") == Gate::XorGate)
+    if(event->mimeData()->property("acceptable").toBool())
     {
-        event->acceptProposedAction();
-        double x = event->scenePos().x();
-        double y = event->scenePos().y();
-        GraphicGate* gate = new GraphicGate(x, y);
-        this->addItem(gate);
+        if(event->mimeData()->property("type") == Gate::AndGate
+           || event->mimeData()->property("type") == Gate::NandGate
+           || event->mimeData()->property("type") == Gate::NorGate
+           || event->mimeData()->property("type") == Gate::NotGate
+           || event->mimeData()->property("type") == Gate::OrGate
+           || event->mimeData()->property("type") == Gate::XnorGate
+           || event->mimeData()->property("type") == Gate::XorGate)
+        {
+            event->acceptProposedAction();
+            double x = event->scenePos().x();
+            double y = event->scenePos().y();
+            GraphicGate* gate = new GraphicGate(x, y);
+            this->addItem(gate);
+        }
+    }
+    else
+    {
+        event->setAccepted(false);
     }
 }
 void Canvas::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+        qDebug() << event->mimeData()->property("acceptable");
+    if(event->mimeData()->property("acceptable").toBool())
     {
         event->acceptProposedAction();
+    }
+    else
+    {
+        event->setAccepted(false);
     }
 }
 void Canvas::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+    if(event->mimeData()->property("acceptable").toBool())
     {
         event->acceptProposedAction();
+    }
+    else
+    {
+        event->setAccepted(false);
     }
 }
 
 void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+    if(event->mimeData()->property("acceptable").toBool())
     {
         event->acceptProposedAction();
+    }
+    else
+    {
+        event->setAccepted(false);
     }
 }
 
