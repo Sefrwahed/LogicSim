@@ -1,7 +1,4 @@
 #include "canvas.h"
-#include "drawablegenericgate.h"
-
-#include <QTableWidgetItem>
 // Qt includes
 #include <QDebug>
 #include <QMessageBox>
@@ -69,36 +66,53 @@ bool Canvas::tabAboutToBeClosed(int index)
 
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+    if(event->mimeData()->property("acceptable").toBool())
     {
+        qDebug() << event->mimeData()->property("type");
         event->acceptProposedAction();
         double x = event->scenePos().x();
         double y = event->scenePos().y();
         GraphicGate* gate = new GraphicGate(x, y);
         this->addItem(gate);
     }
-
+    else
+    {
+        event->setAccepted(false);
+    }
 }
 void Canvas::dragEnterEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+    qDebug() << event->mimeData()->property("acceptable");
+    if(event->mimeData()->property("acceptable").toBool())
     {
         event->acceptProposedAction();
+    }
+    else
+    {
+        event->setAccepted(false);
     }
 }
 void Canvas::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+    if(event->mimeData()->property("acceptable").toBool())
     {
         event->acceptProposedAction();
+    }
+    else
+    {
+        event->setAccepted(false);
     }
 }
 
 void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 {
-    if(event->mimeData()->objectName().compare("gate") == 0)
+    if(event->mimeData()->property("acceptable").toBool())
     {
         event->acceptProposedAction();
+    }
+    else
+    {
+        event->setAccepted(false);
     }
 }
 

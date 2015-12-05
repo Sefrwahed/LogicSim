@@ -4,8 +4,9 @@
 #include <QTableWidget>
 #include <QDebug>
 #include <QMimeData>
-#include <QLabel>
 #include <QHeaderView>
+
+#include "gate.h"
 
 namespace Logicsim
 {
@@ -16,15 +17,11 @@ class ComponentsTab : public QTableWidget
 
 public:
     ComponentsTab(QWidget* parent = 0);
-    ~ComponentsTab();
+
 
 protected:
     QMimeData* mimeData(const QList<QTableWidgetItem *> items) const;
 
-
-private:
-    class Private;
-    Private* const d;
 };
 
 }

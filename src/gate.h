@@ -10,6 +10,17 @@ namespace Logicsim
 class Gate
 {
 public:
+    enum GateType
+    {
+        AndGate,
+        NandGate,
+        NorGate,
+        NotGate,
+        OrGate,
+        XnorGate,
+        XorGate
+    };
+
     Gate();
     ~Gate();
     virtual void calcOutput() = 0;

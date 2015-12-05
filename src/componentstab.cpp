@@ -5,35 +5,22 @@ namespace Logicsim
 
 const int GATES_TYPES_COUNT = 7;
 
-class ComponentsTab::Private
-{
-public:
-    Private() :
-        rows(0),
-        columns(0)
-    {}
-    int rows;
-    int columns;
-};
-
 ComponentsTab::ComponentsTab(QWidget* parent)
-    : QTableWidget(parent), d(new Private)
+    : QTableWidget(parent)
 {
-    this->verticalHeader()->setVisible(false);
-    this->horizontalHeader()->setVisible(false);
+    verticalHeader()->setVisible(false);
+    horizontalHeader()->setVisible(false);
 
     if(GATES_TYPES_COUNT % 2 != 0)
-        this->setRowCount(GATES_TYPES_COUNT/2 + 1);
+        setRowCount(GATES_TYPES_COUNT/2 + 1);
     else
-        this->setRowCount(GATES_TYPES_COUNT/2);
+        setRowCount(GATES_TYPES_COUNT/2);
 
-    this->setColumnCount(2);
-    this->setShowGrid(false);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    this->setDragEnabled(true);
+    setColumnCount(2);
+    setShowGrid(false);
+    setDragEnabled(true);
 
     QPixmap gatePixmap[GATES_TYPES_COUNT];
-    QLabel* gateItem[GATES_TYPES_COUNT];
     gatePixmap[0] = QPixmap(":/gates/and");
     gatePixmap[1] = QPixmap(":/gates/nand");
     gatePixmap[2] = QPixmap(":/gates/nor");
@@ -42,35 +29,41 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     gatePixmap[5] = QPixmap(":/gates/xnor");
     gatePixmap[6] = QPixmap(":/gates/xor");
 
+    QTableWidgetItem *gateItem[GATES_TYPES_COUNT];
+
+    gateItem[0] = new QTableWidgetItem(Gate::AndGate);
+    gateItem[1] = new QTableWidgetItem(Gate::NandGate);
+    gateItem[2] = new QTableWidgetItem(Gate::NorGate);
+    gateItem[3] = new QTableWidgetItem(Gate::NotGate);
+    gateItem[4] = new QTableWidgetItem(Gate::OrGate);
+    gateItem[5] = new QTableWidgetItem(Gate::XnorGate);
+    gateItem[6] = new QTableWidgetItem(Gate::XorGate);
+
     for(int i = 0; i < GATES_TYPES_COUNT; i++)
     {
-        gateItem[i] = new QLabel();
-        gateItem[i]->setPixmap(gatePixmap[i]);
-        gateItem[i]->setObjectName("gate");
+        gateItem[i]->setData(Qt::DecorationRole, gatePixmap[i]
+                           .scaled(120, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
+
     for(int item_no = 0; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
-        this->setCellWidget(item_no/2, 0, gateItem[item_no]);
+        setItem(item_no/2, 0, gateItem[item_no]);
     }
     for(int item_no = 1; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
-        this->setCellWidget(item_no/2, 1, gateItem[item_no]);
+        setItem(item_no/2, 1, gateItem[item_no]);
     }
-    this->resizeColumnsToContents();
-    this->resizeRowsToContents();
-    this->setEditTriggers(QAbstractItemView::NoEditTriggers);
-}
-
-ComponentsTab::~ComponentsTab()
-{
-    delete d;
+    resizeColumnsToContents();
+    resizeRowsToContents();
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 QMimeData* ComponentsTab::mimeData(const QList<QTableWidgetItem *> items) const
 {
     QMimeData *data = QTableWidget::mimeData(items);
-    data->setObjectName("gate");
-
+    data->setProperty("type", items.at(0)->type());
+    data->setProperty("acceptable", true);
     return data;
 }
+
 }

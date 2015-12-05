@@ -1,10 +1,16 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
+#include "drawablegenericgate.h"
+#include "gate.h"
+#include "componentstab.h"
+
+#include <QTableWidgetItem>
 #include <QGraphicsView>
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QMimeData>
+
 
 namespace Logicsim
 {
