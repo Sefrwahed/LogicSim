@@ -5,15 +5,8 @@ namespace Logicsim
 
 const int GATES_TYPES_COUNT = 7;
 
-class ComponentsTab::Private
-{
-public:
-    Private()
-    {}
-};
-
 ComponentsTab::ComponentsTab(QWidget* parent)
-    : QTableWidget(parent), d(new Private)
+    : QTableWidget(parent)
 {
     verticalHeader()->setVisible(false);
     horizontalHeader()->setVisible(false);
@@ -52,15 +45,6 @@ ComponentsTab::ComponentsTab(QWidget* parent)
                            .scaled(120, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
 
- /*   //names to detect which item was dragged
-    gateItem[0]->setData(Qt::UserRole, AndGate);
-    gateItem[1]->setData(Qt::UserRole, NandGate);
-    gateItem[2]->settData(Qt::UserRole, NorGate);
-    gateItem[3]->setData(Qt::UserRole, NotGate);
-    gateItem[4]->setData(Qt::UserRole, OrGate);
-    gateItem[5]->setData(Qt::UserRole, XnorGate);
-    gateItem[6]->setData(Qt::UserRole, XorGate);*/
-
     for(int item_no = 0; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
         setItem(item_no/2, 0, gateItem[item_no]);
@@ -79,11 +63,6 @@ QMimeData* ComponentsTab::mimeData(const QList<QTableWidgetItem *> items) const
     QMimeData *data = QTableWidget::mimeData(items);
     data->setProperty("type", items.at(0)->type());
     return data;
-}
-
-ComponentsTab::~ComponentsTab()
-{
-    delete d;
 }
 
 }
