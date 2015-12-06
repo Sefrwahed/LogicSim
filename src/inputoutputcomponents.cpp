@@ -19,7 +19,13 @@ InputComponentBody::InputComponentBody(QGraphicsItem *parent):Part(parent)
 void InputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
      Q_UNUSED(event);
+    if(pnode->getValue()==false){
+       pnode->setValue(true);
+    }else if(pnode->getValue() == true) {
+        pnode->setValue(false);
+    }
     qDebug()<<"Body clicked";
+    qDebug()<<"input changed to : "<<pnode->getValue();
 }
 
 void InputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -53,19 +59,30 @@ void InputComponentBody::paint(QPainter *painter, const QStyleOptionGraphicsItem
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->drawEllipse(0,0,30,30);
+    painter->drawRect(0,0,30,30);
+}
+
+Node* InputComponentBody::GetBodyNode()
+{
+    return pnode;
+}
+void InputComponentBody::SetBodyNode(Node *n)
+{
+    pnode = n;
 }
 
 /*Input component's Node*/
 
 InputComponentNode::InputComponentNode(QGraphicsItem *parent):Part(parent)
 {
+    node.setValue(false);
 }
 
 void InputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     qDebug()<<"Input Clicked";
+    qDebug()<<"Value of input node: " << node.getValue();
 }
 
 QRectF InputComponentNode::boundingRect() const
@@ -80,14 +97,25 @@ void InputComponentNode::paint (QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawEllipse(0,0,5,5);
 }
 
+Node & InputComponentNode::GetNodeNode()
+{
+    return node;
+}
+void InputComponentNode::SetNodeNode(Node& n)
+{
+    node = n;
+}
+
 /*Input component*/
 
 InputComponent::InputComponent(QGraphicsItem *parent)
 {
     Q_UNUSED(parent);
-    QGraphicsObject *inB = new InputComponentBody(this);
-    QGraphicsObject *inN = new InputComponentNode(inB);
-    QGraphicsObject *Li = new ConnectingLine(inN);
+    InputComponentBody *inB = new InputComponentBody(this);
+    InputComponentNode *inN = new InputComponentNode(inB);
+    ConnectingLine *Li = new ConnectingLine(inN);
+
+    inB->SetBodyNode(&inN->GetNodeNode());
 
     inB->setPos(50,50);
     inN->setPos(40,15);
@@ -98,9 +126,12 @@ InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent)
 {
     qDebug() << xPos << "," << yPos;
     Q_UNUSED(parent);
-    QGraphicsObject *inB = new InputComponentBody(this);
-    QGraphicsObject *inN = new InputComponentNode(inB);
-    QGraphicsObject *Li = new ConnectingLine(inN);
+    InputComponentBody *inB = new InputComponentBody(this);
+    InputComponentNode *inN = new InputComponentNode(inB);
+    ConnectingLine *Li = new ConnectingLine(inN);
+
+    inB->SetBodyNode(&inN->GetNodeNode());
+
     xPos -= inB->boundingRect().width()/2;
     yPos -= inB->boundingRect().height()/2;
     inB->setPos(xPos,yPos);
