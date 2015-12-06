@@ -72,7 +72,7 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
         event->acceptProposedAction();
         double x = event->scenePos().x();
         double y = event->scenePos().y();
-        OutputComponent* gate = new OutputComponent(x, y);
+        GraphicGate* gate = new GraphicGate(x, y);
         this->addItem(gate);
     }
     else
@@ -117,3 +117,4 @@ void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 }
 
 } // namespace Logicsim
+

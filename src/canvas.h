@@ -4,7 +4,6 @@
 #include "drawablegenericgate.h"
 #include "gate.h"
 #include "componentstab.h"
-#include "inputoutputcomponents.h"
 
 #include <QTableWidgetItem>
 #include <QGraphicsView>
@@ -46,3 +45,4 @@ private:
 } // namespace Logicsim
 
 #endif // CANVAS_H
+
