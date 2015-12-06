@@ -70,6 +70,7 @@ class OutputComponentNode : public Part
 {
 private:
     Node *node;
+    //Node n;
 public:
     OutputComponentNode(QGraphicsItem *parent = 0);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

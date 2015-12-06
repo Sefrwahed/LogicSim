@@ -2,6 +2,7 @@
 // Qt includes
 #include <QDebug>
 #include <QMessageBox>
+#include "inputoutputcomponents.h"
 
 namespace Logicsim
 {
@@ -72,7 +73,7 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
         event->acceptProposedAction();
         double x = event->scenePos().x();
         double y = event->scenePos().y();
-        GraphicGate* gate = new GraphicGate(x, y);
+        OutputComponent* gate = new OutputComponent(x, y);
         this->addItem(gate);
     }
     else
