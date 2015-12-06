@@ -72,7 +72,7 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
         event->acceptProposedAction();
         double x = event->scenePos().x();
         double y = event->scenePos().y();
-        InputComponent* gate = new InputComponent(x, y);
+        OutputComponent* gate = new OutputComponent(x, y);
         this->addItem(gate);
     }
     else

@@ -46,6 +46,15 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };
 
+class OutputComponent : public Part
+{
+public:
+    OutputComponent(QGraphicsItem *parent = 0);
+    OutputComponent(double xPos, double yPos, QGraphicsItem *parent = 0);
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+};
+
 }
 
 #endif // INPUTOUTPUTCOMPONENTS
