@@ -8,6 +8,8 @@
 namespace Logicsim
 {
 
+/*Input*/
+
 class InputComponentBody : public Part
 {
 private:
@@ -44,6 +46,37 @@ public:
     InputComponent(double xPos, double yPos, QGraphicsItem *parent = 0);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+};
+
+/*Output*/
+
+class OutputComponentBody : public Part
+{
+private:
+    Node *pnode;
+public:
+   OutputComponentBody(QGraphicsItem *parent = 0);
+   void mousePressEvent(QGraphicsSceneMouseEvent *event);
+   void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+   QRectF boundingRect() const;
+   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+   Node * GetBodyNode();
+   void SetBodyNode(Node *n);
+
+
+};
+
+class OutputComponentNode : public Part
+{
+private:
+    Node node;
+public:
+    OutputComponentNode(QGraphicsItem *parent = 0);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    QRectF boundingRect() const;
+    void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    Node& GetNodeNode();
+    void SetNodeNode(Node &n);
 };
 
 class OutputComponent : public Part
