@@ -213,14 +213,14 @@ void OutputComponentBody::SetBodyNode(Node *n)
 
 OutputComponentNode::OutputComponentNode(QGraphicsItem *parent):Part(parent)
 {
-    node.setValue(false);
+    node->setValue(false);
 }
 
 void OutputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     qDebug()<<"output Clicked";
-    qDebug()<<"Value of output node: " << node.getValue();
+    qDebug()<<"Value of output node: " << node->getValue();
 }
 
 QRectF OutputComponentNode::boundingRect() const
@@ -235,11 +235,11 @@ void OutputComponentNode::paint (QPainter *painter, const QStyleOptionGraphicsIt
     painter->drawEllipse(0,0,5,5);
 }
 
-Node & OutputComponentNode::GetNodeNode()
+Node * OutputComponentNode::GetNodeNode()
 {
     return node;
 }
-void OutputComponentNode::SetNodeNode(Node& n)
+void OutputComponentNode::SetNodeNode(Node* n)
 {
     node = n;
 }
@@ -253,7 +253,8 @@ OutputComponent::OutputComponent(QGraphicsItem *parent)
     OutputComponentNode *outN = new OutputComponentNode(outB);
     ConnectingLine *Lo = new ConnectingLine(outN);
 
-    outB->SetBodyNode(&outN->GetNodeNode());
+    outB->SetBodyNode(outN->GetNodeNode());
+    //outB->SetBodyNode(&outN->GetNodeNode());
 
     outN->setPos(-15,15);
     Lo->setPos(5,2.5);
@@ -267,7 +268,7 @@ OutputComponent::OutputComponent(double xPos, double yPos, QGraphicsItem *parent
     OutputComponentNode *outN = new OutputComponentNode(outB);
     ConnectingLine *Lo = new ConnectingLine(outN);
 
-    outB->SetBodyNode(&outN->GetNodeNode());
+    outB->SetBodyNode(outN->GetNodeNode());
 
     xPos -= outB->boundingRect().width()/2;
     yPos -= outB->boundingRect().height()/2;

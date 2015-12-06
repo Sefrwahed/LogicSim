@@ -69,14 +69,14 @@ public:
 class OutputComponentNode : public Part
 {
 private:
-    Node node;
+    Node *node;
 public:
     OutputComponentNode(QGraphicsItem *parent = 0);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QRectF boundingRect() const;
     void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    Node& GetNodeNode();
-    void SetNodeNode(Node &n);
+    Node* GetNodeNode();
+    void SetNodeNode(Node *n);
 };
 
 class OutputComponent : public Part
