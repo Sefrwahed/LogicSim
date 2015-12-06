@@ -59,7 +59,7 @@ void InputComponentBody::paint(QPainter *painter, const QStyleOptionGraphicsItem
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->drawRect(0,0,30,30);
+    painter->drawEllipse(0,0,30,30);
 }
 
 Node* InputComponentBody::GetBodyNode()
@@ -197,7 +197,7 @@ void OutputComponentBody::paint(QPainter *painter, const QStyleOptionGraphicsIte
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->drawRect(0,0,30,30);
+    painter->drawEllipse(0,0,30,30);
 }
 
 Node* OutputComponentBody::GetBodyNode()
