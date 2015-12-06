@@ -152,4 +152,50 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 }
 
 
+/*Output component*/
+
+OutputComponent::OutputComponent(QGraphicsItem *parent)
+{
+    Q_UNUSED(parent);
+    InputComponentBody *inB = new InputComponentBody(this);
+    InputComponentNode *inN = new InputComponentNode(inB);
+    ConnectingLine *Li = new ConnectingLine(inN);
+
+    inB->SetBodyNode(&inN->GetNodeNode());
+
+    inB->setPos(50,50);
+    inN->setPos(40,15);
+    Li->setPos(-10,2.5);
+}
+
+OutputComponent::OutputComponent(double xPos, double yPos, QGraphicsItem *parent)
+{
+    qDebug() << xPos << "," << yPos;
+    Q_UNUSED(parent);
+    InputComponentBody *outB = new InputComponentBody(this);
+    InputComponentNode *outN = new InputComponentNode(outB);
+    ConnectingLine *Lo = new ConnectingLine(outN);
+
+    outB->SetBodyNode(&outN->GetNodeNode());
+
+    xPos -= outB->boundingRect().width()/2;
+    yPos -= outB->boundingRect().height()/2;
+    outB->setPos(xPos,yPos);
+    outN->setPos(40,15);
+    Lo->setPos(-10,2.5);
+}
+
+QRectF OutputComponent::boundingRect() const
+{
+    return QRectF();
+}
+
+void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(painter);
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+}
+
+
 }
