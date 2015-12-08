@@ -3,48 +3,59 @@
 namespace Logicsim
 {
 
-Gate::Gate()
+Gate::Gate(Type t)
 {
-    output = new Node;
-    maxInput = 2;
+    m_type = t;
+    m_output = new Node;
+    m_maxInput = 2;
 }
 
 Gate::~Gate()
 {
-    delete output;
+    delete m_output;
 }
 
 void Gate::setMaxInput(qint16 mi)
 {
-    maxInput = mi;
+    m_maxInput = mi;
 }
 
-qint16 Gate::getMaxInput(){
-    return maxInput;
+qint16 Gate::maxInput(){
+    return m_maxInput;
 }
 
 Node* Gate::outputNode()
 {
-    return output;
+    return m_output;
 }
 
 QList<Node*> Gate::inputList() const
 {
-    return input;
+    return m_input;
 }
 
-void Gate::setInput(QList<Node *> &n)
+void Gate::setInput(QList<Node *> & n)
 {
-    input = n;
+    m_input = n;
+}
+
+Gate::Type Gate::type() const
+{
+    return m_type;
 }
 
 // ===================== AndGate ===================
+
+AndGate::AndGate()
+    : Gate(Gate::AndGate)
+{
+}
 
 void AndGate::calcOutput()
 {
     bool out = true;
     foreach (Node * n, inputList()) {
-        out &= n->getValue();
+        out &= n->value();
     }
 
     outputNode()->setValue(out);
@@ -52,25 +63,33 @@ void AndGate::calcOutput()
 
 // ===================== OrGate ===================
 
+OrGate::OrGate()
+    : Gate(Gate::OrGate)
+{
+}
+
 void OrGate::calcOutput()
 {
     bool out = false;
     foreach (Node * n, inputList()) {
-        out |= n->getValue();
+        out |= n->value();
     }
 
     outputNode()->setValue(out);
 
 }
+
 // ===================== NotGate ===================
+
 NotGate::NotGate()
+    : Gate(Gate::NotGate)
 {
     setMaxInput(1);
 }
 
 void NotGate::calcOutput()
 {
-    bool out = inputList()[0]->getValue();
+    bool out = inputList()[0]->value();
     outputNode()->setValue(!out);
 }
 

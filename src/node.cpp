@@ -1,26 +1,32 @@
 #include "node.h"
+
 namespace Logicsim
 {
+
 Node::Node()
 {
-    value = 0;
-    name = "n";
+    m_value = 0;
+    m_name = "n";
 }
-QString Node::getName()
+
+QString Node::name()
 {
-    return name;
+    return m_name;
 }
-bool Node::getValue()
+
+bool Node::value()
 {
-    return value;
+    return m_value;
 }
+
 void Node::setValue(bool v)
 {
-    value = v;
+    m_value = v;
 }
+
 void Node::setName(QString n)
 {
-    name = n;
+    m_name = n;
 }
 
 } //namespace Logicsim
