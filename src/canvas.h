@@ -9,8 +9,8 @@
 #include <QMimeData>
 
 // Local includes
-#include "drawablegenericgate.h"
-#include "gate.h"
+#include "gateparts.h"
+#include "gates.h"
 #include "componentstab.h"
 
 namespace Logicsim
