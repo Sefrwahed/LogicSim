@@ -1,4 +1,5 @@
 #include "canvas.h"
+
 // Qt includes
 #include <QDebug>
 #include <QMessageBox>

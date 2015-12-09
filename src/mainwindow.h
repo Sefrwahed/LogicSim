@@ -1,9 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// Qt includes
 #include <QMainWindow>
 #include <QGraphicsSceneDragDropEvent>
 #include <QLabel>
+
+// Local includes
 #include "componentstab.h"
 
 namespace Ui {

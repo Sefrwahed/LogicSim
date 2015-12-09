@@ -1,15 +1,23 @@
-#include <QtWidgets>
 #include "drawablegenericgate.h"
+
+// Qt includes
+#include <QtWidgets>
 
 namespace Logicsim
 {
 const int X_MARGIN = 20;
 const int CANVAS_WIDTH = 1500;
 const int CANVAS_HEIGHT = 1500;
-Part::Part(QGraphicsItem *parent): QGraphicsObject(parent)
-{}
 
-GateBody::GateBody(QGraphicsItem *parent):Part(parent)
+Part::Part(QGraphicsItem *parent)
+    : QGraphicsObject(parent)
+{
+}
+
+// ==============================================
+
+GateBody::GateBody(QGraphicsItem *parent)
+    : Part(parent)
 {
     //setFlag(QGraphicsItem::ItemIsSelectable); //item must be selected first before dragging
     setFlag(QGraphicsItem::ItemIsMovable);
@@ -55,8 +63,12 @@ void GateBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawRect(0,0,40,50);
 }
 
-Input::Input(QGraphicsItem *parent):Part(parent)
-{}
+// ==============================================
+
+Input::Input(QGraphicsItem *parent)
+    : Part(parent)
+{
+}
 
 void Input::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -76,8 +88,12 @@ void Input::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     painter->drawEllipse(0,0,5,5);
 }
 
-Output::Output(QGraphicsItem *parent):Part(parent)
-{}
+// ==============================================
+
+Output::Output(QGraphicsItem *parent)
+    : Part(parent)
+{
+}
 
 void Output::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -97,9 +113,30 @@ void Output::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawEllipse(0,0,5,5);
 }
 
-GraphicGate::GraphicGate(QGraphicsItem *parent)
+// ==============================================
+
+ConnectingLine::ConnectingLine(QGraphicsItem *parent)
+    : Part(parent)
 {
-    Q_UNUSED(parent);
+}
+
+QRectF ConnectingLine::boundingRect() const
+{
+    return QRectF(0,0,10,0);
+}
+
+void ConnectingLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+    painter->drawLine(0,0,10,0);
+}
+
+// ==============================================
+
+GraphicGate::GraphicGate(QGraphicsItem *parent)
+    : Part(parent)
+{
     QGraphicsObject *gate = new GateBody(this);
     QGraphicsObject *in1 = new Input(gate);
     QGraphicsObject *in2 = new Input(gate);
@@ -119,10 +156,9 @@ GraphicGate::GraphicGate(QGraphicsItem *parent)
 }
 
 GraphicGate::GraphicGate(double xPos, double yPos, QGraphicsItem *parent)
+    : Part(parent)
 {
-
     qDebug() << xPos << "," << yPos;
-    Q_UNUSED(parent);
     QGraphicsObject *gate = new GateBody(this);
     QGraphicsObject *in1 = new Input(gate);
     QGraphicsObject *in2 = new Input(gate);
@@ -154,18 +190,4 @@ void GraphicGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     Q_UNUSED(widget);
 }
 
-ConnectingLine::ConnectingLine(QGraphicsItem *parent):Part(parent)
-{}
-
-QRectF ConnectingLine::boundingRect() const
-{
-    return QRectF(0,0,10,0);
-}
-
-void ConnectingLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    painter->drawLine(0,0,10,0);
-}
-}
+} // namespace Logicsim

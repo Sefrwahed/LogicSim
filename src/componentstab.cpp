@@ -12,9 +12,13 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     horizontalHeader()->setVisible(false);
 
     if(GATES_TYPES_COUNT % 2 != 0)
+    {
         setRowCount(GATES_TYPES_COUNT/2 + 1);
+    }
     else
+    {
         setRowCount(GATES_TYPES_COUNT/2);
+    }
 
     setColumnCount(2);
     setShowGrid(false);
@@ -49,10 +53,12 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     {
         setItem(item_no/2, 0, gateItem[item_no]);
     }
+
     for(int item_no = 1; item_no < GATES_TYPES_COUNT; item_no += 2)
     {
         setItem(item_no/2, 1, gateItem[item_no]);
     }
+
     if(GATES_TYPES_COUNT % 2 != 0)
     {
         //create a transperent pixmap and set it to the empty item
@@ -64,6 +70,7 @@ ComponentsTab::ComponentsTab(QWidget* parent)
         emptySlot->setFlags(Qt::ItemIsSelectable);
         setItem((GATES_TYPES_COUNT)/2, 1,emptySlot);
     }
+
     resizeColumnsToContents();
     resizeRowsToContents();
     setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -77,4 +84,4 @@ QMimeData* ComponentsTab::mimeData(const QList<QTableWidgetItem *> items) const
     return data;
 }
 
-}
+} // namespace Logicsim
