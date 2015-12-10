@@ -28,6 +28,9 @@ public:
 
     void calcOutput();
     QString imageUrl() const;
+
+    inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+    { GraphicGate::mouseMoveEvent(e); }
 };
 
 // ===================== OrGate =================
@@ -40,6 +43,9 @@ public:
 
     void calcOutput();
     QString imageUrl() const;
+
+    inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+    { GraphicGate::mouseMoveEvent(e); }
 };
 
 // ===================== NotGate ================
@@ -53,6 +59,9 @@ public:
     void calcOutput();
     QString imageUrl() const;
     void paint();
+
+    inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+    { GraphicGate::mouseMoveEvent(e); }
 };
 
 } // namespace Logicsim

@@ -19,6 +19,8 @@ public:
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 };
 
 } // namespace Logicsim

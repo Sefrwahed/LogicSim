@@ -4,6 +4,7 @@
 
 #include "gateparts.h"
 #include "abstractgate.h"
+#include "logicsim_global.h"
 
 namespace Logicsim
 {
@@ -40,6 +41,28 @@ void GraphicGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     Q_UNUSED(painter);
     Q_UNUSED(option);
     Q_UNUSED(widget);
+}
+
+void GraphicGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsObject::mouseMoveEvent(event);
+    if(x() - X_MARGIN < 0)
+    {
+        setPos(X_MARGIN, y());
+    }
+    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
+    {
+        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
+    }
+
+    if(y() < 0)
+    {
+        setPos(x(), 0);
+    }
+    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
+    {
+        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
+    }
 }
 
 } // namespace Logicsim

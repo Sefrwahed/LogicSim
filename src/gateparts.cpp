@@ -11,55 +11,6 @@
 namespace Logicsim
 {
 
-GateBody::GateBody(QGraphicsItem *parent)
-    : QGraphicsObject(parent)
-{
-    //setFlag(QGraphicsItem::ItemIsSelectable); //item must be selected first before dragging
-    setFlag(QGraphicsItem::ItemIsMovable);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-}
-
-void GateBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-     Q_UNUSED(event);
-}
-
-void GateBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsObject::mouseMoveEvent(event);
-    if(x() - X_MARGIN < 0)
-    {
-        setPos(X_MARGIN, y());
-    }
-    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
-    {
-        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
-    }
-
-    if(y() < 0)
-    {
-        setPos(x(), 0);
-    }
-    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
-    {
-        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
-    }
-}
-
-QRectF GateBody::boundingRect() const
-{
-    return QRectF(0,0,40,50);
-}
-
-void GateBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    painter->drawRect(0,0,40,50);
-}
-
-// ==============================================
-
 Input::Input(QGraphicsItem *parent)
     : QGraphicsObject(parent)
 {
