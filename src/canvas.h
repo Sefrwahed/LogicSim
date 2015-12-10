@@ -12,6 +12,7 @@
 #include "drawablegenericgate.h"
 #include "gate.h"
 #include "componentstab.h"
+#include "canvasmanager.h"
 
 namespace Logicsim
 {

@@ -17,7 +17,7 @@ public:
 
     int            tabIndex;
     QGraphicsView* view;
-
+    CanvasManager *mCanvasManager;
 };
 
 Canvas::Canvas(QObject *parent)
@@ -25,6 +25,7 @@ Canvas::Canvas(QObject *parent)
 {
     d->view = new QGraphicsView(this);
     d->view->setSceneRect(0,0,1500,1500);
+    d->mCanvasManager = new CanvasManager(parent, this);
 }
 
 Canvas::~Canvas()
@@ -74,7 +75,7 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
         double x = event->scenePos().x();
         double y = event->scenePos().y();
         GraphicGate* gate = new GraphicGate(x, y);
-        this->addItem(gate);
+        addItem(gate);
     }
     else
     {
