@@ -11,19 +11,6 @@
 namespace Logicsim
 {
 
-class GateBody : public QGraphicsObject
-{
-public:
-   GateBody(QGraphicsItem *parent = 0);
-
-   void mousePressEvent(QGraphicsSceneMouseEvent *event);
-   void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-   QRectF boundingRect() const;
-   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-};
-
-// ==============================================
-
 class Input : public QGraphicsObject
 {
 public:
