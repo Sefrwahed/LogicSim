@@ -25,6 +25,7 @@ public:
     ~MainWindow();
 
     void initComponentsTab();
+    void setMainFrameDisabled(bool disabled);
 
 public Q_SLOTS:
     void newFile();
