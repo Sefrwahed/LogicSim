@@ -32,8 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     initComponentsTab();
 
-
     d->tabWidget = new QTabWidget(ui->frame);
+    setMainFrameDisabled(true);
     ui->frameGridLayout->addWidget(d->tabWidget);
     d->tabWidget->setTabsClosable(true);
 
@@ -65,14 +65,27 @@ void MainWindow::initComponentsTab()
     ui->gridLayout_3->addWidget(components);
 }
 
+void MainWindow::setMainFrameDisabled(bool disabled)
+{
+    if(disabled)
+    {
+        ui->frame->setStyleSheet("background-color: #D3D3D3");
+    }
+    else
+    {
+        ui->frame->setStyleSheet("");
+    }
+}
+
 void MainWindow::newFile()
 {
     if(d->tabsCount >= 10) return;
     Canvas* c = new Canvas(d->tabWidget);
     d->tabsCount++;
-    int tabIndex = d->tabWidget->addTab(c->view(), "New File " + QString::number(d->tabsCount));
+    int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
     c->setTabIndex(tabIndex);
     d->canvases << c;
+    setMainFrameDisabled(false);
 }
 
 void MainWindow::closeTab(int tabIndex)
@@ -90,7 +103,7 @@ void MainWindow::closeTab(int tabIndex)
 
     delete d->canvases.at(tabIndex);
     d->canvases.removeAt(tabIndex);
-    d->tabsCount--;
+    setMainFrameDisabled(!--d->tabsCount);
 }
 
 } // namespace Logicsim
