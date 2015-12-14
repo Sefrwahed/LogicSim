@@ -12,11 +12,9 @@
 namespace Logicsim
 {
 
-/* Maximum tabs to be created in the main frame */
-const int MAX_TABS_COUNT = 10;
-
 /* Drawing constants */
-const int X_MARGIN = 20;
+const int GATE_X_MARGIN = 20;
+const int GATE_Y_MARGIN = 5;
 const int CANVAS_WIDTH = 1500;
 const int CANVAS_HEIGHT = 1500;
 

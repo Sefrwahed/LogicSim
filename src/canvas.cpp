@@ -1,8 +1,13 @@
 #include "canvas.h"
 
 // Qt includes
+
 #include <QDebug>
 #include <QMessageBox>
+
+// Local includes
+
+#include "logicsim_global.h"
 
 namespace Logicsim
 {
@@ -24,7 +29,7 @@ Canvas::Canvas(QObject *parent)
     : QGraphicsScene(parent), d(new Private)
 {
     d->view = new QGraphicsView(this);
-    d->view->setSceneRect(0,0,1500,1500);
+    d->view->setSceneRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
 Canvas::~Canvas()

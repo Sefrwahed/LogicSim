@@ -46,22 +46,22 @@ void GraphicGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 void GraphicGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsObject::mouseMoveEvent(event);
-    if(x() - X_MARGIN < 0)
+    if(x() - GATE_X_MARGIN < 0)
     {
-        setPos(X_MARGIN, y());
+        setPos(GATE_X_MARGIN, y());
     }
-    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
+    else if(x() + boundingRect().right() + GATE_X_MARGIN > CANVAS_WIDTH)
     {
-        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
+        setPos(CANVAS_WIDTH - boundingRect().width() - GATE_X_MARGIN, y());
     }
 
     if(y() < 0)
     {
-        setPos(x(), 0);
+        setPos(x(), GATE_Y_MARGIN);
     }
-    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
+    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
     {
-        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
+        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
     }
 }
 

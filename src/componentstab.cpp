@@ -3,13 +3,15 @@
 namespace Logicsim
 {
 
+const int COLUMN_COUNT = 2;
+
 ComponentsTab::ComponentsTab(QWidget* parent)
     : QTableWidget(parent)
 {
     verticalHeader()->setVisible(false);
     horizontalHeader()->setVisible(false);
 
-    setColumnCount(2);
+    setColumnCount(COLUMN_COUNT);
     setShowGrid(false);
     setDragEnabled(true);
 
@@ -56,8 +58,10 @@ ComponentsTab::ComponentsTab(QWidget* parent)
         setItem((gatesCount)/2, 1,emptySlot);
     }
 
-    resizeColumnsToContents();
     resizeRowsToContents();
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    setMinimumWidth(QPixmap(m_gates[0]->imageUrl()).width()*COLUMN_COUNT);
+    setMaximumWidth(minimumWidth());
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 

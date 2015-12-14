@@ -14,6 +14,9 @@
 namespace Logicsim
 {
 
+/* Maximum tabs to be created in the main frame */
+const int MAX_TAB_COUNT = 10;
+
 class MainWindow::Private
 {
 public:
@@ -72,16 +75,18 @@ void MainWindow::setMainFrameDisabled(bool disabled)
     if(disabled)
     {
         ui->frame->setStyleSheet("background-color: #D3D3D3");
+        d->compTab->setDisabled(true);
     }
     else
     {
         ui->frame->setStyleSheet("");
+        d->compTab->setDisabled(false);
     }
 }
 
 void MainWindow::newFile()
 {
-    if(d->tabsCount >= 10) return;
+    if(d->tabsCount >= MAX_TAB_COUNT) return;
     Canvas* c = new Canvas(d->tabWidget);
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
