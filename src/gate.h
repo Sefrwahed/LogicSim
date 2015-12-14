@@ -1,7 +1,10 @@
 #ifndef GATE_H
 #define GATE_H
 
+// Qt includes
 #include <QCoreApplication>
+
+// Local includes
 #include "node.h"
 
 namespace Logicsim
@@ -10,9 +13,9 @@ namespace Logicsim
 class Gate
 {
 public:
-    enum GateType
+    enum Type
     {
-        AndGate,
+        AndGate = 0,
         NandGate,
         NorGate,
         NotGate,
@@ -21,49 +24,57 @@ public:
         XorGate
     };
 
-    Gate();
-    ~Gate();
+public:
     virtual void calcOutput() = 0;
-    qint16 getMaxInput();
+    qint16 maxInput();
     Node* outputNode();
     void setInput(QList<Node*>& n);
-
+    Type type() const;
 
 protected:
+    Gate(Type t);
+    ~Gate();
+
     void setMaxInput(qint16 mi);
     QList<Node*> inputList() const;
 
 private:
-    QList<Node*> input;
-    Node* output;
-    qint16 maxInput;
+    QList<Node*> m_input;
+    Node*        m_output;
+    qint16       m_maxInput;
+    Type     m_type;
 };
-// ===================== AndGate ===================
+
+// ===================== AndGate ================
+
 class AndGate: public Gate
- {
+{
 public:
-    void calcOutput();
+    AndGate();
 
+    void calcOutput();
 };
 
-// ===================== OrGate ===================
+// ===================== OrGate =================
+
 class OrGate: public Gate
- {
+{
 public:
-    void calcOutput();
+    OrGate();
 
+    void calcOutput();
 };
 
-// ===================== NotGate ===================
+// ===================== NotGate ================
+
 class NotGate: public Gate
- {
- public:
+{
+public:
     NotGate();
-    void calcOutput();
 
+    void calcOutput();
 };
 
+} // namespace Logicsim
 
-
-}
 #endif // GATE_H

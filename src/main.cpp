@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+
+// Qt includes
 #include <QApplication>
 #include <QGuiApplication>
 

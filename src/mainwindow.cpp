@@ -1,10 +1,10 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 // Qt includes
 #include <QDebug>
 
 // Local includes
+#include "ui_mainwindow.h"
 #include "canvas.h"
 
 namespace Logicsim

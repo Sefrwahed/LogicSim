@@ -1,16 +1,17 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include "drawablegenericgate.h"
-#include "gate.h"
-#include "componentstab.h"
-
+// Qt includes
 #include <QTableWidgetItem>
 #include <QGraphicsView>
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QMimeData>
 
+// Local includes
+#include "drawablegenericgate.h"
+#include "gate.h"
+#include "componentstab.h"
 
 namespace Logicsim
 {
