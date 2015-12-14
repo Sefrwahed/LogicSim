@@ -31,6 +31,7 @@ void Input::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    painter->setBrush(Qt::SolidPattern);
     painter->drawEllipse(0,0,5,5);
 }
 
@@ -56,6 +57,7 @@ void Output::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    painter->setBrush(Qt::SolidPattern);
     painter->drawEllipse(0,0,5,5);
 }
 

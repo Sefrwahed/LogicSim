@@ -58,7 +58,7 @@ public:
 
     void calcOutput();
     QString imageUrl() const;
-    void paint();
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { GraphicGate::mouseMoveEvent(e); }

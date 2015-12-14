@@ -30,7 +30,6 @@ void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-//    painter->drawRoundedRect(QRect(0,0,40,50),5,10);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,20,0);
     painter->drawLine(0,50,20,50);
@@ -105,6 +104,16 @@ void NotGate::calcOutput()
 QString NotGate::imageUrl() const
 {
     return QString(":/gates/not");
+}
+
+void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
+    painter->drawLine(0,0,0,50);
+    painter->drawLine(0,0,35,27);
+    painter->drawLine(0,50,35,27);
+    painter->drawEllipse(35,25,5,5);
 }
 
 } // namespace Logicsim
