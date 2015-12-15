@@ -2,6 +2,7 @@
 #define DRAWABLEGENERICGATE
 
 // Qt includes
+
 #include <QGraphicsItem>
 #include <QGraphicsObject>
 #include <QDebug>
@@ -10,28 +11,7 @@
 namespace Logicsim
 {
 
-class Part : public QGraphicsObject
-{
-public:
-    Part(QGraphicsItem *parent = 0);
-};
-
-// ==============================================
-
-class GateBody : public Part
-{
-public:
-   GateBody(QGraphicsItem *parent = 0);
-
-   void mousePressEvent(QGraphicsSceneMouseEvent *event);
-   void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-   QRectF boundingRect() const;
-   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-};
-
-// ==============================================
-
-class Input : public Part
+class Input : public QGraphicsObject
 {
 public:
     Input(QGraphicsItem *parent = 0);
@@ -43,7 +23,7 @@ public:
 
 // ==============================================
 
-class Output : public Part
+class Output : public QGraphicsObject
 {
 public:
     Output(QGraphicsItem *parent = 0);
@@ -55,26 +35,13 @@ public:
 
 // ==============================================
 
-class ConnectingLine : public Part
+class ConnectingLine : public QGraphicsObject
 {
 public:
     ConnectingLine(QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const;
     void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-};
-
-
-// ==============================================
-
-class GraphicGate : public Part
-{
-public:
-    GraphicGate(QGraphicsItem *parent = 0);
-    GraphicGate(double xPos, double yPos, QGraphicsItem *parent = 0);
-
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };
 
 } // namespace Logicsim

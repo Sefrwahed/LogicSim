@@ -1,27 +1,34 @@
 #include "mainwindow.h"
 
 // Qt includes
+
 #include <QDebug>
 
 // Local includes
+
+#include "logicsim_global.h"
 #include "ui_mainwindow.h"
 #include "canvas.h"
+#include "gates.h"
 
 namespace Logicsim
 {
 
-const int MAX_TABS_COUNT = 10;
+/* Maximum tabs to be created in the main frame */
+const int MAX_TAB_COUNT = 10;
 
 class MainWindow::Private
 {
 public:
     Private() :
         tabsCount(0),
-        tabWidget(0)
+        tabWidget(0),
+        compTab(0)
     {}
 
     int            tabsCount;
     QTabWidget*    tabWidget;
+    ComponentsTab* compTab;
     QList<Canvas*> canvases;
 };
 
@@ -43,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
             this, SLOT(closeTab(int)));
-
 }
 
 MainWindow::~MainWindow()
@@ -58,11 +64,10 @@ MainWindow::~MainWindow()
     delete d;
 }
 
-
 void MainWindow::initComponentsTab()
 {
-    ComponentsTab* components = new ComponentsTab();
-    ui->gridLayout_3->addWidget(components);
+    d->compTab = new ComponentsTab();
+    ui->gridLayout_3->addWidget(d->compTab);
 }
 
 void MainWindow::setMainFrameDisabled(bool disabled)
@@ -70,16 +75,18 @@ void MainWindow::setMainFrameDisabled(bool disabled)
     if(disabled)
     {
         ui->frame->setStyleSheet("background-color: #D3D3D3");
+        d->compTab->setDisabled(true);
     }
     else
     {
         ui->frame->setStyleSheet("");
+        d->compTab->setDisabled(false);
     }
 }
 
 void MainWindow::newFile()
 {
-    if(d->tabsCount >= 10) return;
+    if(d->tabsCount >= MAX_TAB_COUNT) return;
     Canvas* c = new Canvas(d->tabWidget);
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
