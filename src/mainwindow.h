@@ -23,7 +23,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
     void initComponentsTab();
+    void setMainFrameDisabled(bool disabled);
 
 public Q_SLOTS:
     void newFile();

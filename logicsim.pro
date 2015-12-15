@@ -14,19 +14,24 @@ TEMPLATE = app
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/node.cpp \
-    src/gate.cpp\
-    src/drawablegenericgate.cpp \
     src/canvas.cpp \
     src/componentstab.cpp \
-    src/inputoutputcomponents.cpp
+    src/inputoutputcomponents.cpp \
+    src/graphicgate.cpp \
+    src/abstractgate.cpp \
+    src/gates.cpp \
+    src/gateparts.cpp
 
 HEADERS += src/mainwindow.h \
     src/node.h \
-    src/gate.h \
-    src/drawablegenericgate.h \
     src/canvas.h \
     src/componentstab.h \
-    src/inputoutputcomponents.h
+    src/inputoutputcomponents.h \
+    src/logicsim_global.h \
+    src/graphicgate.h \
+    src/abstractgate.h \
+    src/gates.h \
+    src/gateparts.h
 
 FORMS += src/mainwindow.ui
 
