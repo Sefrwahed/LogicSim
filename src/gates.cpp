@@ -81,6 +81,13 @@ QString OrGate::imageUrl() const
     return QString(":/gates/or");
 }
 
+void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
+    painter->drawArc(QRect(-20,0,25,60), -700, 1400);
+}
+
 // ===================== NotGate ===================
 
 NotGate::NotGate()

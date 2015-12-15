@@ -46,6 +46,8 @@ public:
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { GraphicGate::mouseMoveEvent(e); }
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 // ===================== NotGate ================
