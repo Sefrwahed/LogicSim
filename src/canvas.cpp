@@ -77,7 +77,8 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
         int typeId = event->mimeData()->property("typeId").toInt();
         event->acceptProposedAction();
         GraphicGate* g = static_cast<GraphicGate*>(QMetaType::create(typeId));
-        g->setPos(event->scenePos().x(), event->scenePos().y());
+        g->setPos(event->scenePos().x()-g->boundingRect().width()/2,
+                  event->scenePos().y()-g->boundingRect().height()/2);
         addItem(g);
     }
     else
