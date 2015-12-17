@@ -1,8 +1,13 @@
 #include "canvas.h"
 
 // Qt includes
+
 #include <QDebug>
 #include <QMessageBox>
+
+// Local includes
+
+#include "logicsim_global.h"
 
 namespace Logicsim
 {
@@ -70,12 +75,12 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
     if(event->mimeData()->property("acceptable").toBool())
     {
-        qDebug() << event->mimeData()->property("type");
+        int typeId = event->mimeData()->property("typeId").toInt();
         event->acceptProposedAction();
-        double x = event->scenePos().x();
-        double y = event->scenePos().y();
-        GraphicGate* gate = new GraphicGate(x, y);
-        addItem(gate);
+        GraphicGate* g = static_cast<GraphicGate*>(QMetaType::create(typeId));
+        g->setPos(event->scenePos().x()-g->boundingRect().width()/2,
+                  event->scenePos().y()-g->boundingRect().height()/2);
+        d->mCanvasManager->addGate(g);
     }
     else
     {
