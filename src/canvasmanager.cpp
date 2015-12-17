@@ -12,6 +12,11 @@ public:
     QList<GraphicGate *> mGates;
     int gatesCount;
     QGraphicsScene *canvas;
+    bool checkOverlapping(GraphicGate* g)
+    {
+
+
+    }
 };
 
 
@@ -55,13 +60,11 @@ void CanvasManager::addGate(GraphicGate* g)
     }
     else
     {
-        if(d->mGates.at(i)->pos().rx() + g->boundingRect().width() + GATE_X_MARGIN < CANVAS_WIDTH)
+        if(d->mGates.at(i)->pos().rx() < g->pos().rx())
             g->setX(d->mGates.at(i)->pos().rx() + g->boundingRect().width() + GATE_X_MARGIN);
         else
             g->setX(d->mGates.at(i)->pos().rx() - g->boundingRect().width() - GATE_X_MARGIN);
-        d->canvas->addItem(g);
-        d->gatesCount++;
-        d->mGates << g;
+        addGate(g);
     }
 }
 
@@ -73,7 +76,5 @@ CanvasManager::~CanvasManager()
 {
     delete d;
 }
-
-
 
 }
