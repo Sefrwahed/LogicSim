@@ -123,4 +123,21 @@ void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
     }
 }
 
+void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    // check overlapping here
+    d->mCanvasManager->moveGate(event);
+    QGraphicsScene::mouseReleaseEvent(event);
+}
+
+void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsScene::mousePressEvent(event);
+}
+
+void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsScene::mouseMoveEvent(event);
+}
+
 } // namespace Logicsim

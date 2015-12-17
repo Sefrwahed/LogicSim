@@ -5,7 +5,9 @@
 #include <QGraphicsItem>
 #include <QDebug>
 #include <QObject>
+#include <QGraphicsSceneMouseEvent>
 
+#include "logicsim_global.h"
 #include "graphicgate.h"
 
 namespace Logicsim
@@ -20,6 +22,8 @@ public:
     QList<GraphicGate *> gates();
     QGraphicsScene* canvas();
     void addGate(GraphicGate* g);
+    void moveGate(QGraphicsSceneMouseEvent * event);
+
 signals:
 
 public slots:

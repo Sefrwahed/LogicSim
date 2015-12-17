@@ -36,6 +36,10 @@ protected:
     void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
     void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
 
+    void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+
 public Q_SLOTS:
     bool tabAboutToBeClosed(int index);
 
