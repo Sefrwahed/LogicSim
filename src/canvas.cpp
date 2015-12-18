@@ -125,8 +125,8 @@ void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 
 void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    // check overlapping here
-    d->mCanvasManager->moveGate(event);
+    if(mouseGrabberItem() != 0)
+        d->mCanvasManager->moveGate();
     QGraphicsScene::mouseReleaseEvent(event);
 }
 

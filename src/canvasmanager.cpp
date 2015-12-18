@@ -12,11 +12,6 @@ public:
     QList<GraphicGate *> mGates;
     int gatesCount;
     QGraphicsScene *canvas;
-    bool checkOverlapping(GraphicGate* g)
-    {
-
-
-    }
 };
 
 
@@ -37,17 +32,12 @@ QGraphicsScene *CanvasManager::canvas()
 
 void CanvasManager::addGate(GraphicGate* g)
 {
-    QPointF distance;
     bool addable = true;
     int i;
     for(i = 0; i < d->gatesCount; i++)
     {
-        distance = d->mGates.at(i)->mapFromParent(g->pos());
         //check overlapping
-        if((distance.rx() > -1*(g->boundingRect().width() + GATE_X_MARGIN)
-            && distance.rx() < g->boundingRect().width() + GATE_X_MARGIN)
-            &&(distance.ry() > -1*(g->boundingRect().height() + GATE_Y_MARGIN)
-            && distance.ry() < (g->boundingRect().height() + GATE_Y_MARGIN)))
+        if(g->collidesWithItem(d->mGates.at(i),Qt::IntersectsItemShape))
         {
             addable = false;
             break;
@@ -64,12 +54,17 @@ void CanvasManager::addGate(GraphicGate* g)
             g->setX(d->mGates.at(i)->pos().rx() + g->boundingRect().width() + GATE_X_MARGIN);
         else
             g->setX(d->mGates.at(i)->pos().rx() - g->boundingRect().width() - GATE_X_MARGIN);
-        addGate(g);
+        addGate(g); //using recursion
     }
 }
 
-void CanvasManager::moveGate(QGraphicsSceneMouseEvent *event)
+void CanvasManager::moveGate()
 {
+    int i;
+    for(i = 0; i < d->gatesCount; i++)
+    {
+
+    }
 }
 
 CanvasManager::~CanvasManager()
