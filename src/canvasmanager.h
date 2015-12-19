@@ -21,7 +21,7 @@ public:
     ~CanvasManager();
     QList<GraphicGate *> gates();
     QGraphicsScene* canvas();
-    void addGate(GraphicGate* g);
+    void addGate(GraphicGate* gate);
     void moveGate();
 
 signals:

@@ -30,40 +30,59 @@ QGraphicsScene *CanvasManager::canvas()
     return d->canvas;
 }
 
-void CanvasManager::addGate(GraphicGate* g)
+void CanvasManager::addGate(GraphicGate* gate)
 {
     bool addable = true;
     int i;
     for(i = 0; i < d->gatesCount; i++)
     {
         //check overlapping
-        if(g->collidesWithItem(d->mGates.at(i),Qt::IntersectsItemShape))
+        if(gate->collidesWithItem(d->mGates.at(i),Qt::IntersectsItemShape))
         {
             addable = false;
             break;
         }
     }
     if(addable){
-        d->canvas->addItem(g);
+        d->canvas->addItem(gate);
         d->gatesCount++;
-        d->mGates << g;
+        d->mGates << gate;
     }
     else
     {
-        if(d->mGates.at(i)->pos().rx() < g->pos().rx())
-            g->setX(d->mGates.at(i)->pos().rx() + g->boundingRect().width() + GATE_X_MARGIN);
+        if(d->mGates.at(i)->pos().rx() < gate->pos().rx())
+            gate->setX(d->mGates.at(i)->pos().rx() + gate->boundingRect().width() + GATE_X_MARGIN);
         else
-            g->setX(d->mGates.at(i)->pos().rx() - g->boundingRect().width() - GATE_X_MARGIN);
-        addGate(g); //using recursion
+            gate->setX(d->mGates.at(i)->pos().rx() - gate->boundingRect().width() - GATE_X_MARGIN);
+        addGate(gate); //using recursion
     }
 }
 
 void CanvasManager::moveGate()
 {
+    GraphicGate *gate = static_cast<GraphicGate*>(d->canvas->mouseGrabberItem());
+    bool movable = true;
     int i;
     for(i = 0; i < d->gatesCount; i++)
     {
+        // skip grabbed gate
+        if(gate == d->mGates.at(i))
+            continue;
 
+        // check overlapping
+        if(gate->collidesWithItem(d->mGates.at(i),Qt::IntersectsItemShape))
+        {
+            movable = false;
+            break;
+        }
+    }
+
+    if(!movable){
+        if(d->mGates.at(i)->pos().rx() < gate->pos().rx())
+            gate->setX(d->mGates.at(i)->pos().rx() + gate->boundingRect().width() + GATE_X_MARGIN);
+        else
+            gate->setX(d->mGates.at(i)->pos().rx() - gate->boundingRect().width() - GATE_X_MARGIN);
+        moveGate(); //using recursion
     }
 }
 
