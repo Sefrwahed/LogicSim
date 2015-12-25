@@ -58,9 +58,8 @@ void CanvasManager::addGate(GraphicGate* gate)
     }
 }
 
-void CanvasManager::moveGate()
+void CanvasManager::moveGate(GraphicGate* gate)
 {
-    GraphicGate *gate = static_cast<GraphicGate*>(d->canvas->mouseGrabberItem());
     bool movable = true;
     int i;
     for(i = 0; i < d->gatesCount; i++)
@@ -82,7 +81,7 @@ void CanvasManager::moveGate()
             gate->setX(d->mGates.at(i)->pos().rx() + gate->boundingRect().width() + GATE_X_MARGIN);
         else
             gate->setX(d->mGates.at(i)->pos().rx() - gate->boundingRect().width() - GATE_X_MARGIN);
-        moveGate(); //using recursion
+        moveGate(gate); //using recursion
     }
 }
 

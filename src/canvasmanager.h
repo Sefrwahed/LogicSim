@@ -22,7 +22,7 @@ public:
     QList<GraphicGate *> gates();
     QGraphicsScene* canvas();
     void addGate(GraphicGate* gate);
-    void moveGate();
+    void moveGate(GraphicGate* gate);
 
 signals:
 

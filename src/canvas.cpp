@@ -126,7 +126,10 @@ void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
 void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mouseGrabberItem() != 0)
-        d->mCanvasManager->moveGate();
+    {
+        GraphicGate *gate = static_cast<GraphicGate*>(mouseGrabberItem());
+        d->mCanvasManager->moveGate(gate);
+    }
     QGraphicsScene::mouseReleaseEvent(event);
 }
 
