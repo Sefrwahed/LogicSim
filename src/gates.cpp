@@ -123,4 +123,94 @@ void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->drawEllipse(35,25,5,5);
 }
 
+// ===================== NandGate ===================
+
+NandGate::NandGate()
+    : GraphicGate(AbstractGate::NandGate)
+{
+    setMetaTypeId(qRegisterMetaType<NandGate>("NandGate"));
+}
+
+NandGate::NandGate(const NandGate &g)
+    : GraphicGate(g.gateType())
+{
+}
+
+void NandGate::calcOutput()
+{
+    bool out = true;
+    foreach (Node * n, inputList())
+    {
+        out &= n->value();
+
+    }
+
+    outputNode()->setValue(!out);
+}
+
+QString NandGate::imageUrl() const
+{
+    return QString(":/gates/nand");
+}
+
+
+void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    painter->drawLine(0,0,0,50);
+    painter->drawLine(0,0,17,0);
+    painter->drawLine(0,50,17,50);
+    painter->drawArc(QRect(-4,0,40,50), -1400, 3000);
+    painter->drawEllipse(35,25,5,5);
+
+
+}
+
+// ===================== NorGate ===================
+
+
+
+NorGate::NorGate()
+    : GraphicGate(AbstractGate::NorGate)
+{
+    setMetaTypeId(qRegisterMetaType<NorGate>("NorGate"));
+}
+
+NorGate::NorGate(const NorGate &g)
+    : GraphicGate(g.gateType())
+{
+}
+
+void NorGate::calcOutput()
+{
+    bool out = false;
+    foreach (Node * n, inputList())
+    {
+        out |= n->value();
+
+    }
+
+    outputNode()->setValue(!out);
+}
+
+QString NorGate::imageUrl() const
+{
+    return QString(":/gates/nor");
+}
+
+void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+  painter->drawArc(QRect(-22,-5,25,60), -800, 1500);
+  painter->drawArc(QRect(-23,-2,60,50), -1700, 1500);
+  painter->drawArc(QRect(-23,4,60,50),  200, 1500);
+  painter->drawEllipse(36,24,5,5);
+
+
+}
+
 } // namespace Logicsim

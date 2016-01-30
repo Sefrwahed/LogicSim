@@ -15,8 +15,8 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     setShowGrid(false);
     setDragEnabled(true);
 
-    m_gates << new AndGate() << new OrGate() << new NotGate();
-    int gatesCount = 3;
+    m_gates << new AndGate() << new OrGate() << new NotGate() << new NandGate() << new NorGate();
+    int gatesCount = 5;
 
     if(gatesCount % 2 != 0)
     {
