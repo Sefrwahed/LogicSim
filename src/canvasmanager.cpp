@@ -12,7 +12,7 @@ public:
     QList<GraphicGate *> mGates;
     int gatesCount;
     QGraphicsScene *canvas;
-    void avoidCollision(GraphicGate* oldGate, GraphicGate* newGate);
+    void avoidCollision(GraphicGate* newGate);
     void stayInScene(GraphicGate* Gate);
 };
 
@@ -34,55 +34,17 @@ QGraphicsScene *CanvasManager::canvas()
 
 void CanvasManager::addGate(GraphicGate* gate)
 {
-    bool addable = true;
-    int i;
-
     d->stayInScene(gate);
+    d->avoidCollision(gate);
 
-    for(i = 0; i < d->gatesCount; i++)
-    {
-        //check overlapping
-        if(gate->collidesWithItem(d->mGates.at(i),Qt::IntersectsItemShape))
-        {
-            addable = false;
-            break;
-        }
-    }
-    if(addable)
-    {
-        d->canvas->addItem(gate);
-        d->gatesCount++;
-        d->mGates << gate;
-    }
-    else
-    {
-        d->avoidCollision(d->mGates.at(i), gate);
-        addGate(gate); //using recursion
-    }
+    d->canvas->addItem(gate);
+    d->gatesCount++;
+    d->mGates << gate;
 }
 
 void CanvasManager::moveGate(GraphicGate* gate)
 {
-    bool movable = true;
-    int i;
-    for(i = 0; i < d->gatesCount; i++)
-    {
-        // skip grabbed gate
-        if(gate == d->mGates.at(i))
-            continue;
-
-        // check overlapping
-        if(gate->collidesWithItem(d->mGates.at(i),Qt::IntersectsItemShape))
-        {
-            movable = false;
-            break;
-        }
-    }
-
-    if(!movable){
-        d->avoidCollision(d->mGates.at(i), gate);
-        moveGate(gate); //using recursion
-    }
+    d->avoidCollision(gate);
 }
 
 CanvasManager::~CanvasManager()
@@ -90,27 +52,58 @@ CanvasManager::~CanvasManager()
     delete d;
 }
 
-void CanvasManager::Private::avoidCollision(GraphicGate* oldGate, GraphicGate* newGate)
+void CanvasManager::Private::avoidCollision(GraphicGate* newGate)
 {
-    if(oldGate->pos().rx() < newGate->pos().rx()
-            && newGate->pos().rx() <  CANVAS_WIDTH - (newGate->boundingRect().width() + GATE_X_MARGIN))
+    bool collides = false;
+    int i;
+    for(i = 0; i < gatesCount; i++)
     {
-        newGate->setX(oldGate->pos().rx() + newGate->boundingRect().width() + GATE_X_MARGIN);
+        // skip grabbed gate
+        if(newGate == mGates.at(i))
+            continue;
+
+        //check overlapping
+        if(newGate->collidesWithItem(mGates.at(i),Qt::IntersectsItemShape))
+        {
+            collides = true;
+            break;
+        }
     }
-    else if(oldGate->pos().rx() > newGate->pos().rx()
-            && newGate->pos().rx() > newGate->boundingRect().width() + GATE_X_MARGIN)
+
+    if(collides)
     {
-        newGate->setX(oldGate->pos().rx() - newGate->boundingRect().width() - GATE_X_MARGIN);
-    }
-    if(oldGate->pos().ry() < newGate->pos().ry()
-            && newGate->pos().ry() <  newGate->boundingRect().height() + GATE_Y_MARGIN)
-    {
-        newGate->setY(oldGate->pos().ry() + newGate->boundingRect().height() + GATE_Y_MARGIN);
-    }
-    else if(oldGate->pos().ry() > newGate->pos().ry()
-            && newGate->pos().ry() <  CANVAS_HEIGHT - (newGate->boundingRect().height() + GATE_Y_MARGIN))
-    {
-        newGate->setY(oldGate->pos().ry() - newGate->boundingRect().height() - GATE_Y_MARGIN);
+        if((newGate->pos().rx() < mGates.at(i)->pos().rx()
+                && newGate->pos().rx() > newGate->boundingRect().width() + GATE_X_MARGIN)
+                ||(mGates.at(i)->pos().rx() + mGates.at(i)->boundingRect().width()
+                   + newGate->boundingRect().width() + GATE_X_MARGIN) > CANVAS_WIDTH)
+        {
+            newGate->setX(mGates.at(i)->pos().rx() - newGate->boundingRect().width() - GATE_X_MARGIN);
+        }
+        else if((newGate->pos().rx() > mGates.at(i)->pos().rx()
+                && newGate->pos().rx() <  CANVAS_WIDTH - (newGate->boundingRect().width() + GATE_X_MARGIN))
+                ||(mGates.at(i)->pos().rx() - mGates.at(i)->boundingRect().width()
+                   - newGate->boundingRect().width() - GATE_X_MARGIN) < 0)
+        {
+            newGate->setX(mGates.at(i)->pos().rx() + newGate->boundingRect().width() + GATE_X_MARGIN);
+        }
+
+        if((newGate->pos().ry() < mGates.at(i)->pos().ry()
+                && newGate->pos().ry() > newGate->boundingRect().height() + GATE_Y_MARGIN)
+                ||(mGates.at(i)->pos().ry() + mGates.at(i)->boundingRect().height()
+                   + newGate->boundingRect().height() + GATE_Y_MARGIN) > CANVAS_WIDTH)
+        {
+            newGate->setY(mGates.at(i)->pos().ry() - newGate->boundingRect().height() - GATE_Y_MARGIN);
+        }
+        else if((newGate->pos().ry() > mGates.at(i)->pos().ry()
+                && newGate->pos().ry() <  CANVAS_HEIGHT - (newGate->boundingRect().height() + GATE_Y_MARGIN))
+                ||(mGates.at(i)->pos().ry() - mGates.at(i)->boundingRect().height()
+                   - newGate->boundingRect().height() - GATE_Y_MARGIN) < 0)
+        {
+            newGate->setY(mGates.at(i)->pos().ry() + newGate->boundingRect().height() + GATE_Y_MARGIN);
+        }
+
+
+        avoidCollision(newGate);
     }
 }
 
