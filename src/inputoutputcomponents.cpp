@@ -7,10 +7,30 @@ const int X_MARGIN = 20;
 const int CANVAS_WIDTH = 1500;
 const int CANVAS_HEIGHT = 1500;
 
+class Component::Private
+{
+public:
+    Private()
+    {}
+    int metaTypeId;
+};
+
+Component::Component(): d(new Private)
+{}
+
+void Component::setMetaTypeId(int t)
+{
+        d->metaTypeId = t;
+}
+
+int Component::metaTypeId() const
+{
+    return d->metaTypeId;
+}
 
 /*Input component's Body*/
 
-InputComponentBody::InputComponentBody(QGraphicsItem *parent):Part(parent)
+InputComponentBody::InputComponentBody(QGraphicsItem *parent):QGraphicsObject(parent)
 {
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -19,13 +39,13 @@ InputComponentBody::InputComponentBody(QGraphicsItem *parent):Part(parent)
 void InputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
      Q_UNUSED(event);
-    if(pnode->getValue()==false){
+    if(pnode->value()==false){
        pnode->setValue(true);
-    }else if(pnode->getValue() == true) {
+    }else if(pnode->value() == true) {
         pnode->setValue(false);
     }
     qDebug()<<"Body clicked";
-    qDebug()<<"input changed to : "<<pnode->getValue();
+    qDebug()<<"input changed to : "<<pnode->value();
 }
 
 void InputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -73,7 +93,7 @@ void InputComponentBody::SetBodyNode(Node *n)
 
 /*Input component's Node*/
 
-InputComponentNode::InputComponentNode(QGraphicsItem *parent):Part(parent)
+InputComponentNode::InputComponentNode(QGraphicsItem *parent):QGraphicsObject(parent)
 {
     node.setValue(false);
 }
@@ -82,7 +102,7 @@ void InputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     qDebug()<<"Input Clicked";
-    qDebug()<<"Value of input node: " << node.getValue();
+    qDebug()<<"Value of input node: " << node.value();
 }
 
 QRectF InputComponentNode::boundingRect() const
@@ -110,6 +130,7 @@ void InputComponentNode::SetNodeNode(Node& n)
 
 InputComponent::InputComponent(QGraphicsItem *parent)
 {
+    setMetaTypeId(qRegisterMetaType<InputComponent>("InputComponent"));
     Q_UNUSED(parent);
     InputComponentBody *inB = new InputComponentBody(this);
     InputComponentNode *inN = new InputComponentNode(inB);
@@ -121,6 +142,9 @@ InputComponent::InputComponent(QGraphicsItem *parent)
     inN->setPos(40,15);
     Li->setPos(-10,2.5);
 }
+
+InputComponent::InputComponent(const InputComponent &g)
+{}
 
 InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent)
 {
@@ -153,7 +177,7 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
 /*Output component's Body*/
 
-OutputComponentBody::OutputComponentBody(QGraphicsItem *parent):Part(parent)
+OutputComponentBody::OutputComponentBody(QGraphicsItem *parent):QGraphicsObject(parent)
 {
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -163,7 +187,7 @@ void OutputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
      Q_UNUSED(event);
     qDebug()<<"Body clicked";
-    qDebug()<<"output is : "<<pnode->getValue();
+    qDebug()<<"output is : "<<pnode->value();
 }
 
 void OutputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -211,7 +235,7 @@ void OutputComponentBody::SetBodyNode(Node *n)
 
 /*output component's Node*/
 
-OutputComponentNode::OutputComponentNode(QGraphicsItem *parent):Part(parent)
+OutputComponentNode::OutputComponentNode(QGraphicsItem *parent):QGraphicsObject(parent)
 {
     //node->setValue(false);
 //    n.setValue(false);
@@ -222,7 +246,7 @@ void OutputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     qDebug()<<"output Clicked";
-    qDebug()<<"Value of output node: " << node->getValue();
+    qDebug()<<"Value of output node: " << node->value();
 }
 
 QRectF OutputComponentNode::boundingRect() const
@@ -251,6 +275,7 @@ void OutputComponentNode::SetNodeNode(Node* n)
 OutputComponent::OutputComponent(QGraphicsItem *parent)
 {
     Q_UNUSED(parent);
+    setMetaTypeId(qRegisterMetaType<OutputComponent>("OutputComponent"));
     OutputComponentBody *outB = new OutputComponentBody(this);
     OutputComponentNode *outN = new OutputComponentNode(outB);
     ConnectingLine *Lo = new ConnectingLine(outN);
@@ -261,6 +286,9 @@ OutputComponent::OutputComponent(QGraphicsItem *parent)
     outN->setPos(-15,15);
     Lo->setPos(5,2.5);
 }
+
+OutputComponent::OutputComponent(const OutputComponent &g)
+{}
 
 OutputComponent::OutputComponent(double xPos, double yPos, QGraphicsItem *parent)
 {

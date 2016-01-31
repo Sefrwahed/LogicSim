@@ -1,16 +1,28 @@
 #ifndef INPUTOUTPUTCOMPONENTS
 #define INPUTOUTPUTCOMPONENTS
 
-#include "drawablegenericgate.h"
 #include "node.h"
+#include "gateparts.h"
 #include <QtWidgets>
 
 namespace Logicsim
 {
 
 /*Input*/
+class Component
+{
 
-class InputComponentBody : public Part
+public:
+    Component();
+    int metaTypeId() const;
+protected:
+    void setMetaTypeId(int t);
+private:
+    class Private;
+    Private* const d;
+};
+
+class InputComponentBody : public QGraphicsObject
 {
 private:
     Node *pnode;
@@ -26,7 +38,7 @@ public:
 
 };
 
-class InputComponentNode : public Part
+class InputComponentNode : public QGraphicsObject
 {
 private:
     Node node;
@@ -39,10 +51,11 @@ public:
     void SetNodeNode(Node &n);
 };
 
-class InputComponent : public Part
+class InputComponent : public QGraphicsObject,public Component
 {
 public:
     InputComponent(QGraphicsItem *parent = 0);
+    InputComponent(const InputComponent& g);
     InputComponent(double xPos, double yPos, QGraphicsItem *parent = 0);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -50,7 +63,7 @@ public:
 
 /*Output*/
 
-class OutputComponentBody : public Part
+class OutputComponentBody : public QGraphicsObject
 {
 private:
     Node *pnode;
@@ -66,7 +79,7 @@ public:
 
 };
 
-class OutputComponentNode : public Part
+class OutputComponentNode : public QGraphicsObject
 {
 private:
     Node *node;
@@ -80,10 +93,11 @@ public:
     void SetNodeNode(Node *n);
 };
 
-class OutputComponent : public Part
+class OutputComponent : public QGraphicsObject,public Component
 {
 public:
     OutputComponent(QGraphicsItem *parent = 0);
+    OutputComponent(const OutputComponent& g);
     OutputComponent(double xPos, double yPos, QGraphicsItem *parent = 0);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
