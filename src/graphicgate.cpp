@@ -33,7 +33,7 @@ GraphicGate::GraphicGate(AbstractGate::Type t, QGraphicsItem *parent)
 
 QRectF GraphicGate::boundingRect() const
 {
-    return this->boundingRect();
+    return QRectF(0,0,40,50);
 }
 
 void GraphicGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
