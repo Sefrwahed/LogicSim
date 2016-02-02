@@ -54,6 +54,7 @@ QString AndGate::imageUrl() const
 
 // ===================== OrGate ===================
 
+
 OrGate::OrGate()
     : GraphicGate(AbstractGate::OrGate)
 {
@@ -85,8 +86,12 @@ void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    painter->drawArc(QRect(-20,0,25,60), -700, 1400);
+    painter->drawArc(QRect(-22,-5,25,60), -800 , 1500);
+    painter->drawArc(QRect(-30,-2,70,50), -1600, 1500);
+    painter->drawArc(QRect(-30, 4,70,50),  100 , 1500);
 }
+
+
 
 // ===================== NotGate ===================
 
@@ -210,11 +215,7 @@ void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
   painter->drawArc(QRect(-23,4,60,50),  200, 1500);
   painter->drawEllipse(36,24,5,5);
 
-
 }
-
-
-
 
 // ===================== XorGate ===================
 
@@ -261,10 +262,7 @@ QString XorGate::imageUrl() const
 
 }
 
-
  // ===================== XnorGate ===================
-
-
 
  XnorGate::XnorGate()
      : GraphicGate(AbstractGate::XnorGate)
