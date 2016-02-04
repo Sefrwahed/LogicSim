@@ -29,7 +29,9 @@ Canvas::Canvas(QObject *parent)
     : QGraphicsScene(parent), d(new Private)
 {
     d->view = new QGraphicsView(this);
-    d->view->setSceneRect(0,0,1500,1500);
+
+    d->view->setSceneRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+//    d->view->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     d->mCanvasManager = new CanvasManager(parent, this);
 }
 
@@ -142,5 +144,7 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseMoveEvent(event);
 }
+
+
 
 } // namespace Logicsim

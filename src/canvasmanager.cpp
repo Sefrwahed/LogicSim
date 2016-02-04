@@ -10,6 +10,7 @@ public:
         gatesCount(0)
     {}
     QList<GraphicGate *> mGates;
+    QList<QPointF> mGatePositions;
     int gatesCount;
     QGraphicsScene *canvas;
     void avoidCollision(GraphicGate* newGate);
@@ -36,7 +37,6 @@ void CanvasManager::addGate(GraphicGate* gate)
 {
     d->stayInScene(gate);
     d->avoidCollision(gate);
-
     d->canvas->addItem(gate);
     d->gatesCount++;
     d->mGates << gate;
@@ -70,58 +70,94 @@ void CanvasManager::Private::avoidCollision(GraphicGate* newGate)
             break;
         }
     }
-
+    newXPos = newGate->pos().rx();
+    newYPos = newGate->pos().ry();
     if(collides)
     {
-        if(newGate->pos().rx() < mGates.at(i)->pos().rx()
-                && newGate->pos().rx() > newGate->boundingRect().width() + GATE_X_MARGIN)
+        qDebug() << newGate->pos();
+        if(newXPos < mGates.at(i)->pos().rx()
+                && newXPos > newGate->boundingRect().width()
+                && newYPos < mGates.at(i)->pos().ry()
+                && newYPos > newGate->boundingRect().height())
         {
-            newXPos = mGates.at(i)->pos().rx() - newGate->boundingRect().width() - GATE_X_MARGIN;
+            newXPos = mGates.at(i)->pos().rx() - newGate->boundingRect().width();
+            newYPos = mGates.at(i)->pos().ry() - newGate->boundingRect().height();
         }
-        else if(newGate->pos().rx() > mGates.at(i)->pos().rx()
-                && newGate->pos().rx() <  CANVAS_WIDTH - (newGate->boundingRect().width() + GATE_X_MARGIN))
+        else if(newXPos > mGates.at(i)->pos().rx()
+                && newXPos <  CANVAS_WIDTH - (newGate->boundingRect().width())
+                && newYPos > mGates.at(i)->pos().ry()
+                && newYPos <  CANVAS_HEIGHT - (newGate->boundingRect().height()))
         {
-            newXPos = mGates.at(i)->pos().rx() + newGate->boundingRect().width() + GATE_X_MARGIN;
+            newXPos = mGates.at(i)->pos().rx() + newGate->boundingRect().width();
+            newYPos = mGates.at(i)->pos().ry() + newGate->boundingRect().height();
+        }
+        else if(newXPos < mGates.at(i)->pos().rx()
+                && newXPos > newGate->boundingRect().width()
+                && newYPos > mGates.at(i)->pos().ry()
+                && newYPos <  CANVAS_HEIGHT - (newGate->boundingRect().height()))
+        {
+            newXPos = mGates.at(i)->pos().rx() - newGate->boundingRect().width();
+            newYPos = mGates.at(i)->pos().ry() + newGate->boundingRect().height();
+        }
+        else if(newXPos > mGates.at(i)->pos().rx()
+                && newXPos <  CANVAS_WIDTH - (newGate->boundingRect().width())
+                && newYPos < mGates.at(i)->pos().ry()
+                && newYPos > newGate->boundingRect().height())
+        {
+            newXPos = mGates.at(i)->pos().rx() + newGate->boundingRect().width();
+            newYPos = mGates.at(i)->pos().ry() - newGate->boundingRect().height();
         }
         else
         {
             if(mGates.at(i)->pos().rx() - mGates.at(i)->boundingRect().width()
-               - newGate->boundingRect().width() - GATE_X_MARGIN < 0)
+               - newGate->boundingRect().width() < 0)
             {
-                newXPos = mGates.at(i)->pos().rx() + newGate->boundingRect().width() + GATE_X_MARGIN;
+                newXPos = mGates.at(i)->pos().rx() + newGate->boundingRect().width();
             }
             else
             {
-                newXPos = mGates.at(i)->pos().rx() - newGate->boundingRect().width() - GATE_X_MARGIN;
+                newXPos = mGates.at(i)->pos().rx() - newGate->boundingRect().width();
             }
-        }
-
-        if(newGate->pos().ry() < mGates.at(i)->pos().ry()
-                && newGate->pos().ry() > newGate->boundingRect().height() + GATE_Y_MARGIN)
+            if(mGates.at(i)->pos().ry() - mGates.at(i)->boundingRect().height()
+                    - newGate->boundingRect().height()< 0)
+            {
+                newYPos = mGates.at(i)->pos().ry() + newGate->boundingRect().height();
+            }
+            else
+            {
+                newYPos = mGates.at(i)->pos().ry() - newGate->boundingRect().height();
+            }
+        }/*
+        if(!mGatePositions.contains(QPointF(newXPos, newYPos)))
         {
-            newYPos = mGates.at(i)->pos().ry() - newGate->boundingRect().height() - GATE_Y_MARGIN;
-        }
-        else if(newGate->pos().ry() > mGates.at(i)->pos().ry()
-                && newGate->pos().ry() <  CANVAS_HEIGHT - (newGate->boundingRect().height() + GATE_Y_MARGIN))
-        {
-            newYPos = mGates.at(i)->pos().ry() + newGate->boundingRect().height() + GATE_Y_MARGIN;
+            mGatePositions << QPointF(newXPos, newYPos);
         }
         else
         {
-            if(mGates.at(i)->pos().ry() - mGates.at(i)->boundingRect().height()
-                    - newGate->boundingRect().height() - GATE_Y_MARGIN < 0)
+            if( newXPos - newGate->boundingRect().width() < 0)
             {
-                newYPos = mGates.at(i)->pos().ry() + newGate->boundingRect().height() + GATE_Y_MARGIN;
+                newXPos = newXPos + newGate->boundingRect().width();
             }
             else
             {
-                newYPos = mGates.at(i)->pos().ry() - newGate->boundingRect().height() - GATE_Y_MARGIN;
+                newXPos = newXPos - newGate->boundingRect().width();
             }
-        }
-
+            if(newYPos - newGate->boundingRect().height() < 0)
+            {
+                newYPos = newYPos + newGate->boundingRect().height();
+            }
+            else
+            {
+                newYPos = newYPos - newGate->boundingRect().height();
+            }
+        }*/
         newGate->setX(newXPos);
         newGate->setY(newYPos);
         avoidCollision(newGate);
+    }
+    else
+    {
+        mGatePositions.clear();
     }
 }
 
@@ -143,6 +179,7 @@ void CanvasManager::Private::stayInScene(GraphicGate *gate)
     {
         gate->setY(CANVAS_HEIGHT - (gate->boundingRect().height() + GATE_Y_MARGIN));
     }
+
 }
 
 
