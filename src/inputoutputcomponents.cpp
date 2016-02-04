@@ -128,6 +128,7 @@ void InputComponentNode::SetNodeNode(Node& n)
 
 /*Input component*/
 
+
 InputComponent::InputComponent(QGraphicsItem *parent)
 {
     setMetaTypeId(qRegisterMetaType<InputComponent>("InputComponent"));
