@@ -20,7 +20,9 @@ SOURCES += src/main.cpp \
     src/graphicgate.cpp \
     src/abstractgate.cpp \
     src/gates.cpp \
-    src/gateparts.cpp
+    src/gateparts.cpp \
+    src/inouparts.cpp \
+    src/component.cpp
 
 HEADERS += src/mainwindow.h \
     src/node.h \
@@ -31,7 +33,9 @@ HEADERS += src/mainwindow.h \
     src/graphicgate.h \
     src/abstractgate.h \
     src/gates.h \
-    src/gateparts.h
+    src/gateparts.h \
+    src/inouparts.h \
+    src/component.h
 
 FORMS += src/mainwindow.ui
 

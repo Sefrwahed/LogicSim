@@ -1,133 +1,10 @@
 #include <QtWidgets>
+#include "gateparts.h"
 #include "inputoutputcomponents.h"
+#include "inouparts.h"
+#include "component.h"
 
 namespace Logicsim {
-
-const int X_MARGIN = 20;
-const int CANVAS_WIDTH = 1500;
-const int CANVAS_HEIGHT = 1500;
-
-class Component::Private
-{
-public:
-    Private()
-    {}
-    int metaTypeId;
-};
-
-Component::Component(): d(new Private)
-{}
-
-void Component::setMetaTypeId(int t)
-{
-        d->metaTypeId = t;
-}
-
-int Component::metaTypeId() const
-{
-    return d->metaTypeId;
-}
-
-/*Input component's Body*/
-
-InputComponentBody::InputComponentBody(QGraphicsItem *parent):QGraphicsObject(parent)
-{
-    setFlag(QGraphicsItem::ItemIsMovable);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-}
-
-void InputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-     Q_UNUSED(event);
-    if(pnode->value()==false){
-       pnode->setValue(true);
-    }else if(pnode->value() == true) {
-        pnode->setValue(false);
-    }
-    qDebug()<<"Body clicked";
-    qDebug()<<"input changed to : "<<pnode->value();
-}
-
-void InputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsObject::mouseMoveEvent(event);
-    if(x() - X_MARGIN < 0)
-    {
-        setPos(X_MARGIN, y());
-    }
-    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
-    {
-        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
-    }
-
-    if(y() < 0)
-    {
-        setPos(x(), 0);
-    }
-    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
-    {
-        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
-    }
-}
-
-QRectF InputComponentBody::boundingRect() const
-{
-    return QRectF(0,0,30,30);
-}
-
-void InputComponentBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    painter->drawEllipse(0,0,30,30);
-}
-
-Node* InputComponentBody::GetBodyNode()
-{
-    return pnode;
-}
-void InputComponentBody::SetBodyNode(Node *n)
-{
-    pnode = n;
-}
-
-/*Input component's Node*/
-
-InputComponentNode::InputComponentNode(QGraphicsItem *parent):QGraphicsObject(parent)
-{
-    node.setValue(false);
-}
-
-void InputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_UNUSED(event);
-    qDebug()<<"Input Clicked";
-    qDebug()<<"Value of input node: " << node.value();
-}
-
-QRectF InputComponentNode::boundingRect() const
-{
-    return QRectF(0,0,5,5);
-}
-
-void InputComponentNode::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    painter->drawEllipse(0,0,5,5);
-}
-
-Node & InputComponentNode::GetNodeNode()
-{
-    return node;
-}
-void InputComponentNode::SetNodeNode(Node& n)
-{
-    node = n;
-}
-
-/*Input component*/
-
 
 InputComponent::InputComponent(QGraphicsItem *parent)
 {
@@ -145,7 +22,7 @@ InputComponent::InputComponent(QGraphicsItem *parent)
 }
 
 InputComponent::InputComponent(const InputComponent &g)
-{}
+{Q_UNUSED(g);}
 
 InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent)
 {
@@ -175,103 +52,13 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
-
-/*Output component's Body*/
-
-OutputComponentBody::OutputComponentBody(QGraphicsItem *parent):QGraphicsObject(parent)
+//**/////////////////////////////Not yet implemented///////////////////////////**//
+QString InputComponent::imageUrl() const
 {
-    setFlag(QGraphicsItem::ItemIsMovable);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+    return QString("");
 }
 
-void OutputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-     Q_UNUSED(event);
-    qDebug()<<"Body clicked";
-    qDebug()<<"output is : "<<pnode->value();
-}
-
-void OutputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsObject::mouseMoveEvent(event);
-    if(x() - X_MARGIN < 0)
-    {
-        setPos(X_MARGIN, y());
-    }
-    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
-    {
-        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
-    }
-
-    if(y() < 0)
-    {
-        setPos(x(), 0);
-    }
-    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
-    {
-        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
-    }
-}
-
-QRectF OutputComponentBody::boundingRect() const
-{
-    return QRectF(0,0,30,30);
-}
-
-void OutputComponentBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    painter->drawEllipse(0,0,30,30);
-}
-
-Node* OutputComponentBody::GetBodyNode()
-{
-    return pnode;
-}
-void OutputComponentBody::SetBodyNode(Node *n)
-{
-    pnode = n;
-}
-
-/*output component's Node*/
-
-OutputComponentNode::OutputComponentNode(QGraphicsItem *parent):QGraphicsObject(parent)
-{
-    //node->setValue(false);
-//    n.setValue(false);
-//    node = &n;
-}
-
-void OutputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_UNUSED(event);
-    qDebug()<<"output Clicked";
-    qDebug()<<"Value of output node: " << node->value();
-}
-
-QRectF OutputComponentNode::boundingRect() const
-{
-    return QRectF(0,0,5,5);
-}
-
-void OutputComponentNode::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    painter->drawEllipse(0,0,5,5);
-}
-
-Node * OutputComponentNode::GetNodeNode()
-{
-    return node;
-}
-void OutputComponentNode::SetNodeNode(Node* n)
-{
-    node = n;
-}
-
-/*Output component*/
+// ==============================================
 
 OutputComponent::OutputComponent(QGraphicsItem *parent)
 {
@@ -318,6 +105,11 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     Q_UNUSED(painter);
     Q_UNUSED(option);
     Q_UNUSED(widget);
+}
+//**/////////////////////////////Not yet implemented///////////////////////////**//
+QString OutputComponent::imageUrl() const
+{
+    return QString("");
 }
 
 
