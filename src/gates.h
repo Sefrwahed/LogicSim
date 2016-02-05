@@ -69,6 +69,73 @@ public:
     { GraphicGate::mouseMoveEvent(e); }
 };
 
+// ===================== NandGate ================
+
+class NandGate: public GraphicGate
+{
+public:
+    NandGate();
+    NandGate(const NandGate& g);
+
+    // QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+
+    void calcOutput();
+    QString imageUrl() const;
+
+    inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+    { GraphicGate::mouseMoveEvent(e); }
+};
+// ===================== NorGate ================
+
+class NorGate: public GraphicGate
+{
+public:
+    NorGate();
+    NorGate(const NorGate& g);
+
+    void calcOutput();
+    QString imageUrl() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+    { GraphicGate::mouseMoveEvent(e); }
+};
+// ===================== XorGate ================
+
+class XorGate: public GraphicGate
+{
+public:
+    XorGate();
+    XorGate(const XorGate& g);
+
+    void calcOutput();
+    QString imageUrl() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+    { GraphicGate::mouseMoveEvent(e); }
+};
+
+
+// ===================== XnorGate ================
+
+class XnorGate: public GraphicGate
+{
+public:
+    XnorGate();
+    XnorGate(const XnorGate& g);
+
+    void calcOutput();
+    QString imageUrl() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+    { GraphicGate::mouseMoveEvent(e); }
+};
+
+
 } // namespace Logicsim
 
 #endif // GATE_H
