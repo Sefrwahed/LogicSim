@@ -1,13 +1,9 @@
-#ifndef COMPONENT
-#define COMPONENT
+#ifndef COMPONENT_H
+#define COMPONENT_H
 
 // Qt includes
 
 #include <QGraphicsObject>
-
-// Local includes
-
-#include "abstractgate.h"
 
 namespace Logicsim
 {

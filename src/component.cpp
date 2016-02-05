@@ -1,8 +1,7 @@
-#include "graphicgate.h"
+#include "component.h"
 
 // Local includes
 
-#include "component.h"
 #include "logicsim_global.h"
 
 namespace Logicsim
