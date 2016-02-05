@@ -28,7 +28,7 @@ protected:
 
 private:
     QList<QTableWidgetItem*> m_items;
-    QList<GraphicGate*> m_gates;
+    QList<Gate*> m_gates;
 };
 
 } // namespace Logicsim

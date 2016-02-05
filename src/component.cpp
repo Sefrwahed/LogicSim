@@ -13,15 +13,17 @@ class Component::Private
 public:
     Private()
     {}
+
     int metaTypeId;
 };
 
-Component::Component(): d(new Private)
+Component::Component()
+    : d(new Private)
 {}
 
 void Component::setMetaTypeId(int t)
 {
-        d->metaTypeId = t;
+    d->metaTypeId = t;
 }
 
 int Component::metaTypeId() const

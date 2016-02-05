@@ -15,7 +15,9 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     setShowGrid(false);
     setDragEnabled(true);
 
-    m_gates << new AndGate() << new OrGate() << new NotGate() << new NandGate() << new NorGate()  << new XorGate()   << new XnorGate();
+    m_gates << new AndGate() << new OrGate() << new NotGate()
+            << new NandGate() << new NorGate() << new XorGate()
+            << new XnorGate();
     int gatesCount = 7;
 
     if(gatesCount % 2 != 0)
@@ -28,7 +30,7 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     }
 
     int index = 0;
-    foreach (GraphicGate* g, m_gates)
+    foreach (Gate* g, m_gates)
     {
         QTableWidgetItem* item = new QTableWidgetItem(g->gateType());
         item->setData(QTableWidgetItem::UserType, g->metaTypeId());

@@ -1,18 +1,15 @@
-#ifndef ABSTRACTGATE_H
-#define ABSTRACTGATE_H
-
-// Qt includes
-
-#include <QObject>
+#ifndef GATE_H
+#define GATE_H
 
 // Local includes
 
+#include "component.h"
 #include "node.h"
 
 namespace Logicsim
 {
 
-class AbstractGate : public QObject
+class Gate : public Component
 {
 public:
     enum Type
@@ -27,7 +24,7 @@ public:
     };
 
 public:
-    ~AbstractGate();
+    ~Gate();
 
     qint16 maxInput();
     Node* outputNode();
@@ -35,23 +32,22 @@ public:
     Type gateType() const;
 
     virtual void calcOutput() = 0;
-    virtual QString imageUrl() const = 0;
 
-    int metaTypeId() const;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
+    QRectF boundingRect() const;
+    //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
-    AbstractGate(Type t);
+    Gate(Type t);
 
     void setMaxInput(qint16 mi);
     QList<Node*> inputList() const;
-
-    void setMetaTypeId(int t);
 
 private:
     class Private;
     Private* const d;
 };
 
-} // namespace Logicsim
-
-#endif // ABSTRACTGATE_H
+}
+#endif // GATE_H
