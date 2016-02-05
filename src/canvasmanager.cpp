@@ -1,5 +1,9 @@
 #include "canvasmanager.h"
 
+// Qt includes
+
+#include <QtMath>
+
 namespace Logicsim
 {
 
@@ -10,13 +14,14 @@ public:
         gatesCount(0)
     {}
     QList<GraphicGate *> mGates;
-    QList<QPointF> mGatePositions;
-    int gatesCount;
-    QGraphicsScene *canvas;
+    QList<QPointF>       mGatePositions;
+    int                  gatesCount;
+    QGraphicsScene*      canvas;
+    QVector<int>         acquiredSquares;
+
     void avoidCollision(GraphicGate* newGate);
     void stayInScene(GraphicGate* Gate);
 };
-
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas) : QObject(parent), d(new Private)
 {
@@ -40,6 +45,34 @@ void CanvasManager::addGate(GraphicGate* gate)
     d->canvas->addItem(gate);
     d->gatesCount++;
     d->mGates << gate;
+}
+
+void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
+{
+    int col = qCeil(scenePos.x() / GRID_STEP);
+    int row = qCeil(scenePos.y() / GRID_STEP);
+    int squareNumber = col + ((row - 1) * NUMBER_OF_SQUARES_IN_ROW);
+
+    qDebug() << "Dropped on square number: " << (squareNumber);
+
+    if (!d->acquiredSquares.contains(squareNumber))
+    {
+        qreal x = (col - 1) * GRID_STEP + GRID_STEP/2;
+        qreal y = (row - 1) * GRID_STEP + GRID_STEP/2;
+
+        qDebug() << "X: " << x << " Y: " << y;
+
+        gate->setPos(x - gate->boundingRect().width()/2,
+                     y - gate->boundingRect().height()/2);
+
+        d->acquiredSquares.append(squareNumber);
+
+        d->stayInScene(gate);
+        d->avoidCollision(gate);
+        d->canvas->addItem(gate);
+        d->gatesCount++;
+        d->mGates << gate;
+    }
 }
 
 void CanvasManager::moveGate(GraphicGate* gate)
@@ -181,7 +214,5 @@ void CanvasManager::Private::stayInScene(GraphicGate *gate)
     }
 
 }
-
-
 
 }

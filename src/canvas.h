@@ -40,6 +40,8 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
+    void drawBackground(QPainter *painter, const QRectF &rect);
+
 public Q_SLOTS:
     bool tabAboutToBeClosed(int index);
 

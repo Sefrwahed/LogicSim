@@ -22,11 +22,12 @@ public:
     QList<GraphicGate *> gates();
     QGraphicsScene* canvas();
     void addGate(GraphicGate* gate);
+    void addGate(GraphicGate* gate, QPointF scenePos);
     void moveGate(GraphicGate* gate);
 
-signals:
-
-public slots:
+private:
+    QPointF findPosition(int col, int row);
+    int nearestEmptySquare(int acquiredSquare);
 
 private:
     class Private;
