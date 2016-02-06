@@ -40,8 +40,6 @@ void WorkspaceTab::currentCanvas(int index)
 {
     d->tabIndex = index;
     qDebug() << index;
-    qDebug() << d->mCanvases.length();
-    updateGates();
 }
 
 void WorkspaceTab::updateGates()

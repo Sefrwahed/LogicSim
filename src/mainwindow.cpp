@@ -56,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(d->tabWidget, SIGNAL(currentChanged(int)),
             d->workspaceTab, SLOT(currentCanvas(int)));
 
+    connect(d->tabWidget, SIGNAL(currentChanged(int)),
+            d->workspaceTab, SLOT(updateGates()));
+
 }
 
 MainWindow::~MainWindow()
