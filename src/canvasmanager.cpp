@@ -109,38 +109,29 @@ Cell CanvasManager::findSuitableCell(QPointF scenePos)
 {
     int col = qCeil(scenePos.x() / GRID_STEP);
     int row = qCeil(scenePos.y() / GRID_STEP);
-    int squareNumber = calculateSquareNumber(Cell(col,row));
-    bool found = true;
-    Cell c;
-
-    qDebug() << "Dropped on square number: " << (squareNumber);
+    Cell c(col, row);
+    int squareNumber = calculateSquareNumber(c);
 
     if (d->acquiredSquares.contains(squareNumber))
     {
-        found = false;
-        foreach(QPoint i, alternativePlaces(col, row))
+        foreach(Cell i, alternativePlaces(c))
         {
-            qDebug() << i;
-            col = i.x();
-            row = i.y();
-            int alternativeSquareNumber = calculateSquareNumber(Cell(col,row));
+            int alternativeSquareNumber = calculateSquareNumber(i);
 
             if(!d->acquiredSquares.contains(alternativeSquareNumber))
             {
-                found = true;
                 squareNumber = alternativeSquareNumber;
-                break;
+
+                return i;
             }
         }
     }
-
-    if(found)
+    else
     {
-        c.setCol(col);
-        c.setRow(row);
+        return c;
     }
 
-    return c;
+    return Cell();
 }
 
 void CanvasManager::parkGate(GraphicGate * g, Cell c)
@@ -154,43 +145,45 @@ void CanvasManager::parkGate(GraphicGate * g, Cell c)
               y - g->boundingRect().height()/2);
 }
 
-QList<QPoint> CanvasManager::alternativePlaces(int col, int row) const
+QList<Cell> CanvasManager::alternativePlaces(Cell c) const
 {
-    QList<QPoint> colsAndRows;
+    QList<Cell> cells;
+    int col = c.col();
+    int row = c.row();
 
     if(col - 1 >= 1)
     {
-        colsAndRows << QPoint(col - 1, row);
+        cells << Cell(col - 1, row);
     }
 
     if(col + 1 <= NUMBER_OF_SQUARES_IN_ROW)
     {
-        colsAndRows << QPoint(col + 1, row);
+        cells << Cell(col + 1, row);
     }
 
     if(row - 1 >= 1)
     {
-        colsAndRows << QPoint(col, row - 1);
+        cells << Cell(col, row - 1);
 
         if(col - 1 >= 1)
-            colsAndRows << QPoint(col - 1, row - 1);
+            cells << Cell(col - 1, row - 1);
 
         if(col + 1 <= NUMBER_OF_SQUARES_IN_ROW)
-            colsAndRows << QPoint(col + 1, row - 1);
+            cells << Cell(col + 1, row - 1);
     }
 
     if(row + 1 <= NUMBER_OF_SQUARES_IN_COLUMN)
     {
-        colsAndRows << QPoint(col, row + 1);
+        cells << Cell(col, row + 1);
 
         if(col - 1 >= 1)
-            colsAndRows << QPoint(col - 1, row + 1);
+            cells << Cell(col - 1, row + 1);
 
         if(col + 1 <= NUMBER_OF_SQUARES_IN_ROW)
-            colsAndRows << QPoint(col + 1, row + 1);
+            cells << Cell(col + 1, row + 1);
     }
 
-    return colsAndRows;
+    return cells;
 }
 
 int CanvasManager::calculateSquareNumber(Cell c) const

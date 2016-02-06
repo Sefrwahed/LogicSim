@@ -52,8 +52,10 @@ class CanvasManager : public QObject
 public:
     CanvasManager(QObject *parent = 0, QGraphicsScene *canvas = 0);
     ~CanvasManager();
+
     QList<GraphicGate *> gates();
     QGraphicsScene* canvas();
+
     void addGate(GraphicGate* gate);
     void addGate(GraphicGate* gate, QPointF scenePos);
     void movingGate(GraphicGate* gate);
@@ -62,8 +64,7 @@ public:
 private:
     Cell findSuitableCell(QPointF scenePos);
     void parkGate(GraphicGate* g, Cell c);
-    void parkGate(GraphicGate* g, QPointF pos);
-    QList<QPoint> alternativePlaces(int col, int row) const;
+    QList<Cell> alternativePlaces(Cell c) const;
     int calculateSquareNumber(Cell c) const;
 
 private:
