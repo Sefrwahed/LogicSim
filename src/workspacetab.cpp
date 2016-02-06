@@ -22,8 +22,6 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
     setRowCount(0);
     setShowGrid(false);
 
-    QTableWidgetItem* item = new QTableWidgetItem("gate");
-    setItem(0,0,item);
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
