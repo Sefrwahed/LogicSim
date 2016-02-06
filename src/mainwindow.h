@@ -8,6 +8,7 @@
 
 // Local includes
 #include "componentstab.h"
+#include "workspacetab.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,7 @@ public:
     ~MainWindow();
 
     void initComponentsTab();
+    void initWorkspaceTab();
     void setMainFrameDisabled(bool disabled);
 
 public Q_SLOTS:

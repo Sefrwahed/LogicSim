@@ -29,6 +29,7 @@ public:
     int            tabsCount;
     QTabWidget*    tabWidget;
     ComponentsTab* compTab;
+    WorkspaceTab* workspaceTab;
     QList<Canvas*> canvases;
 };
 
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     initComponentsTab();
+    initWorkspaceTab();
 
     d->tabWidget = new QTabWidget(ui->frame);
     setMainFrameDisabled(true);
@@ -68,6 +70,12 @@ void MainWindow::initComponentsTab()
 {
     d->compTab = new ComponentsTab();
     ui->gridLayout_3->addWidget(d->compTab);
+}
+
+void MainWindow::initWorkspaceTab()
+{
+    d->workspaceTab = new WorkspaceTab();
+    ui->gridLayout_6->addWidget(d->workspaceTab);
 }
 
 void MainWindow::setMainFrameDisabled(bool disabled)

@@ -3,9 +3,15 @@
 namespace Logicsim
 {
 
-WorkspaceTab::WorkspaceTab()
+WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent)
 {
 
 }
+
+WorkspaceTab::~WorkspaceTab()
+{
+
+}
+
 
 }
