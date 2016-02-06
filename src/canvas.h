@@ -12,6 +12,7 @@
 #include "gateparts.h"
 #include "gates.h"
 #include "componentstab.h"
+#include "canvasmanager.h"
 
 namespace Logicsim
 {
@@ -34,6 +35,12 @@ protected:
     void dragEnterEvent(QGraphicsSceneDragDropEvent * event);
     void dragMoveEvent(QGraphicsSceneDragDropEvent * event);
     void dragLeaveEvent(QGraphicsSceneDragDropEvent * event);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+
+    void drawBackground(QPainter *painter, const QRectF &rect);
 
 public Q_SLOTS:
     bool tabAboutToBeClosed(int index);

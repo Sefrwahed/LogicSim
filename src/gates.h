@@ -23,11 +23,11 @@ public:
     AndGate();
     AndGate(const AndGate& g);
 
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
     void calcOutput();
     QString imageUrl() const;
+
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { GraphicGate::mouseMoveEvent(e); }
@@ -44,10 +44,11 @@ public:
     void calcOutput();
     QString imageUrl() const;
 
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { GraphicGate::mouseMoveEvent(e); }
-
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 // ===================== NotGate ================
@@ -60,6 +61,8 @@ public:
 
     void calcOutput();
     QString imageUrl() const;
+
+    QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)

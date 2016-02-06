@@ -23,7 +23,7 @@ AndGate::AndGate(const AndGate &g)
 
 QRectF AndGate::boundingRect() const
 {
-    return QRectF(0,0,40,50);
+    return GraphicGate::boundingRect();
 }
 
 void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -82,6 +82,11 @@ QString OrGate::imageUrl() const
     return QString(":/gates/or");
 }
 
+QRectF OrGate::boundingRect() const
+{
+    return GraphicGate::boundingRect();
+}
+
 void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
@@ -116,6 +121,11 @@ void NotGate::calcOutput()
 QString NotGate::imageUrl() const
 {
     return QString(":/gates/not");
+}
+
+QRectF NotGate::boundingRect() const
+{
+    return GraphicGate::boundingRect();
 }
 
 void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
