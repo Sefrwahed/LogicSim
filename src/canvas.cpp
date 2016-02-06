@@ -178,7 +178,6 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mouseGrabberItem() != 0)
     {
-        qDebug() << "Mouse Move event :: Gate is moving";
         GraphicGate *gate = static_cast<GraphicGate*>(mouseGrabberItem());
         d->mCanvasManager->movingGate(gate);
     }

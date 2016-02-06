@@ -13,7 +13,7 @@ public:
     Private() :
         gatesCount(0),
         canvas(0),
-        squareNumberOfMovingGate(0)
+        oldSquareNumberOfMovingGate(0)
     {}
 
     QList<GraphicGate *> mGates;
@@ -21,7 +21,8 @@ public:
     int                  gatesCount;
     QGraphicsScene*      canvas;
     QSet<int>            acquiredSquares;
-    int                  squareNumberOfMovingGate;
+    int                  oldSquareNumberOfMovingGate;
+    Cell                 oldCellOfMovingGate;
 
     void avoidCollision(GraphicGate* newGate);
     void stayInScene(GraphicGate* Gate);
@@ -53,9 +54,13 @@ void CanvasManager::addGate(GraphicGate* gate)
 
 void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
 {
-    bool found = findSuitablePosition(gate, scenePos);
-    if (found)
+    Cell c = findSuitableCell(scenePos);
+    if (!c.isNull())
     {
+        parkGate(gate, c);
+        int squareNumber = calculateSquareNumber(c);
+        d->acquiredSquares.insert(squareNumber);
+        qDebug() << d->acquiredSquares;
         d->canvas->addItem(gate);
         d->gatesCount++;
         d->mGates << gate;
@@ -64,7 +69,7 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
 
 void CanvasManager::movingGate(GraphicGate *gate)
 {
-    if (d->squareNumberOfMovingGate != 0)
+    if (d->oldSquareNumberOfMovingGate != 0)
         return;
 
     qreal x = gate->pos().x() + gate->boundingRect().width()/2;
@@ -73,32 +78,40 @@ void CanvasManager::movingGate(GraphicGate *gate)
     int col = ((x - GRID_STEP/2) / GRID_STEP) + 1;
     int row = ((y - GRID_STEP/2) / GRID_STEP) + 1;
 
-    d->squareNumberOfMovingGate = calculateSquareNumber(col, row);
-    qDebug() << "Square number of moving Gate: " << d->squareNumberOfMovingGate;
+    d->oldCellOfMovingGate.setCol(col);
+    d->oldCellOfMovingGate.setRow(row);
+    d->oldSquareNumberOfMovingGate = calculateSquareNumber(d->oldCellOfMovingGate);
+    qDebug() << "Square number of moving Gate: " << d->oldSquareNumberOfMovingGate;
 }
 
 void CanvasManager::gateMoved(GraphicGate* gate, QPointF scenePos)
 {
-    bool moved = findSuitablePosition(gate, scenePos);
+    Cell newCell = findSuitableCell(scenePos);
 
-    if(moved)
+    if(!newCell.isNull())
     {
-        qDebug() << "Gate Moved ::: " << moved;
-
-        d->acquiredSquares.remove(d->squareNumberOfMovingGate);
-
-        qDebug() << d->acquiredSquares;
-        d->squareNumberOfMovingGate = 0;
+        qDebug() << "Gate Moved";
+        parkGate(gate, newCell);
+        d->acquiredSquares.insert(calculateSquareNumber(newCell));
+        d->acquiredSquares.remove(d->oldSquareNumberOfMovingGate);
     }
+    else
+    {
+        qDebug() << "Gate Not Moved";
+        parkGate(gate, d->oldCellOfMovingGate);
+    }
+
+    d->oldCellOfMovingGate.erase();
+    d->oldSquareNumberOfMovingGate = 0;
 }
 
-bool CanvasManager::findSuitablePosition(GraphicGate *g, QPointF scenePos)
+Cell CanvasManager::findSuitableCell(QPointF scenePos)
 {
     int col = qCeil(scenePos.x() / GRID_STEP);
     int row = qCeil(scenePos.y() / GRID_STEP);
-    int squareNumber = calculateSquareNumber(col,row);
+    int squareNumber = calculateSquareNumber(Cell(col,row));
     bool found = true;
-    qreal x,y;
+    Cell c;
 
     qDebug() << "Dropped on square number: " << (squareNumber);
 
@@ -110,7 +123,7 @@ bool CanvasManager::findSuitablePosition(GraphicGate *g, QPointF scenePos)
             qDebug() << i;
             col = i.x();
             row = i.y();
-            int alternativeSquareNumber = calculateSquareNumber(col, row);
+            int alternativeSquareNumber = calculateSquareNumber(Cell(col,row));
 
             if(!d->acquiredSquares.contains(alternativeSquareNumber))
             {
@@ -123,19 +136,22 @@ bool CanvasManager::findSuitablePosition(GraphicGate *g, QPointF scenePos)
 
     if(found)
     {
-        x = (col - 1) * GRID_STEP + GRID_STEP/2;
-        y = (row - 1) * GRID_STEP + GRID_STEP/2;
-
-        qDebug() << "X: " << x << " Y: " << y;
-
-        g->setPos(x - g->boundingRect().width()/2,
-                  y - g->boundingRect().height()/2);
-
-        d->acquiredSquares.insert(squareNumber);
-        qDebug() << d->acquiredSquares;
+        c.setCol(col);
+        c.setRow(row);
     }
 
-    return found;
+    return c;
+}
+
+void CanvasManager::parkGate(GraphicGate * g, Cell c)
+{
+    qreal x = (c.col() - 1) * GRID_STEP + GRID_STEP/2;
+    qreal y = (c.row() - 1) * GRID_STEP + GRID_STEP/2;
+
+    qDebug() << "X: " << x << " Y: " << y;
+
+    g->setPos(x - g->boundingRect().width()/2,
+              y - g->boundingRect().height()/2);
 }
 
 QList<QPoint> CanvasManager::alternativePlaces(int col, int row) const
@@ -177,9 +193,9 @@ QList<QPoint> CanvasManager::alternativePlaces(int col, int row) const
     return colsAndRows;
 }
 
-int CanvasManager::calculateSquareNumber(int col, int row) const
+int CanvasManager::calculateSquareNumber(Cell c) const
 {
-    return col + ((row - 1) * NUMBER_OF_SQUARES_IN_ROW);
+    return c.col() + ((c.row() - 1) * NUMBER_OF_SQUARES_IN_ROW);
 }
 
 CanvasManager::~CanvasManager()
