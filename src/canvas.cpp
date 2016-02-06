@@ -38,7 +38,7 @@ Canvas::Canvas(QObject *parent)
     d->view = new QGraphicsView(this);
 
     d->view->setSceneRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-    //    d->view->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
     d->mCanvasManager = new CanvasManager(parent, this);
 }
 
@@ -61,6 +61,11 @@ void Canvas::setTabIndex(int index)
 {
     qDebug() << "I am: " << this << " My new tab index: " << index;
     d->tabIndex = index;
+}
+
+CanvasManager *Canvas::getCanvasManager()
+{
+    return d->mCanvasManager;
 }
 
 bool Canvas::tabAboutToBeClosed(int index)

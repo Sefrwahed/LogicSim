@@ -51,6 +51,7 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
         d->canvas->addItem(gate);
         d->gatesCount++;
         d->mGates << gate;
+        emit gateCreated();
     }
 }
 

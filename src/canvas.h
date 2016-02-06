@@ -29,6 +29,7 @@ public:
 
     int tabIndex() const;
     void setTabIndex(int index);
+    CanvasManager *getCanvasManager();
 
 protected:
     void dropEvent(QGraphicsSceneDragDropEvent * event);
