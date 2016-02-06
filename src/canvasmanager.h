@@ -1,11 +1,16 @@
 #ifndef CANVASMANAGER_H
 #define CANVASMANAGER_H
 
+// Qt includes
+
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <QDebug>
 #include <QObject>
 #include <QGraphicsSceneMouseEvent>
+#include <QList>
+
+// Local includes
 
 #include "logicsim_global.h"
 #include "graphicgate.h"
@@ -26,8 +31,8 @@ public:
     void moveGate(GraphicGate* gate);
 
 private:
-    QPointF findPosition(int col, int row);
-    int nearestEmptySquare(int acquiredSquare);
+    QList<QPoint> alternativePlaces(int col, int row) const;
+    int calculateSquareNumber(int col, int row) const;
 
 private:
     class Private;

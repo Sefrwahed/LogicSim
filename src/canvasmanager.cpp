@@ -51,14 +51,35 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
 {
     int col = qCeil(scenePos.x() / GRID_STEP);
     int row = qCeil(scenePos.y() / GRID_STEP);
-    int squareNumber = col + ((row - 1) * NUMBER_OF_SQUARES_IN_ROW);
+    int squareNumber = calculateSquareNumber(col,row);
+    bool found = true;
+    qreal x,y;
 
     qDebug() << "Dropped on square number: " << (squareNumber);
 
-    if (!d->acquiredSquares.contains(squareNumber))
+    if (d->acquiredSquares.contains(squareNumber))
     {
-        qreal x = (col - 1) * GRID_STEP + GRID_STEP/2;
-        qreal y = (row - 1) * GRID_STEP + GRID_STEP/2;
+        found = false;
+        foreach(QPoint i, alternativePlaces(col, row))
+        {
+            qDebug() << i;
+            col = i.x();
+            row = i.y();
+            int alternativeSquareNumber = calculateSquareNumber(col, row);
+
+            if(!d->acquiredSquares.contains(alternativeSquareNumber))
+            {
+                found = true;
+                squareNumber = alternativeSquareNumber;
+                break;
+            }
+        }
+    }
+
+    if(found)
+    {
+        x = (col - 1) * GRID_STEP + GRID_STEP/2;
+        y = (row - 1) * GRID_STEP + GRID_STEP/2;
 
         qDebug() << "X: " << x << " Y: " << y;
 
@@ -67,8 +88,6 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
 
         d->acquiredSquares.append(squareNumber);
 
-        d->stayInScene(gate);
-        d->avoidCollision(gate);
         d->canvas->addItem(gate);
         d->gatesCount++;
         d->mGates << gate;
@@ -78,6 +97,50 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
 void CanvasManager::moveGate(GraphicGate* gate)
 {
     d->avoidCollision(gate);
+}
+
+QList<QPoint> CanvasManager::alternativePlaces(int col, int row) const
+{
+    QList<QPoint> colsAndRows;
+
+    if(col - 1 >= 1)
+    {
+        colsAndRows << QPoint(col - 1, row);
+    }
+
+    if(col + 1 <= NUMBER_OF_SQUARES_IN_ROW)
+    {
+        colsAndRows << QPoint(col + 1, row);
+    }
+
+    if(row - 1 >= 1)
+    {
+        colsAndRows << QPoint(col, row - 1);
+
+        if(col - 1 >= 1)
+            colsAndRows << QPoint(col - 1, row - 1);
+
+        if(col + 1 <= NUMBER_OF_SQUARES_IN_ROW)
+            colsAndRows << QPoint(col + 1, row - 1);
+    }
+
+    if(row + 1 <= NUMBER_OF_SQUARES_IN_COLUMN)
+    {
+        colsAndRows << QPoint(col, row + 1);
+
+        if(col - 1 >= 1)
+            colsAndRows << QPoint(col - 1, row + 1);
+
+        if(col + 1 <= NUMBER_OF_SQUARES_IN_ROW)
+            colsAndRows << QPoint(col + 1, row + 1);
+    }
+
+    return colsAndRows;
+}
+
+int CanvasManager::calculateSquareNumber(int col, int row) const
+{
+    return col + ((row - 1) * NUMBER_OF_SQUARES_IN_ROW);
 }
 
 CanvasManager::~CanvasManager()
