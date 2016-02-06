@@ -28,9 +28,11 @@ public:
     QGraphicsScene* canvas();
     void addGate(GraphicGate* gate);
     void addGate(GraphicGate* gate, QPointF scenePos);
-    void moveGate(GraphicGate* gate);
+    void movingGate(GraphicGate* gate);
+    void gateMoved(GraphicGate* gate, QPointF scenePos);
 
 private:
+    bool findSuitablePosition(GraphicGate* g, QPointF scenePos);
     QList<QPoint> alternativePlaces(int col, int row) const;
     int calculateSquareNumber(int col, int row) const;
 

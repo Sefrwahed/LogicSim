@@ -135,8 +135,9 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if(mouseGrabberItem() != 0)
     {
         GraphicGate *gate = static_cast<GraphicGate*>(mouseGrabberItem());
-        d->mCanvasManager->moveGate(gate);
+        d->mCanvasManager->gateMoved(gate, event->scenePos());
     }
+
     QGraphicsScene::mouseReleaseEvent(event);
 }
 
@@ -175,6 +176,12 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(mouseGrabberItem() != 0)
+    {
+        qDebug() << "Mouse Move event :: Gate is moving";
+        GraphicGate *gate = static_cast<GraphicGate*>(mouseGrabberItem());
+        d->mCanvasManager->movingGate(gate);
+    }
     QGraphicsScene::mouseMoveEvent(event);
 }
 

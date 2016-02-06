@@ -11,13 +11,17 @@ class CanvasManager::Private
 {
 public:
     Private() :
-        gatesCount(0)
+        gatesCount(0),
+        canvas(0),
+        squareNumberOfMovingGate(0)
     {}
+
     QList<GraphicGate *> mGates;
     QList<QPointF>       mGatePositions;
     int                  gatesCount;
     QGraphicsScene*      canvas;
-    QVector<int>         acquiredSquares;
+    QSet<int>            acquiredSquares;
+    int                  squareNumberOfMovingGate;
 
     void avoidCollision(GraphicGate* newGate);
     void stayInScene(GraphicGate* Gate);
@@ -48,6 +52,47 @@ void CanvasManager::addGate(GraphicGate* gate)
 }
 
 void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
+{
+    bool found = findSuitablePosition(gate, scenePos);
+    if (found)
+    {
+        d->canvas->addItem(gate);
+        d->gatesCount++;
+        d->mGates << gate;
+    }
+}
+
+void CanvasManager::movingGate(GraphicGate *gate)
+{
+    if (d->squareNumberOfMovingGate != 0)
+        return;
+
+    qreal x = gate->pos().x() + gate->boundingRect().width()/2;
+    qreal y = gate->pos().y() + gate->boundingRect().height()/2;
+
+    int col = ((x - GRID_STEP/2) / GRID_STEP) + 1;
+    int row = ((y - GRID_STEP/2) / GRID_STEP) + 1;
+
+    d->squareNumberOfMovingGate = calculateSquareNumber(col, row);
+    qDebug() << "Square number of moving Gate: " << d->squareNumberOfMovingGate;
+}
+
+void CanvasManager::gateMoved(GraphicGate* gate, QPointF scenePos)
+{
+    bool moved = findSuitablePosition(gate, scenePos);
+
+    if(moved)
+    {
+        qDebug() << "Gate Moved ::: " << moved;
+
+        d->acquiredSquares.remove(d->squareNumberOfMovingGate);
+
+        qDebug() << d->acquiredSquares;
+        d->squareNumberOfMovingGate = 0;
+    }
+}
+
+bool CanvasManager::findSuitablePosition(GraphicGate *g, QPointF scenePos)
 {
     int col = qCeil(scenePos.x() / GRID_STEP);
     int row = qCeil(scenePos.y() / GRID_STEP);
@@ -83,20 +128,14 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
 
         qDebug() << "X: " << x << " Y: " << y;
 
-        gate->setPos(x - gate->boundingRect().width()/2,
-                     y - gate->boundingRect().height()/2);
+        g->setPos(x - g->boundingRect().width()/2,
+                  y - g->boundingRect().height()/2);
 
-        d->acquiredSquares.append(squareNumber);
-
-        d->canvas->addItem(gate);
-        d->gatesCount++;
-        d->mGates << gate;
+        d->acquiredSquares.insert(squareNumber);
+        qDebug() << d->acquiredSquares;
     }
-}
 
-void CanvasManager::moveGate(GraphicGate* gate)
-{
-    d->avoidCollision(gate);
+    return found;
 }
 
 QList<QPoint> CanvasManager::alternativePlaces(int col, int row) const
