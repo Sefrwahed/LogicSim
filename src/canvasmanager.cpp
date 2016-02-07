@@ -79,12 +79,12 @@ void CanvasManager::movingGate(GraphicGate *gate)
     d->oldCellOfMovingGate.setCol(col);
     d->oldCellOfMovingGate.setRow(row);
     d->oldSquareNumberOfMovingGate = calculateSquareNumber(d->oldCellOfMovingGate);
+    qDebug() << d->oldSquareNumberOfMovingGate;
 }
 
 void CanvasManager::gateMoved(GraphicGate* gate, QPointF scenePos)
 {
     Cell newCell = findSuitableCell(scenePos);
-
     if(!newCell.isNull() && calculateSquareNumber(newCell) != d->oldSquareNumberOfMovingGate)
     {
         qDebug() << "Gate Moved";
