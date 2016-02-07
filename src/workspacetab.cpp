@@ -29,7 +29,6 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
 
 WorkspaceTab::~WorkspaceTab()
 {
-    disconnect(d->currentCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
 }
 
 void WorkspaceTab::setManager(CanvasManager *canvasManager)

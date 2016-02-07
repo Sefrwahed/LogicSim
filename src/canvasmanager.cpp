@@ -23,6 +23,7 @@ public:
     QSet<int>            acquiredSquares;
     int                  oldSquareNumberOfMovingGate;
     Cell                 oldCellOfMovingGate;
+    GraphicGate * selectedGate;
     int gateId;
 };
 
@@ -55,7 +56,26 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
         d->canvas->addItem(gate);
         d->gatesCount++;
         d->mGates << gate;
+        selectGate(gate);
         emit gateCreated();
+    }
+}
+
+void CanvasManager::selectGate(GraphicGate *gate)
+{
+    if(d->selectedGate != gate)
+    {
+        qDebug() << "selected: " << gate->name();
+        d->selectedGate = gate;
+    }
+}
+
+void CanvasManager::unSelectGate(GraphicGate* gate)
+{
+    if(d->selectedGate != gate)
+    {
+        qDebug() << "Unselected: " << gate->name();
+        d->selectedGate = NULL;
     }
 }
 

@@ -18,9 +18,10 @@ public:
     GraphicGate(AbstractGate::Type t, QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 };
 
 } // namespace Logicsim
