@@ -15,6 +15,7 @@ SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/node.cpp \
     src/canvas.cpp \
+    src/canvasmanager.cpp \
     src/componentstab.cpp \
     src/graphicgate.cpp \
     src/abstractgate.cpp \
@@ -25,6 +26,7 @@ HEADERS += src/mainwindow.h \
     src/node.h \
     src/canvas.h \
     src/componentstab.h \
+    src/canvasmanager.h \
     src/logicsim_global.h \
     src/graphicgate.h \
     src/abstractgate.h \
