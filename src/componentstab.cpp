@@ -17,8 +17,8 @@ ComponentsTab::ComponentsTab(QWidget* parent)
 
     m_gates << new AndGate() << new OrGate() << new NotGate()
             << new NandGate() << new NorGate() << new XorGate()
-            << new XnorGate();
-    int gatesCount = 7;
+            << new XnorGate() << new InputComponent() << new OutputComponent();
+    int gatesCount = 9;
 
     if(gatesCount % 2 != 0)
     {

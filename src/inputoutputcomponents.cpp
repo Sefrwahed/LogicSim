@@ -55,7 +55,7 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 //**/////////////////////////////Not yet implemented///////////////////////////**//
 QString InputComponent::imageUrl() const
 {
-    return QString("");
+    return QString(":/gates/input");
 }
 
 // ==============================================
@@ -109,7 +109,7 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 //**/////////////////////////////Not yet implemented///////////////////////////**//
 QString OutputComponent::imageUrl() const
 {
-    return QString("");
+    return QString(":/gates/output");
 }
 
 
