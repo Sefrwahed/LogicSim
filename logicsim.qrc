@@ -7,6 +7,8 @@
         <file alias="or">assets/gates/or.png</file>
         <file alias="xnor">assets/gates/xnor.png</file>
         <file alias="xor">assets/gates/xor.png</file>
+        <file alias="output">assets/gates/output.png</file>
+        <file alias="input">assets/gates/input.png</file>
     </qresource>
     <qresource prefix="/icons">
         <file alias="open">assets/icons/default-document-open.svg</file>

@@ -86,7 +86,11 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
     {
         int typeId = event->mimeData()->property("typeId").toInt();
         event->acceptProposedAction();
-        GraphicGate* g = static_cast<GraphicGate*>(QMetaType::create(typeId));
+
+        Component* g = static_cast<Component*>(QMetaType::create(typeId));
+        g->setPos(event->scenePos().x()-g->boundingRect().width()/2,
+                  event->scenePos().y()-g->boundingRect().height()/2);
+        addItem(g);
         d->mCanvasManager->addGate(g, event->scenePos());
     }
     else
@@ -134,7 +138,7 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mouseGrabberItem() != 0)
     {
-        GraphicGate *gate = dynamic_cast<GraphicGate*>(mouseGrabberItem());
+        Component *gate = dynamic_cast<Component*>(mouseGrabberItem());
         if(gate)
         {
             d->mCanvasManager->gateMoved(gate, event->scenePos());
@@ -181,7 +185,7 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mouseGrabberItem() != 0)
     {
-        GraphicGate *gate = dynamic_cast<GraphicGate*>(mouseGrabberItem());
+        Component *gate = dynamic_cast<Component*>(mouseGrabberItem());
         if(gate)
         {
             d->mCanvasManager->movingGate(gate);
@@ -191,3 +195,4 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 }
 
 } // namespace Logicsim
+
