@@ -11,13 +11,13 @@ namespace Logicsim
 // ===================== AndGate ===================
 
 AndGate::AndGate()
-    : Gate(Gate::AndGate)
+    :Gate(Component::AndGate)
 {
     setMetaTypeId(qRegisterMetaType<AndGate>("AndGate"));
 }
 
 AndGate::AndGate(const AndGate &g)
-    : Gate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -56,13 +56,13 @@ QString AndGate::imageUrl() const
 
 
 OrGate::OrGate()
-    : Gate(Gate::OrGate)
+    : Gate(Component::OrGate)
 {
     setMetaTypeId(qRegisterMetaType<OrGate>("OrGate"));
 }
 
 OrGate::OrGate(const OrGate &g)
-    : Gate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -96,14 +96,14 @@ void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 // ===================== NotGate ===================
 
 NotGate::NotGate()
-    : Gate(Gate::NotGate)
+    : Gate(Component::NotGate)
 {
     setMaxInput(1);
     setMetaTypeId(qRegisterMetaType<NotGate>("NotGate"));
 }
 
 NotGate::NotGate(const NotGate &g)
-    : Gate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -131,13 +131,13 @@ void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 // ===================== NandGate ===================
 
 NandGate::NandGate()
-    : Gate(Gate::NandGate)
+    : Gate(Component::NandGate)
 {
     setMetaTypeId(qRegisterMetaType<NandGate>("NandGate"));
 }
 
 NandGate::NandGate(const NandGate &g)
-    : Gate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -176,13 +176,13 @@ void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 // ===================== NorGate ===================
 
 NorGate::NorGate()
-    : Gate(Gate::NorGate)
+    : Gate(Component::NorGate)
 {
     setMetaTypeId(qRegisterMetaType<NorGate>("NorGate"));
 }
 
 NorGate::NorGate(const NorGate &g)
-    : Gate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -217,13 +217,13 @@ void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 // ===================== XorGate ===================
 
 XorGate::XorGate()
-    : Gate(Gate::XorGate)
+    : Gate(Component::XorGate)
 {
     setMetaTypeId(qRegisterMetaType<XorGate>("XorGate"));
 }
 
 XorGate::XorGate(const XorGate &g)
-    : Gate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -262,13 +262,13 @@ void XorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 // ===================== XnorGate ===================
 
 XnorGate::XnorGate()
-    : Gate(Gate::XnorGate)
+    : Gate(Component::XnorGate)
 {
     setMetaTypeId(qRegisterMetaType<XnorGate>("XnorGate"));
 }
 
 XnorGate::XnorGate(const XnorGate &g)
-    : Gate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 

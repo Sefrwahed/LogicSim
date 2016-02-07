@@ -11,12 +11,26 @@ namespace Logicsim
 class Component: public QGraphicsObject
 {
 public:
-    Component();
+    enum Type
+    {
+        AndGate = 0,
+        OrGate,
+        NotGate,
+        NandGate,
+        NorGate,
+        XorGate,
+        XnorGate,
+        InputComponent,
+        OutputComponent
+    };
 
     int metaTypeId() const;
     virtual QString imageUrl() const = 0;
+    Type componentType() const;
+    ~Component();
 
 protected:
+    Component(Type t);
     void setMetaTypeId(int t);
 
 private:

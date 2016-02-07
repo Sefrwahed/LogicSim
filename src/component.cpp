@@ -14,11 +14,18 @@ public:
     {}
 
     int metaTypeId;
+    Component::Type   type;
 };
 
-Component::Component()
+Component::Component(Type t)
     : d(new Private)
-{}
+{d->type = t;}
+
+
+Component::~Component()
+{
+    delete d;
+}
 
 void Component::setMetaTypeId(int t)
 {
@@ -28,6 +35,11 @@ void Component::setMetaTypeId(int t)
 int Component::metaTypeId() const
 {
     return d->metaTypeId;
+}
+
+Component::Type Component::componentType() const
+{
+    return d->type;
 }
 
 } // namespace Logicsim

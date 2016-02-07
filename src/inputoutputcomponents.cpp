@@ -6,7 +6,7 @@
 
 namespace Logicsim {
 
-InputComponent::InputComponent(QGraphicsItem *parent)
+InputComponent::InputComponent(QGraphicsItem *parent): Component(Component::InputComponent)
 {
     setMetaTypeId(qRegisterMetaType<InputComponent>("InputComponent"));
     Q_UNUSED(parent);
@@ -21,10 +21,10 @@ InputComponent::InputComponent(QGraphicsItem *parent)
     Li->setPos(-10,2.5);
 }
 
-InputComponent::InputComponent(const InputComponent &g)
+InputComponent::InputComponent(const InputComponent &g):Component(g.componentType())
 {Q_UNUSED(g);}
 
-InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent)
+InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent): Component(Component::InputComponent)
 {
     qDebug() << xPos << "," << yPos;
     Q_UNUSED(parent);
@@ -60,7 +60,7 @@ QString InputComponent::imageUrl() const
 
 // ==============================================
 
-OutputComponent::OutputComponent(QGraphicsItem *parent)
+OutputComponent::OutputComponent(QGraphicsItem *parent): Component(Component::OutputComponent)
 {
     Q_UNUSED(parent);
     setMetaTypeId(qRegisterMetaType<OutputComponent>("OutputComponent"));
@@ -75,10 +75,10 @@ OutputComponent::OutputComponent(QGraphicsItem *parent)
     Lo->setPos(5,2.5);
 }
 
-OutputComponent::OutputComponent(const OutputComponent &g)
-{}
+OutputComponent::OutputComponent(const OutputComponent &g): Component(Component::OutputComponent)
+{Q_UNUSED(g);}
 
-OutputComponent::OutputComponent(double xPos, double yPos, QGraphicsItem *parent)
+OutputComponent::OutputComponent(double xPos, double yPos, QGraphicsItem *parent): Component(Component::OutputComponent)
 {
     qDebug() << xPos << "," << yPos;
     Q_UNUSED(parent);

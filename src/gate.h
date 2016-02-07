@@ -12,16 +12,16 @@ namespace Logicsim
 class Gate : public Component
 {
 public:
-    enum Type
-    {
-        AndGate = 0,
-        OrGate,
-        NotGate,
-        NandGate,
-        NorGate,
-        XorGate,
-        XnorGate
-    };
+//    enum Type
+//    {
+//        AndGate = 0,
+//        OrGate,
+//        NotGate,
+//        NandGate,
+//        NorGate,
+//        XorGate,
+//        XnorGate
+//    };
 
 public:
     ~Gate();

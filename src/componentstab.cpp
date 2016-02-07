@@ -30,9 +30,9 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     }
 
     int index = 0;
-    foreach (Gate* g, m_gates)
+    foreach (Component* g, m_gates)
     {
-        QTableWidgetItem* item = new QTableWidgetItem(g->gateType());
+        QTableWidgetItem* item = new QTableWidgetItem(g->componentType());
         item->setData(QTableWidgetItem::UserType, g->metaTypeId());
         item->setData(Qt::DecorationRole, QPixmap(g->imageUrl())
                            .scaled(120, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));

@@ -18,12 +18,12 @@ public:
     QList<Node*> input;
     Node*        output;
     qint16       maxInput;
-    Gate::Type   type;
+    Component::Type   type;
     int          metaTypeId;
 };
 
 Gate::Gate(Type t)
-    : d(new Private)
+    : d(new Private), Component::Component(t)
 {
     d->type = t;
     d->output = new Node;
