@@ -1,8 +1,10 @@
 #include "simulator.h"
-
-Simulator Simulator::getInstance()
+namespace Logicsim
 {
-    if(instance == null) instance = new Simulator();
+Simulator* Simulator::instance = 0;
+Simulator* Simulator::getInstance()
+{
+    if(instance == 0) instance = new Simulator();
             return instance;
 }
 
@@ -11,3 +13,4 @@ Simulator::Simulator()
 
 }
 
+} // namespace Logicsim
