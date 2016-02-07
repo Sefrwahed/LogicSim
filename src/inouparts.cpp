@@ -10,7 +10,6 @@
 
 namespace Logicsim
 {
-const int X_MARGIN = 20;
 
 InputComponentBody::InputComponentBody(QGraphicsItem *parent):QGraphicsObject(parent)
 {
@@ -29,28 +28,6 @@ void InputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug()<<"Body clicked";
     qDebug()<<"input changed to : "<<pnode->value();
 }
-
-//void InputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    QGraphicsObject::mouseMoveEvent(event);
-//    if(x() - GATE_X_MARGIN < 0)
-//    {
-//        setPos(GATE_X_MARGIN, y());
-//    }
-//    else if(x() + boundingRect().right() + GATE_X_MARGIN > CANVAS_WIDTH)
-//    {
-//        setPos(CANVAS_WIDTH - boundingRect().width() - GATE_X_MARGIN, y());
-//    }
-
-//    if(y() < 0)
-//    {
-//        setPos(x(), GATE_Y_MARGIN);
-//    }
-//    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
-//    {
-//        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
-//    }
-//}
 
 QRectF InputComponentBody::boundingRect() const
 {
@@ -123,28 +100,6 @@ void OutputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug()<<"output is : "<<pnode->value();
 }
 
-//void OutputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    QGraphicsObject::mouseMoveEvent(event);
-//    if(x() - GATE_X_MARGIN < 0)
-//    {
-//        setPos(GATE_X_MARGIN, y());
-//    }
-//    else if(x() + boundingRect().right() + GATE_X_MARGIN > CANVAS_WIDTH)
-//    {
-//        setPos(CANVAS_WIDTH - boundingRect().width() - GATE_X_MARGIN, y());
-//    }
-
-//    if(y() < 0)
-//    {
-//        setPos(x(), GATE_Y_MARGIN);
-//    }
-//    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
-//    {
-//        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
-//    }
-//}
-
 QRectF OutputComponentBody::boundingRect() const
 {
     return QRectF(0,0,30,30);
@@ -173,6 +128,8 @@ OutputComponentNode::OutputComponentNode(QGraphicsItem *parent):QGraphicsObject(
     //node->setValue(false);
 //    n.setValue(false);
 //    node = &n;
+    Test.setValue(false);
+    node = &Test;
 }
 
 void OutputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)

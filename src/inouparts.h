@@ -19,7 +19,6 @@ private:
 public:
    InputComponentBody(QGraphicsItem *parent = 0);
    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-   //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
    QRectF boundingRect() const;
    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
    Node * GetBodyNode();
@@ -50,7 +49,6 @@ private:
 public:
    OutputComponentBody(QGraphicsItem *parent = 0);
    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-   //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
    QRectF boundingRect() const;
    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
    Node * GetBodyNode();
@@ -63,6 +61,7 @@ class OutputComponentNode : public QGraphicsObject
 {
 private:
     Node *node;
+    Node Test;
 public:
     OutputComponentNode(QGraphicsItem *parent = 0);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
