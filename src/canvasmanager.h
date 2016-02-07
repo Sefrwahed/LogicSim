@@ -66,6 +66,7 @@ private:
     void parkGate(GraphicGate* g, Cell c);
     QList<Cell> alternativePlaces(Cell c) const;
     int calculateSquareNumber(Cell c) const;
+    int selectedGateSquare(int index) const;
 
 Q_SIGNALS:
     void gateCreated();

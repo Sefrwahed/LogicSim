@@ -50,8 +50,8 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
         parkGate(gate, c);
         int squareNumber = calculateSquareNumber(c);
         d->acquiredSquares.insert(squareNumber);
-     /*   gate->setName("gate " + QString::number(d->gateId));
-        d->gateId++;*/
+        gate->setName("gate " + QString::number(d->gateId));
+        d->gateId++;
         d->canvas->addItem(gate);
         d->gatesCount++;
         d->mGates << gate;
@@ -62,6 +62,7 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
 void CanvasManager::deleteGate(int index)
 {
     d->canvas->removeItem(d->mGates.at(index));
+    d->acquiredSquares.remove(selectedGateSquare(index));
     d->mGates.removeAt(index);
 }
 void CanvasManager::movingGate(GraphicGate *gate)
@@ -183,6 +184,15 @@ QList<Cell> CanvasManager::alternativePlaces(Cell c) const
 int CanvasManager::calculateSquareNumber(Cell c) const
 {
     return c.col() + ((c.row() - 1) * NUMBER_OF_SQUARES_IN_ROW);
+}
+
+int CanvasManager::selectedGateSquare(int index) const
+{
+    QPointF position = d->mGates.at(index)->pos();
+    int col = qCeil(position.x() / GRID_STEP);
+    int row = qCeil(position.y() / GRID_STEP);
+    Cell c(col, row);
+    return calculateSquareNumber(c);
 }
 
 CanvasManager::~CanvasManager()
