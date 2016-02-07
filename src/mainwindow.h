@@ -32,6 +32,10 @@ public:
 public Q_SLOTS:
     void newFile();
     void closeTab(int tabIndex);
+    void changeManager(int index);
+
+Q_SIGNALS:
+    void notLastTabClosed(int index);
 
 private:
     Ui::MainWindow *ui;

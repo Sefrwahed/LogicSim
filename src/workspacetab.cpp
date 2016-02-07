@@ -10,7 +10,7 @@ public:
         tabIndex(-1)
     {}
     int tabIndex;
-    QList<Canvas*> mCanvases;
+    CanvasManager *mCanvasManager;
 };
 
 WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Private)
@@ -28,28 +28,28 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
 
 WorkspaceTab::~WorkspaceTab()
 {
-
+    disconnect(d->mCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
 }
 
-void WorkspaceTab::addCanvas(Canvas *canvas)
+void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
-    d->mCanvases << canvas;
-}
-
-void WorkspaceTab::currentCanvas(int index)
-{
-    d->tabIndex = index;
-    qDebug() << index;
+    disconnect(d->mCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
+    d->mCanvasManager = canvasManager;
+    clear();
+    connect(d->mCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
 }
 
 void WorkspaceTab::updateGates()
 {
-    CanvasManager *manager = d->mCanvases.at(d->tabIndex)->getCanvasManager();
-    setRowCount(manager->gates().length());
-    for(int i = 0; i < manager->gates().length(); i++)
+    if(d->mCanvasManager != NULL)
     {
-        QTableWidgetItem* item = new QTableWidgetItem("gate");
-        setItem(i,0,item);
+        qDebug() << "manager" << d->mCanvasManager->gates().length();
+        setRowCount(d->mCanvasManager->gates().length());
+        for(int i = 0; i < d->mCanvasManager->gates().length(); i++)
+        {
+            QTableWidgetItem* item = new QTableWidgetItem("gate");
+            setItem(i,0,item);
+        }
     }
 }
 

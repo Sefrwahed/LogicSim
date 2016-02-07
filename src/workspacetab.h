@@ -3,8 +3,8 @@
 
 #include <QTableWidget>
 #include <QDebug>
+#include <QHeaderView>
 
-#include "canvas.h"
 #include "canvasmanager.h"
 #include "graphicgate.h"
 
@@ -19,10 +19,9 @@ public:
     WorkspaceTab(QWidget* parent = 0);
     ~WorkspaceTab();
 
-    void addCanvas(Canvas *canvas);
+    void setManager(CanvasManager *canvasManager);
 
 public Q_SLOTS:
-    void currentCanvas(int index);
     void updateGates();
 
 private:
