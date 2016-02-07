@@ -2,10 +2,13 @@
 #define SIMULATOR_H
 
 
-class simulator
+class Simulator
 {
 public:
-    simulator();
+    static Simulator getInstance();
+private:
+    static Simulator * instance;
+    Simulator();
 
 signals:
 
