@@ -43,7 +43,7 @@ InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent):
 
 QRectF InputComponent::boundingRect() const
 {
-    return QRectF();
+    return QRectF(0,0,40,50);
 }
 
 void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -52,10 +52,32 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
-//**/////////////////////////////Not yet implemented///////////////////////////**//
+
 QString InputComponent::imageUrl() const
 {
     return QString(":/gates/input");
+}
+
+void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsObject::mouseMoveEvent(event);
+    if(x() - GATE_X_MARGIN < 0)
+    {
+        setPos(GATE_X_MARGIN, y());
+    }
+    else if(x() + boundingRect().right() + GATE_X_MARGIN > CANVAS_WIDTH)
+    {
+        setPos(CANVAS_WIDTH - boundingRect().width() - GATE_X_MARGIN, y());
+    }
+
+    if(y() < 0)
+    {
+        setPos(x(), GATE_Y_MARGIN);
+    }
+    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
+    {
+        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
+    }
 }
 
 // ==============================================
@@ -97,7 +119,7 @@ OutputComponent::OutputComponent(double xPos, double yPos, QGraphicsItem *parent
 
 QRectF OutputComponent::boundingRect() const
 {
-    return QRectF();
+    return QRectF(0,0,40,50);
 }
 
 void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -106,11 +128,32 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
-//**/////////////////////////////Not yet implemented///////////////////////////**//
+
 QString OutputComponent::imageUrl() const
 {
     return QString(":/gates/output");
 }
 
+void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsObject::mouseMoveEvent(event);
+    if(x() - GATE_X_MARGIN < 0)
+    {
+        setPos(GATE_X_MARGIN, y());
+    }
+    else if(x() + boundingRect().right() + GATE_X_MARGIN > CANVAS_WIDTH)
+    {
+        setPos(CANVAS_WIDTH - boundingRect().width() - GATE_X_MARGIN, y());
+    }
+
+    if(y() < 0)
+    {
+        setPos(x(), GATE_Y_MARGIN);
+    }
+    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
+    {
+        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
+    }
+}
 
 }

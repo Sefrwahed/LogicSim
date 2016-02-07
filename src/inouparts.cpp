@@ -30,27 +30,27 @@ void InputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug()<<"input changed to : "<<pnode->value();
 }
 
-void InputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsObject::mouseMoveEvent(event);
-    if(x() - X_MARGIN < 0)
-    {
-        setPos(X_MARGIN, y());
-    }
-    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
-    {
-        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
-    }
+//void InputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    QGraphicsObject::mouseMoveEvent(event);
+//    if(x() - GATE_X_MARGIN < 0)
+//    {
+//        setPos(GATE_X_MARGIN, y());
+//    }
+//    else if(x() + boundingRect().right() + GATE_X_MARGIN > CANVAS_WIDTH)
+//    {
+//        setPos(CANVAS_WIDTH - boundingRect().width() - GATE_X_MARGIN, y());
+//    }
 
-    if(y() < 0)
-    {
-        setPos(x(), 0);
-    }
-    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
-    {
-        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
-    }
-}
+//    if(y() < 0)
+//    {
+//        setPos(x(), GATE_Y_MARGIN);
+//    }
+//    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
+//    {
+//        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
+//    }
+//}
 
 QRectF InputComponentBody::boundingRect() const
 {
@@ -123,27 +123,27 @@ void OutputComponentBody::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug()<<"output is : "<<pnode->value();
 }
 
-void OutputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsObject::mouseMoveEvent(event);
-    if(x() - X_MARGIN < 0)
-    {
-        setPos(X_MARGIN, y());
-    }
-    else if(x() + boundingRect().right() + X_MARGIN > CANVAS_WIDTH)
-    {
-        setPos(CANVAS_WIDTH - boundingRect().width() - X_MARGIN, y());
-    }
+//void OutputComponentBody::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    QGraphicsObject::mouseMoveEvent(event);
+//    if(x() - GATE_X_MARGIN < 0)
+//    {
+//        setPos(GATE_X_MARGIN, y());
+//    }
+//    else if(x() + boundingRect().right() + GATE_X_MARGIN > CANVAS_WIDTH)
+//    {
+//        setPos(CANVAS_WIDTH - boundingRect().width() - GATE_X_MARGIN, y());
+//    }
 
-    if(y() < 0)
-    {
-        setPos(x(), 0);
-    }
-    else if( y()+ boundingRect().bottom() > CANVAS_HEIGHT)
-    {
-        setPos(x(), CANVAS_HEIGHT - boundingRect().height());
-    }
-}
+//    if(y() < 0)
+//    {
+//        setPos(x(), GATE_Y_MARGIN);
+//    }
+//    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
+//    {
+//        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
+//    }
+//}
 
 QRectF OutputComponentBody::boundingRect() const
 {

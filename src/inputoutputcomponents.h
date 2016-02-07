@@ -5,6 +5,7 @@
 #include "inouparts.h"
 #include "gateparts.h"
 #include "component.h"
+#include "logicsim_global.h"
 #include <QtWidgets>
 
 namespace Logicsim
@@ -18,6 +19,7 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QString imageUrl() const;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 };
 
 
@@ -30,6 +32,7 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QString imageUrl() const;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 };
 
 }
