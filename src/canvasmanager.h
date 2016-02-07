@@ -62,6 +62,7 @@ public:
     void deleteGate(int index);
     void movingGate(GraphicGate* gate);
     void gateMoved(GraphicGate* gate, QPointF scenePos);
+    int selectedGate();
 
 private:
     Cell findSuitableCell(QPointF scenePos);
@@ -70,8 +71,13 @@ private:
     int calculateSquareNumber(Cell c) const;
     int selectedGateSquare(int index) const;
 
+public Q_SLOTS:
+    void selectedFromWorkspace(int index);
+
 Q_SIGNALS:
-    void gateCreated();
+    void gatesUpdated();
+    void gateDeleted(int index);
+    void gateAdded(int index);
     void gateSelectedFromCanvas(int index);
 
 private:

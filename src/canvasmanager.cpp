@@ -24,11 +24,13 @@ public:
     int                  oldSquareNumberOfMovingGate;
     Cell                 oldCellOfMovingGate;
     GraphicGate *selectedGate;
+    int selectedGateIndex;
     int gateId;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas) : QObject(parent), d(new Private)
 {
+    d->selectedGateIndex = -1;
     d->gateId = 0;
     d->selectedGate = NULL;
     d->canvas = canvas;
@@ -57,10 +59,7 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
         d->canvas->addItem(gate);
         d->gatesCount++;
         d->mGates << gate;
-        unSelectGate();
-        selectGate(gate);
-        emit gateCreated();
-        emit gateSelectedFromCanvas(d->gatesCount - 1);
+        emit gateAdded(d->gatesCount - 1);
     }
 }
 
@@ -70,6 +69,7 @@ void CanvasManager::selectGate(GraphicGate *gate)
     {
         qDebug() << "selected: " << gate->name();
         d->selectedGate = gate;
+        d->selectedGateIndex = d->mGates.indexOf(d->selectedGate);
         d->selectedGate->setSelection(true);
         emit gateSelectedFromCanvas(d->mGates.indexOf(d->selectedGate));
     }
@@ -80,6 +80,7 @@ void CanvasManager::unSelectGate()
     if(d->selectedGate != NULL)
     {
         qDebug() << "Unselected: " << d->selectedGate->name();
+        d->selectedGateIndex = -1;
         d->selectedGate->setSelection(false);
         d->selectedGate = NULL;
     }
@@ -87,9 +88,12 @@ void CanvasManager::unSelectGate()
 
 void CanvasManager::deleteGate(int index)
 {
+    unSelectGate();
     d->canvas->removeItem(d->mGates.at(index));
     d->acquiredSquares.remove(selectedGateSquare(index));
     d->mGates.removeAt(index);
+    d->gatesCount--;
+    emit gateDeleted(index);
 }
 void CanvasManager::movingGate(GraphicGate *gate)
 {
@@ -125,6 +129,11 @@ void CanvasManager::gateMoved(GraphicGate* gate, QPointF scenePos)
 
     d->oldCellOfMovingGate.erase();
     d->oldSquareNumberOfMovingGate = 0;
+}
+
+int CanvasManager::selectedGate()
+{
+    return d->selectedGateIndex;
 }
 
 Cell CanvasManager::findSuitableCell(QPointF scenePos)
@@ -218,6 +227,12 @@ int CanvasManager::selectedGateSquare(int index) const
     int row = qCeil(position.y() / GRID_STEP);
     Cell c(col, row);
     return calculateSquareNumber(c);
+}
+
+void CanvasManager::selectedFromWorkspace(int index)
+{
+    unSelectGate();
+    selectGate(d->mGates.at(index));
 }
 
 CanvasManager::~CanvasManager()

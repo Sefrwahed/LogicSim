@@ -149,6 +149,20 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mouseReleaseEvent(event);
 }
 
+void Canvas::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+        case Qt::Key_Delete:
+        if(d->mCanvasManager->selectedGate() != -1)
+        {
+            qDebug() << "Delete";
+            d->mCanvasManager->deleteGate(d->mCanvasManager->selectedGate());
+        }
+        break;
+    }
+}
+
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
 {
     int step = GRID_STEP;

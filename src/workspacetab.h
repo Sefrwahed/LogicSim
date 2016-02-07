@@ -24,10 +24,16 @@ public:
 
 public Q_SLOTS:
     void updateGates();
+    void addGateToWorkspace(int index);
+    void removeGateFromWorkspace(int index);
     void selectedFromCanvas(int index);
+
+Q_SIGNALS:
+    void gateSelectedFromWorkspace(int index);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     class Private;
