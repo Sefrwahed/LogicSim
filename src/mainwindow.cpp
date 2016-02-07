@@ -31,6 +31,17 @@ public:
     ComponentsTab* compTab;
     WorkspaceTab* workspaceTab;
     QList<Canvas*> canvases;
+
+    ~Private()
+    {
+        foreach (Canvas* c, canvases)
+        {
+            delete c;
+        }
+        delete workspaceTab;
+        delete compTab;
+        delete tabWidget;
+    }
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -57,21 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
-               this, SLOT(changeManager(int)));
-    disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
-               d->workspaceTab, SLOT(updateGates()));
-    disconnect(this, SIGNAL(notLastTabClosed(int)),
-               this, SLOT(changeManager(int)));
-    disconnect(this, SIGNAL(notLastTabClosed(int)),
-               d->workspaceTab, SLOT(updateGates()));
     delete ui;
-
-    foreach (Canvas* c, d->canvases)
-    {
-        delete c;
-    }
-
     delete d;
 }
 
