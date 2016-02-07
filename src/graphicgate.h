@@ -4,6 +4,7 @@
 // Qt includes
 
 #include <QGraphicsObject>
+#include <QPainter>
 
 // Local includes
 
@@ -22,6 +23,11 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+
+    void setSelection(bool selection);
+
+private:
+    bool selected;
 };
 
 } // namespace Logicsim

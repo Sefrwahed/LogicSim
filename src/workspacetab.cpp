@@ -18,7 +18,7 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
     verticalHeader()->setVisible(false);
     horizontalHeader()->setVisible(false);
     setSelectionMode(QAbstractItemView::SingleSelection);
-
+    setSelectionBehavior(QAbstractItemView::SelectRows);
     setColumnCount(1);
     setRowCount(0);
     setShowGrid(false);
@@ -33,10 +33,12 @@ WorkspaceTab::~WorkspaceTab()
 
 void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
+    disconnect(d->currentCanvasManager, SIGNAL(gateSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
     disconnect(d->currentCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
     d->currentCanvasManager = canvasManager;
     clear();
     connect(d->currentCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
+    connect(d->currentCanvasManager, SIGNAL(gateSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
 }
 
 void WorkspaceTab::updateGates()
@@ -51,6 +53,12 @@ void WorkspaceTab::updateGates()
             setItem(i,0,item);
         }
     }
+}
+
+void WorkspaceTab::selectedFromCanvas(int index)
+{
+    qDebug() << index;
+    selectRow(index);
 }
 
 void WorkspaceTab::keyPressEvent(QKeyEvent *event)

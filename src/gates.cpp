@@ -30,6 +30,7 @@ void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    GraphicGate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,20,0);
     painter->drawLine(0,50,20,50);
@@ -91,6 +92,7 @@ void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
+    GraphicGate::paint(painter, option, widget);
     painter->drawArc(QRect(-22,-5,25,60), -800 , 1500);
     painter->drawArc(QRect(-30,-2,70,50), -1600, 1500);
     painter->drawArc(QRect(-30, 4,70,50),  100 , 1500);
@@ -132,6 +134,7 @@ void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
+    GraphicGate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,35,27);
     painter->drawLine(0,50,35,27);
@@ -173,7 +176,7 @@ void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-
+    GraphicGate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,17,0);
     painter->drawLine(0,50,17,50);
@@ -219,12 +222,11 @@ void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-
-  painter->drawArc(QRect(-22,-5,25,60), -800, 1500);
-  painter->drawArc(QRect(-23,-2,60,50), -1700, 1500);
-  painter->drawArc(QRect(-23,4,60,50),  200, 1500);
-  painter->drawEllipse(36,24,5,5);
-
+    GraphicGate::paint(painter, option, widget);
+    painter->drawArc(QRect(-22,-5,25,60), -800, 1500);
+    painter->drawArc(QRect(-23,-2,60,50), -1700, 1500);
+    painter->drawArc(QRect(-23,4,60,50),  200, 1500);
+    painter->drawEllipse(36,24,5,5);
 }
 
 // ===================== XorGate ===================
@@ -264,59 +266,59 @@ QString XorGate::imageUrl() const
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-
+    GraphicGate::paint(painter, option, widget);
     painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
-     painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
-     painter->drawArc(QRect(-19,-2,60,50), -1700, 1600);
-     painter->drawArc(QRect(-19,4,60,50),  200, 1500);
+    painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
+    painter->drawArc(QRect(-19,-2,60,50), -1700, 1600);
+    painter->drawArc(QRect(-19,4,60,50),  200, 1500);
 
 }
 
- // ===================== XnorGate ===================
+// ===================== XnorGate ===================
 
- XnorGate::XnorGate()
-     : GraphicGate(AbstractGate::XnorGate)
- {
-     setMetaTypeId(qRegisterMetaType<XnorGate>("XnorGate"));
- }
+XnorGate::XnorGate()
+    : GraphicGate(AbstractGate::XnorGate)
+{
+    setMetaTypeId(qRegisterMetaType<XnorGate>("XnorGate"));
+}
 
- XnorGate::XnorGate(const XnorGate &g)
-     : GraphicGate(g.gateType())
- {
- }
+XnorGate::XnorGate(const XnorGate &g)
+    : GraphicGate(g.gateType())
+{
+}
 
 
- void XnorGate::calcOutput()
- {
+void XnorGate::calcOutput()
+{
     bool out = inputList()[0]->value();
     outputNode()->setValue(out);
     int i ;
     for ( i = 1 ; i< inputList().size() ; i++);
- {
-   if  ( inputList()[i]->value() == out )
-           out = 0 ;
-   else
-       out = 1 ;
- }
-   outputNode()->setValue(!out);
- }
+    {
+        if( inputList()[i]->value() == out )
+            out = 0 ;
+        else
+            out = 1 ;
+    }
+    outputNode()->setValue(!out);
+}
 
- QString XnorGate::imageUrl() const
- {
-     return QString(":/gates/xnor");
- }
+QString XnorGate::imageUrl() const
+{
+    return QString(":/gates/xnor");
+}
 
- void XnorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
- {
-     Q_UNUSED(option);
-     Q_UNUSED(widget);
+void XnorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+    GraphicGate::paint(painter, option, widget);
+    painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
+    painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
+    painter->drawArc(QRect(-24,-2,60,50), -1550, 1400);
+    painter->drawArc(QRect(-24,4,60,50),  200, 1300);
 
-      painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
-      painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
-      painter->drawArc(QRect(-24,-2,60,50), -1550, 1400);
-      painter->drawArc(QRect(-24,4,60,50),  200, 1300);
-
-      painter->drawEllipse(36,24,5,5);
- }
+    painter->drawEllipse(36,24,5,5);
+}
 
 } // namespace Logicsim

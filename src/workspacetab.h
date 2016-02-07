@@ -24,6 +24,7 @@ public:
 
 public Q_SLOTS:
     void updateGates();
+    void selectedFromCanvas(int index);
 
 protected:
     void keyPressEvent(QKeyEvent *event);

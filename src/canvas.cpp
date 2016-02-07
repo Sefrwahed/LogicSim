@@ -146,7 +146,6 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             d->mCanvasManager->gateMoved(gate, event->scenePos());
         }
     }
-
     QGraphicsScene::mouseReleaseEvent(event);
 }
 
@@ -181,6 +180,8 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
 void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
+    d->mCanvasManager->unSelectGate();
+    Canvas::mouseMoveEvent(event);
 }
 
 void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

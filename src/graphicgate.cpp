@@ -12,6 +12,7 @@ namespace Logicsim
 GraphicGate::GraphicGate(AbstractGate::Type t, QGraphicsItem *parent)
     : QGraphicsObject(parent), AbstractGate(t)
 {
+    selected = false;
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 
@@ -38,9 +39,22 @@ QRectF GraphicGate::boundingRect() const
 
 void GraphicGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(painter);
+    if(selected)
+    {
+        painter->setPen(QPen(Qt::red));
+    }
+    else
+    {
+        painter->setPen(QPen(Qt::black));
+    }
     Q_UNUSED(option);
     Q_UNUSED(widget);
+}
+
+void GraphicGate::setSelection(bool selection)
+{
+    selected = selection;
+    update();
 }
 
 void GraphicGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
