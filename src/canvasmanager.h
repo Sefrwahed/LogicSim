@@ -57,6 +57,7 @@ public:
     QGraphicsScene* canvas();
 
     void addGate(GraphicGate* gate, QPointF scenePos);
+    void deleteGate(int index);
     void movingGate(GraphicGate* gate);
     void gateMoved(GraphicGate* gate, QPointF scenePos);
 

@@ -4,6 +4,7 @@
 #include <QTableWidget>
 #include <QDebug>
 #include <QHeaderView>
+#include <QKeyEvent>
 
 #include "canvasmanager.h"
 #include "graphicgate.h"
@@ -23,6 +24,9 @@ public:
 
 public Q_SLOTS:
     void updateGates();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     class Private;

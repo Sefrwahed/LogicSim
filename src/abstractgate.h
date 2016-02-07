@@ -39,6 +39,9 @@ public:
 
     int metaTypeId() const;
 
+    QString name();
+    void setName(QString value);
+
 protected:
     AbstractGate(Type t);
 

@@ -23,10 +23,12 @@ public:
     QSet<int>            acquiredSquares;
     int                  oldSquareNumberOfMovingGate;
     Cell                 oldCellOfMovingGate;
+    int gateId;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas) : QObject(parent), d(new Private)
 {
+    d->gateId = 0;
     d->canvas = canvas;
 }
 
@@ -48,6 +50,8 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
         parkGate(gate, c);
         int squareNumber = calculateSquareNumber(c);
         d->acquiredSquares.insert(squareNumber);
+     /*   gate->setName("gate " + QString::number(d->gateId));
+        d->gateId++;*/
         d->canvas->addItem(gate);
         d->gatesCount++;
         d->mGates << gate;
@@ -55,6 +59,11 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
     }
 }
 
+void CanvasManager::deleteGate(int index)
+{
+    d->canvas->removeItem(d->mGates.at(index));
+    d->mGates.removeAt(index);
+}
 void CanvasManager::movingGate(GraphicGate *gate)
 {
     if (d->oldSquareNumberOfMovingGate != 0)

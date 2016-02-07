@@ -62,7 +62,7 @@ void Canvas::setTabIndex(int index)
     d->tabIndex = index;
 }
 
-CanvasManager *Canvas::getCanvasManager()
+CanvasManager *Canvas::canvasManager()
 {
     return d->mCanvasManager;
 }

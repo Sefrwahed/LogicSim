@@ -9,7 +9,7 @@ public:
     Private()
     {
     }
-
+    QString name;
     QList<Node*> input;
     Node*        output;
     qint16       maxInput;
@@ -67,6 +67,16 @@ AbstractGate::Type AbstractGate::gateType() const
 int AbstractGate::metaTypeId() const
 {
     return d->metaTypeId;
+}
+
+QString AbstractGate::name()
+{
+    return d->name;
+}
+
+void AbstractGate::setName(QString value)
+{
+    d->name = value;
 }
 
 } //namespace Logicsim

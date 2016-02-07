@@ -10,13 +10,14 @@ public:
         tabIndex(-1)
     {}
     int tabIndex;
-    CanvasManager *mCanvasManager;
+    CanvasManager *currentCanvasManager;
 };
 
 WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Private)
 {
     verticalHeader()->setVisible(false);
     horizontalHeader()->setVisible(false);
+    setSelectionMode(QAbstractItemView::SingleSelection);
 
     setColumnCount(1);
     setRowCount(0);
@@ -28,30 +29,45 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
 
 WorkspaceTab::~WorkspaceTab()
 {
-    disconnect(d->mCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
+    disconnect(d->currentCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
 }
 
 void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
-    disconnect(d->mCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
-    d->mCanvasManager = canvasManager;
+    disconnect(d->currentCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
+    d->currentCanvasManager = canvasManager;
     clear();
-    connect(d->mCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
+    connect(d->currentCanvasManager, SIGNAL(gateCreated()), this, SLOT(updateGates()));
 }
 
 void WorkspaceTab::updateGates()
 {
-    if(d->mCanvasManager != NULL)
+    if(d->currentCanvasManager != NULL)
     {
-        qDebug() << "manager" << d->mCanvasManager->gates().length();
-        setRowCount(d->mCanvasManager->gates().length());
-        for(int i = 0; i < d->mCanvasManager->gates().length(); i++)
+        qDebug() << "manager" << d->currentCanvasManager->gates().length();
+        setRowCount(d->currentCanvasManager->gates().length());
+        for(int i = 0; i < d->currentCanvasManager->gates().length(); i++)
         {
-            QTableWidgetItem* item = new QTableWidgetItem("gate");
+            QTableWidgetItem* item = new QTableWidgetItem(d->currentCanvasManager->gates().at(i)->name());
             setItem(i,0,item);
         }
     }
 }
 
+void WorkspaceTab::keyPressEvent(QKeyEvent *event)
+{
+  switch (event->key())
+  {
+    case Qt::Key_Delete:
+        qDebug() << "Delete";
+        for(int i = 0, n = selectedIndexes().length(); i < n; i++)
+        {
+            int row = selectedIndexes().at(i).row();
+            d->currentCanvasManager->deleteGate(row);
+            removeRow(row);
+        }
+    break;
+  }
+}
 
 }

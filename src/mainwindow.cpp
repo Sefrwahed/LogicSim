@@ -161,7 +161,7 @@ void MainWindow::closeTab(int tabIndex)
 
 void MainWindow::changeManager(int index)
 {
-    d->workspaceTab->setManager(d->canvases.at(index)->getCanvasManager());
+    d->workspaceTab->setManager(d->canvases.at(index)->canvasManager());
 }
 
 } // namespace Logicsim
