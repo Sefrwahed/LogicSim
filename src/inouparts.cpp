@@ -125,11 +125,8 @@ void OutputComponentBody::SetBodyNode(Node *n)
 
 OutputComponentNode::OutputComponentNode(QGraphicsItem *parent):QGraphicsObject(parent)
 {
-    //node->setValue(false);
-//    n.setValue(false);
-//    node = &n;
-    Test.setValue(false);
-    node = &Test;
+//    Test.setValue(false);
+//    node = &Test;
 }
 
 void OutputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)

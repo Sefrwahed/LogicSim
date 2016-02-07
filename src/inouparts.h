@@ -61,7 +61,7 @@ class OutputComponentNode : public QGraphicsObject
 {
 private:
     Node *node;
-    Node Test;
+//    Node Test;
 public:
     OutputComponentNode(QGraphicsItem *parent = 0);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
