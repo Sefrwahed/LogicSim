@@ -112,11 +112,11 @@ void MainWindow::newFile()
         connect(d->tabWidget, SIGNAL(currentChanged(int)),
                 this, SLOT(changeManager(int)));
         connect(d->tabWidget, SIGNAL(currentChanged(int)),
-                d->workspaceTab, SLOT(updateGates()));
+                d->workspaceTab, SLOT(updateComponents()));
         connect(this, SIGNAL(notLastTabClosed(int)),
                 this, SLOT(changeManager(int)));
         connect(this, SIGNAL(notLastTabClosed(int)),
-                d->workspaceTab, SLOT(updateGates()));
+                d->workspaceTab, SLOT(updateComponents()));
     }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
@@ -134,11 +134,11 @@ void MainWindow::closeTab(int tabIndex)
         disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
                    this, SLOT(changeManager(int)));
         disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
-                   d->workspaceTab, SLOT(updateGates()));
+                   d->workspaceTab, SLOT(updateComponents()));
         disconnect(this, SIGNAL(notLastTabClosed(int)),
                    this, SLOT(changeManager(int)));
         disconnect(this, SIGNAL(notLastTabClosed(int)),
-                   d->workspaceTab, SLOT(updateGates()));
+                   d->workspaceTab, SLOT(updateComponents()));
 
     }
     d->tabWidget->removeTab(tabIndex);

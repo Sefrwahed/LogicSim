@@ -8,10 +8,10 @@ class WorkspaceTab::Private
 public:
     Private() :
         tabIndex(-1),
-        gatesCount(0)
+        componentsCount(0)
     {}
     int tabIndex;
-    int gatesCount;
+    int componentsCount;
     CanvasManager *currentCanvasManager;
 };
 
@@ -37,47 +37,47 @@ WorkspaceTab::~WorkspaceTab()
 
 void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
-    disconnect(this, SIGNAL(gateSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
-    disconnect(d->currentCanvasManager, SIGNAL(gateSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
-    disconnect(d->currentCanvasManager, SIGNAL(gateAdded(int)), this, SLOT(addGateToWorkspace(int)));
-    disconnect(d->currentCanvasManager, SIGNAL(gateDeleted(int)), this, SLOT(removeGateFromWorkspace(int)));
+    disconnect(this, SIGNAL(componentSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
+    disconnect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
+    disconnect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
+    disconnect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
   //  disconnect(d->currentCanvasManager, SIGNAL(gatesUpdated()), this, SLOT(updateGates()));
     d->currentCanvasManager = canvasManager;
 //    connect(d->currentCanvasManager, SIGNAL(gatesUpdated()), this, SLOT(updateGates()));
-    connect(d->currentCanvasManager, SIGNAL(gateAdded(int)), this, SLOT(addGateToWorkspace(int)));
-    connect(d->currentCanvasManager, SIGNAL(gateDeleted(int)), this, SLOT(removeGateFromWorkspace(int)));
-    connect(d->currentCanvasManager, SIGNAL(gateSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
-    connect(this, SIGNAL(gateSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
+    connect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
+    connect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
+    connect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
+    connect(this, SIGNAL(componentSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
 }
 
-void WorkspaceTab::updateGates()
+void WorkspaceTab::updateComponents()
 {
     clear();
-    qDebug() << "hello " << d->currentCanvasManager->gates().length();
+    qDebug() << "hello " << d->currentCanvasManager->components().length();
     if(d->currentCanvasManager != NULL)
     {
-        d->gatesCount = d->currentCanvasManager->gates().length();
-        setRowCount(d->gatesCount);
-        for(int i = 0; i < d->gatesCount; i++)
+        d->componentsCount = d->currentCanvasManager->components().length();
+        setRowCount(d->componentsCount);
+        for(int i = 0; i < d->componentsCount; i++)
         {
-            QTableWidgetItem* item = new QTableWidgetItem(d->currentCanvasManager->gates().at(i)->name());
+            QTableWidgetItem* item = new QTableWidgetItem(d->currentCanvasManager->components().at(i)->name());
             setItem(i,0,item);
         }
     }
 }
 
-void WorkspaceTab::addGateToWorkspace(int index)
+void WorkspaceTab::addComponentsToWorkspace(int index)
 {
-    setRowCount(d->gatesCount+1);
-    QTableWidgetItem* item = new QTableWidgetItem(d->currentCanvasManager->gates().at(index)->name());
-    setItem(d->gatesCount,0,item);
-    d->gatesCount++;
+    setRowCount(d->componentsCount+1);
+    QTableWidgetItem* item = new QTableWidgetItem(d->currentCanvasManager->components().at(index)->name());
+    setItem(d->componentsCount,0,item);
+    d->componentsCount++;
 }
 
-void WorkspaceTab::removeGateFromWorkspace(int index)
+void WorkspaceTab::removeComponentsFromWorkspace(int index)
 {
     removeRow(index);
-    d->gatesCount--;
+    d->componentsCount--;
 }
 
 void WorkspaceTab::selectedFromCanvas(int index)
@@ -95,7 +95,7 @@ void WorkspaceTab::keyPressEvent(QKeyEvent *event)
         {
             int row = selectedIndexes().at(0).row();
                         qDebug() << row;
-            d->currentCanvasManager->deleteGate(row);
+            d->currentCanvasManager->deleteComponent(row);
         }
     break;
   }
@@ -105,7 +105,7 @@ void WorkspaceTab::mousePressEvent(QMouseEvent *event)
 {
     QTableWidget::mousePressEvent(event);
 
-    emit gateSelectedFromWorkspace(selectedItems().at(0)->row());
+    emit componentSelectedFromWorkspace(selectedItems().at(0)->row());
 }
 
 }

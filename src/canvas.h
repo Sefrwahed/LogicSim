@@ -57,3 +57,4 @@ private:
 } // namespace Logicsim
 
 #endif // CANVAS_H
+

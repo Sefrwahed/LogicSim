@@ -11,26 +11,26 @@ namespace Logicsim
 // ===================== AndGate ===================
 
 AndGate::AndGate()
-    : GraphicGate(AbstractGate::AndGate)
+    :Gate(Component::AndGate)
 {
     setMetaTypeId(qRegisterMetaType<AndGate>("AndGate"));
 }
 
 AndGate::AndGate(const AndGate &g)
-    : GraphicGate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
 QRectF AndGate::boundingRect() const
 {
-    return GraphicGate::boundingRect();
+    return Component::boundingRect();
 }
 
 void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    GraphicGate::paint(painter, option, widget);
+    Gate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,20,0);
     painter->drawLine(0,50,20,50);
@@ -57,13 +57,13 @@ QString AndGate::imageUrl() const
 
 
 OrGate::OrGate()
-    : GraphicGate(AbstractGate::OrGate)
+    : Gate(Component::OrGate)
 {
     setMetaTypeId(qRegisterMetaType<OrGate>("OrGate"));
 }
 
 OrGate::OrGate(const OrGate &g)
-    : GraphicGate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -85,14 +85,14 @@ QString OrGate::imageUrl() const
 
 QRectF OrGate::boundingRect() const
 {
-    return GraphicGate::boundingRect();
+    return Component::boundingRect();
 }
 
 void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    GraphicGate::paint(painter, option, widget);
+    Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-22,-5,25,60), -800 , 1500);
     painter->drawArc(QRect(-30,-2,70,50), -1600, 1500);
     painter->drawArc(QRect(-30, 4,70,50),  100 , 1500);
@@ -103,14 +103,14 @@ void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 // ===================== NotGate ===================
 
 NotGate::NotGate()
-    : GraphicGate(AbstractGate::NotGate)
+    : Gate(Component::NotGate)
 {
     setMaxInput(1);
     setMetaTypeId(qRegisterMetaType<NotGate>("NotGate"));
 }
 
 NotGate::NotGate(const NotGate &g)
-    : GraphicGate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -127,14 +127,14 @@ QString NotGate::imageUrl() const
 
 QRectF NotGate::boundingRect() const
 {
-    return GraphicGate::boundingRect();
+    return Component::boundingRect();
 }
 
 void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    GraphicGate::paint(painter, option, widget);
+    Gate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,35,27);
     painter->drawLine(0,50,35,27);
@@ -144,13 +144,13 @@ void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 // ===================== NandGate ===================
 
 NandGate::NandGate()
-    : GraphicGate(AbstractGate::NandGate)
+    : Gate(Component::NandGate)
 {
     setMetaTypeId(qRegisterMetaType<NandGate>("NandGate"));
 }
 
 NandGate::NandGate(const NandGate &g)
-    : GraphicGate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -176,7 +176,7 @@ void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    GraphicGate::paint(painter, option, widget);
+    Gate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,17,0);
     painter->drawLine(0,50,17,50);
@@ -188,16 +188,14 @@ void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 // ===================== NorGate ===================
 
-
-
 NorGate::NorGate()
-    : GraphicGate(AbstractGate::NorGate)
+    : Gate(Component::NorGate)
 {
     setMetaTypeId(qRegisterMetaType<NorGate>("NorGate"));
 }
 
 NorGate::NorGate(const NorGate &g)
-    : GraphicGate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
@@ -222,7 +220,7 @@ void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    GraphicGate::paint(painter, option, widget);
+    Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-22,-5,25,60), -800, 1500);
     painter->drawArc(QRect(-23,-2,60,50), -1700, 1500);
     painter->drawArc(QRect(-23,4,60,50),  200, 1500);
@@ -232,29 +230,29 @@ void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 // ===================== XorGate ===================
 
 XorGate::XorGate()
-    : GraphicGate(AbstractGate::XorGate)
+    : Gate(Component::XorGate)
 {
     setMetaTypeId(qRegisterMetaType<XorGate>("XorGate"));
 }
 
 XorGate::XorGate(const XorGate &g)
-    : GraphicGate(g.gateType())
+    : Gate(g.componentType())
 {
 }
 
 void XorGate::calcOutput()
 {
-   bool out = inputList()[0]->value();
-   outputNode()->setValue(out);
-   int i ;
-   for ( i = 1 ; i< inputList().size() ; i++);
-{
-  if  ( inputList()[i]->value() == out )
-          out = 0 ;
-  else
-      out = 1 ;
-}
-  outputNode()->setValue(out);
+    bool out = inputList()[0]->value();
+    outputNode()->setValue(out);
+    int i ;
+    for ( i = 1 ; i< inputList().size() ; i++);
+    {
+        if  ( inputList()[i]->value() == out )
+            out = 0 ;
+        else
+            out = 1 ;
+    }
+    outputNode()->setValue(out);
 }
 
 QString XorGate::imageUrl() const
@@ -262,11 +260,11 @@ QString XorGate::imageUrl() const
     return QString(":/gates/xor");
 }
 
- void XorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void XorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    GraphicGate::paint(painter, option, widget);
+    Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
     painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
     painter->drawArc(QRect(-19,-2,60,50), -1700, 1600);
@@ -277,23 +275,22 @@ QString XorGate::imageUrl() const
 // ===================== XnorGate ===================
 
 XnorGate::XnorGate()
-    : GraphicGate(AbstractGate::XnorGate)
+    : Gate(Component::XnorGate)
 {
     setMetaTypeId(qRegisterMetaType<XnorGate>("XnorGate"));
 }
 
 XnorGate::XnorGate(const XnorGate &g)
-    : GraphicGate(g.gateType())
+    : Gate(g.componentType())
 {
 }
-
 
 void XnorGate::calcOutput()
 {
     bool out = inputList()[0]->value();
     outputNode()->setValue(out);
     int i ;
-    for ( i = 1 ; i< inputList().size() ; i++);
+    for( i = 1 ; i< inputList().size() ; i++)
     {
         if( inputList()[i]->value() == out )
             out = 0 ;
@@ -312,12 +309,11 @@ void XnorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    GraphicGate::paint(painter, option, widget);
+    Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
     painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
     painter->drawArc(QRect(-24,-2,60,50), -1550, 1400);
     painter->drawArc(QRect(-24,4,60,50),  200, 1300);
-
     painter->drawEllipse(36,24,5,5);
 }
 

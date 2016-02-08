@@ -23,13 +23,13 @@ public:
     void setManager(CanvasManager *canvasManager);
 
 public Q_SLOTS:
-    void updateGates();
-    void addGateToWorkspace(int index);
-    void removeGateFromWorkspace(int index);
+    void updateComponents();
+    void addComponentsToWorkspace(int index);
+    void removeComponentsFromWorkspace(int index);
     void selectedFromCanvas(int index);
 
 Q_SIGNALS:
-    void gateSelectedFromWorkspace(int index);
+    void componentSelectedFromWorkspace(int index);
 
 protected:
     void keyPressEvent(QKeyEvent *event);

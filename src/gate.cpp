@@ -1,18 +1,33 @@
-#include "graphicgate.h"
+#include "gate.h"
 
 // Local includes
 
 #include "gateparts.h"
-#include "abstractgate.h"
 #include "logicsim_global.h"
 
 namespace Logicsim
 {
 
-GraphicGate::GraphicGate(AbstractGate::Type t, QGraphicsItem *parent)
-    : QGraphicsObject(parent), AbstractGate(t)
+class Gate::Private
 {
-    selected = false;
+public:
+    Private()
+    {
+    }
+
+    QList<Node*> input;
+    Node*        output;
+    qint16       maxInput;
+    Component::Type   type;
+    int          metaTypeId;
+};
+
+Gate::Gate(Type t)
+    : d(new Private), Component::Component(t)
+{
+    d->output = new Node;
+    d->maxInput = 2;
+
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 
@@ -32,32 +47,37 @@ GraphicGate::GraphicGate(AbstractGate::Type t, QGraphicsItem *parent)
     Lo1->setPos(-10,2.5);
 }
 
-QRectF GraphicGate::boundingRect() const
+Gate::~Gate()
 {
-    return QRectF(0,0,40,50);
+    delete d;
 }
 
-void GraphicGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Gate::setMaxInput(qint16 mi)
 {
-    if(selected)
-    {
-        painter->setPen(QPen(Qt::red));
-    }
-    else
-    {
-        painter->setPen(QPen(Qt::black));
-    }
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
+    d->maxInput = mi;
 }
 
-void GraphicGate::setSelection(bool selection)
+qint16 Gate::maxInput()
 {
-    selected = selection;
-    update();
+    return d->maxInput;
 }
 
-void GraphicGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+Node* Gate::outputNode()
+{
+    return d->output;
+}
+
+QList<Node*> Gate::inputList() const
+{
+    return d->input;
+}
+
+void Gate::setInput(QList<Node *> & n)
+{
+    d->input = n;
+}
+
+void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsObject::mouseMoveEvent(event);
     if(x() - GATE_X_MARGIN < 0)
@@ -77,6 +97,11 @@ void GraphicGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
     }
+}
+
+QRectF Gate::boundingRect() const
+{
+    return QRectF(0,0,40,50);
 }
 
 } // namespace Logicsim

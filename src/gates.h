@@ -1,5 +1,5 @@
-#ifndef GATE_H
-#define GATE_H
+#ifndef GATES_H
+#define GATES_H
 
 // Qt includes
 
@@ -10,14 +10,14 @@
 #include "logicsim_global.h"
 #include "node.h"
 #include "gateparts.h"
-#include "graphicgate.h"
+#include "gate.h"
 
 namespace Logicsim
 {
 
 // ===================== AndGate ================
 
-class AndGate: public GraphicGate
+class AndGate: public Gate
 {
 public:
     AndGate();
@@ -30,12 +30,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-    { GraphicGate::mouseMoveEvent(e); }
+    { Gate::mouseMoveEvent(e); }
 };
 
 // ===================== OrGate =================
 
-class OrGate: public  GraphicGate
+class OrGate: public Gate
 {
 public:
     OrGate();
@@ -45,15 +45,17 @@ public:
     QString imageUrl() const;
 
     QRectF boundingRect() const;
+
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-    { GraphicGate::mouseMoveEvent(e); }
+    { Gate::mouseMoveEvent(e); }
 };
 
 // ===================== NotGate ================
 
-class NotGate: public GraphicGate
+class NotGate: public Gate
 {
 public:
     NotGate();
@@ -66,12 +68,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-    { GraphicGate::mouseMoveEvent(e); }
+    { Gate::mouseMoveEvent(e); }
 };
 
 // ===================== NandGate ================
 
-class NandGate: public GraphicGate
+class NandGate: public Gate
 {
 public:
     NandGate();
@@ -85,11 +87,12 @@ public:
     QString imageUrl() const;
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-    { GraphicGate::mouseMoveEvent(e); }
+    { Gate::mouseMoveEvent(e); }
 };
+
 // ===================== NorGate ================
 
-class NorGate: public GraphicGate
+class NorGate: public Gate
 {
 public:
     NorGate();
@@ -100,11 +103,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-    { GraphicGate::mouseMoveEvent(e); }
+    { Gate::mouseMoveEvent(e); }
 };
+
 // ===================== XorGate ================
 
-class XorGate: public GraphicGate
+class XorGate: public Gate
 {
 public:
     XorGate();
@@ -115,13 +119,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-    { GraphicGate::mouseMoveEvent(e); }
+    { Gate::mouseMoveEvent(e); }
 };
-
 
 // ===================== XnorGate ================
 
-class XnorGate: public GraphicGate
+class XnorGate: public Gate
 {
 public:
     XnorGate();
@@ -132,9 +135,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
-    { GraphicGate::mouseMoveEvent(e); }
+    { Gate::mouseMoveEvent(e); }
 };
-
 
 } // namespace Logicsim
 
