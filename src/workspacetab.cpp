@@ -8,7 +8,8 @@ class WorkspaceTab::Private
 public:
     Private() :
         tabIndex(-1),
-        componentsCount(0)
+        componentsCount(0),
+        currentCanvasManager(0)
     {}
     int tabIndex;
     int componentsCount;
@@ -37,10 +38,13 @@ WorkspaceTab::~WorkspaceTab()
 
 void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
-    disconnect(this, SIGNAL(componentSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
-    disconnect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
-    disconnect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
-    disconnect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
+    if(d->currentCanvasManager != NULL)
+    {
+        disconnect(this, SIGNAL(componentSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
+        disconnect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
+        disconnect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
+        disconnect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
+    }
     d->currentCanvasManager = canvasManager;
     connect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
     connect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
