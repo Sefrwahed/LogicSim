@@ -41,9 +41,7 @@ void WorkspaceTab::setManager(CanvasManager *canvasManager)
     disconnect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
     disconnect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
     disconnect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
-  //  disconnect(d->currentCanvasManager, SIGNAL(gatesUpdated()), this, SLOT(updateGates()));
     d->currentCanvasManager = canvasManager;
-//    connect(d->currentCanvasManager, SIGNAL(gatesUpdated()), this, SLOT(updateGates()));
     connect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
     connect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
     connect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
@@ -53,7 +51,6 @@ void WorkspaceTab::setManager(CanvasManager *canvasManager)
 void WorkspaceTab::updateComponents()
 {
     clear();
-    qDebug() << "hello " << d->currentCanvasManager->components().length();
     if(d->currentCanvasManager != NULL)
     {
         d->componentsCount = d->currentCanvasManager->components().length();

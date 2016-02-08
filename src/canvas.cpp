@@ -204,7 +204,8 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if(mouseGrabberItem() != 0)
     {
         Component *component = dynamic_cast<Component*>(mouseGrabberItem());
-        qDebug()<< component->componentType();
+        qDebug()<< component;
+        qDebug() << mouseGrabberItem();
         if(component)
         {
             d->mCanvasManager->selectComponent(component);
