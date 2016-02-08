@@ -21,12 +21,10 @@ SOURCES += src/main.cpp \
     src/gate.cpp \
     src/gates.cpp \
     src/gateparts.cpp \
-<<<<<<< HEAD
     src/simulator.cpp
-=======
     src/inouparts.cpp \
     src/component.cpp
->>>>>>> master
+
 
 HEADERS += src/mainwindow.h \
     src/node.h \
@@ -38,12 +36,10 @@ HEADERS += src/mainwindow.h \
     src/gate.h \
     src/gates.h \
     src/gateparts.h \
-<<<<<<< HEAD
     src/simulator.h
-=======
     src/inouparts.h \
     src/component.h
->>>>>>> master
+
 
 FORMS += src/mainwindow.ui
 
