@@ -16,7 +16,7 @@ public:
         oldSquareNumberOfMovingGate(0)
     {}
 
-    QList<GraphicGate *> mGates;
+    QList<Component *> mGates;
     QList<QPointF>       mGatePositions;
     int                  gatesCount;
     QGraphicsScene*      canvas;
@@ -30,7 +30,7 @@ CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas) : QObject(
     d->canvas = canvas;
 }
 
-QList<GraphicGate *> CanvasManager::gates()
+QList<Component *> CanvasManager::gates()
 {
     return d->mGates;
 }
@@ -40,7 +40,7 @@ QGraphicsScene *CanvasManager::canvas()
     return d->canvas;
 }
 
-void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
+void CanvasManager::addGate(Component *gate, QPointF scenePos)
 {
     Cell c = findSuitableCell(scenePos);
     if (!c.isNull())
@@ -54,7 +54,7 @@ void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
     }
 }
 
-void CanvasManager::movingGate(GraphicGate *gate)
+void CanvasManager::movingGate(Component *gate)
 {
     if (d->oldSquareNumberOfMovingGate != 0)
         return;
@@ -70,7 +70,7 @@ void CanvasManager::movingGate(GraphicGate *gate)
     d->oldSquareNumberOfMovingGate = calculateSquareNumber(d->oldCellOfMovingGate);
 }
 
-void CanvasManager::gateMoved(GraphicGate* gate, QPointF scenePos)
+void CanvasManager::gateMoved(Component* gate, QPointF scenePos)
 {
     Cell newCell = findSuitableCell(scenePos);
 
@@ -120,7 +120,7 @@ Cell CanvasManager::findSuitableCell(QPointF scenePos)
     return Cell();
 }
 
-void CanvasManager::parkGate(GraphicGate * g, Cell c)
+void CanvasManager::parkGate(Component * g, Cell c)
 {
     qreal x = (c.col() - 1) * GRID_STEP + GRID_STEP/2;
     qreal y = (c.row() - 1) * GRID_STEP + GRID_STEP/2;

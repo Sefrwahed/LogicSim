@@ -15,8 +15,10 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     setShowGrid(false);
     setDragEnabled(true);
 
-    m_gates << new AndGate() << new OrGate() << new NotGate() << new NandGate() << new NorGate()  << new XorGate()   << new XnorGate();
-    int gatesCount = 7;
+    m_gates << new AndGate() << new OrGate() << new NotGate()
+            << new NandGate() << new NorGate() << new XorGate()
+            << new XnorGate() << new InputComponent() << new OutputComponent();
+    int gatesCount = 9;
 
     if(gatesCount % 2 != 0)
     {
@@ -28,9 +30,9 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     }
 
     int index = 0;
-    foreach (GraphicGate* g, m_gates)
+    foreach (Component* g, m_gates)
     {
-        QTableWidgetItem* item = new QTableWidgetItem(g->gateType());
+        QTableWidgetItem* item = new QTableWidgetItem(g->componentType());
         item->setData(QTableWidgetItem::UserType, g->metaTypeId());
         item->setData(Qt::DecorationRole, QPixmap(g->imageUrl())
                            .scaled(120, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
