@@ -95,7 +95,6 @@ void WorkspaceTab::keyPressEvent(QKeyEvent *event)
         if(selectedIndexes().length() == 1)
         {
             int row = selectedIndexes().at(0).row();
-                        qDebug() << row;
             d->currentCanvasManager->deleteComponent(row);
         }
     break;

@@ -81,7 +81,7 @@ void MainWindow::initComponentsTab()
 void MainWindow::initWorkspaceTab()
 {
     d->workspaceTab = new WorkspaceTab();
-    ui->gridLayout_3->addWidget(d->workspaceTab);
+    ui->gridLayout_6->addWidget(d->workspaceTab);
 }
 
 void MainWindow::setMainFrameDisabled(bool disabled)
