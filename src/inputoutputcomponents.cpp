@@ -9,13 +9,11 @@ namespace Logicsim {
 InputComponent::InputComponent(): Component(Component::InputComponent)
 {
     setMetaTypeId(qRegisterMetaType<InputComponent>("InputComponent"));
-    InputComponentBody *inB = new InputComponentBody(this);
-    InputComponentNode *inN = new InputComponentNode(inB);
+    InputComponentNode *inN = new InputComponentNode(this);
     ConnectingLine *Li = new ConnectingLine(inN);
 
-    inB->SetBodyNode(&inN->GetNodeNode());
+    pnode = &inN->GetNodeNode();
 
-    inB->setPos(50,50);
     inN->setPos(40,15);
     Li->setPos(-10,2.5);
 }
@@ -33,6 +31,7 @@ QRectF InputComponent::boundingRect() const
 void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Component::paint(painter, option, widget);
+    painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
@@ -64,16 +63,36 @@ void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void InputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+     Q_UNUSED(event);
+    if(pnode->value()==false){
+       pnode->setValue(true);
+    }else if(pnode->value() == true) {
+        pnode->setValue(false);
+    }
+    qDebug()<<"Body clicked";
+    qDebug()<<"input changed to : "<<pnode->value();
+}
+
+Node* InputComponent::GetBodyNode()
+{
+    return pnode;
+}
+void InputComponent::SetBodyNode(Node *n)
+{
+    pnode = n;
+}
+
 // ==============================================
 
 OutputComponent::OutputComponent(): Component(Component::OutputComponent)
 {
     setMetaTypeId(qRegisterMetaType<OutputComponent>("OutputComponent"));
-    OutputComponentBody *outB = new OutputComponentBody(this);
-    OutputComponentNode *outN = new OutputComponentNode(outB);
+    OutputComponentNode *outN = new OutputComponentNode(this);
     ConnectingLine *Lo = new ConnectingLine(outN);
 
-    outB->SetBodyNode(outN->GetNodeNode());
+    pnode = outN->GetNodeNode();
 
     outN->setPos(-15,15);
     Lo->setPos(5,2.5);
@@ -92,6 +111,7 @@ QRectF OutputComponent::boundingRect() const
 void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Component::paint(painter, option, widget);
+    painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
@@ -121,6 +141,23 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
     }
+}
+
+
+void OutputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+     Q_UNUSED(event);
+    qDebug()<<"Body clicked";
+
+}
+
+Node* OutputComponent::GetBodyNode()
+{
+    return pnode;
+}
+void OutputComponent::SetBodyNode(Node *n)
+{
+    pnode = n;
 }
 
 }
