@@ -58,7 +58,7 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     if(d->selected)
     {
-        painter->setPen(QPen(Qt::red));
+        painter->setPen(QPen(QColor(123,183,243),2));
     }
     else
     {
