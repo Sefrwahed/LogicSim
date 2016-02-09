@@ -8,6 +8,9 @@ namespace Logicsim {
 
 InputComponent::InputComponent(): Component(Component::InputComponent)
 {
+    setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+
     setMetaTypeId(qRegisterMetaType<InputComponent>("InputComponent"));
     InputComponentNode *inN = new InputComponentNode(this);
     ConnectingLine *Li = new ConnectingLine(inN);
@@ -88,6 +91,9 @@ void InputComponent::SetBodyNode(Node *n)
 
 OutputComponent::OutputComponent(): Component(Component::OutputComponent)
 {
+    setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+
     setMetaTypeId(qRegisterMetaType<OutputComponent>("OutputComponent"));
     OutputComponentNode *outN = new OutputComponentNode(this);
     ConnectingLine *Lo = new ConnectingLine(outN);
