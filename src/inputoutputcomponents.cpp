@@ -6,39 +6,25 @@
 
 namespace Logicsim {
 
-InputComponent::InputComponent(QGraphicsItem *parent): Component(Component::InputComponent)
+InputComponent::InputComponent()
+    : Component(Component::InputComponent)
 {
+    setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+
     setMetaTypeId(qRegisterMetaType<InputComponent>("InputComponent"));
-    Q_UNUSED(parent);
-    InputComponentBody *inB = new InputComponentBody(this);
-    InputComponentNode *inN = new InputComponentNode(inB);
+    InputComponentNode *inN = new InputComponentNode(this);
     ConnectingLine *Li = new ConnectingLine(inN);
 
-    inB->SetBodyNode(&inN->GetNodeNode());
+    pnode = &inN->nodeNode();
 
-    inB->setPos(50,50);
     inN->setPos(40,15);
     Li->setPos(-10,2.5);
 }
 
 InputComponent::InputComponent(const InputComponent &g):Component(g.componentType())
-{Q_UNUSED(g);}
-
-InputComponent::InputComponent(double xPos, double yPos, QGraphicsItem *parent): Component(Component::InputComponent)
 {
-    qDebug() << xPos << "," << yPos;
-    Q_UNUSED(parent);
-    InputComponentBody *inB = new InputComponentBody(this);
-    InputComponentNode *inN = new InputComponentNode(inB);
-    ConnectingLine *Li = new ConnectingLine(inN);
-
-    inB->SetBodyNode(&inN->GetNodeNode());
-
-    xPos -= inB->boundingRect().width()/2;
-    yPos -= inB->boundingRect().height()/2;
-    inB->setPos(xPos,yPos);
-    inN->setPos(40,15);
-    Li->setPos(-10,2.5);
+    Q_UNUSED(g);
 }
 
 QRectF InputComponent::boundingRect() const
@@ -48,7 +34,8 @@ QRectF InputComponent::boundingRect() const
 
 void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(painter);
+    Component::paint(painter, option, widget);
+    painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
@@ -80,41 +67,52 @@ void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void InputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+
+    if(pnode->value()==false)
+    {
+        pnode->setValue(true);
+    }
+    else if(pnode->value() == true) {
+        pnode->setValue(false);
+    }
+
+    qDebug()<<"Body clicked";
+    qDebug()<<"input changed to : "<<pnode->value();
+}
+
+Node* InputComponent::GetBodyNode()
+{
+    return pnode;
+}
+void InputComponent::SetBodyNode(Node *n)
+{
+    pnode = n;
+}
+
 // ==============================================
 
-OutputComponent::OutputComponent(QGraphicsItem *parent): Component(Component::OutputComponent)
+OutputComponent::OutputComponent()
+    : Component(Component::OutputComponent)
 {
-    Q_UNUSED(parent);
+    setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+
     setMetaTypeId(qRegisterMetaType<OutputComponent>("OutputComponent"));
-    OutputComponentBody *outB = new OutputComponentBody(this);
-    OutputComponentNode *outN = new OutputComponentNode(outB);
+    OutputComponentNode *outN = new OutputComponentNode(this);
     ConnectingLine *Lo = new ConnectingLine(outN);
 
-    outB->SetBodyNode(outN->GetNodeNode());
-    //outB->SetBodyNode(&outN->GetNodeNode());
+    pnode = outN->nodeNode();
 
     outN->setPos(-15,15);
     Lo->setPos(5,2.5);
 }
 
 OutputComponent::OutputComponent(const OutputComponent &g): Component(Component::OutputComponent)
-{Q_UNUSED(g);}
-
-OutputComponent::OutputComponent(double xPos, double yPos, QGraphicsItem *parent): Component(Component::OutputComponent)
 {
-    qDebug() << xPos << "," << yPos;
-    Q_UNUSED(parent);
-    OutputComponentBody *outB = new OutputComponentBody(this);
-    OutputComponentNode *outN = new OutputComponentNode(outB);
-    ConnectingLine *Lo = new ConnectingLine(outN);
-
-    outB->SetBodyNode(outN->GetNodeNode());
-
-    xPos -= outB->boundingRect().width()/2;
-    yPos -= outB->boundingRect().height()/2;
-    outB->setPos(xPos,yPos);
-    outN->setPos(-15,15);
-    Lo->setPos(5,2.5);
+    Q_UNUSED(g);
 }
 
 QRectF OutputComponent::boundingRect() const
@@ -124,7 +122,8 @@ QRectF OutputComponent::boundingRect() const
 
 void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(painter);
+    Component::paint(painter, option, widget);
+    painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
@@ -156,4 +155,19 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void OutputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+    qDebug()<<"Body clicked";
 }
+
+Node* OutputComponent::bodyNode()
+{
+    return pnode;
+}
+void OutputComponent::setBodyNode(Node *n)
+{
+    pnode = n;
+}
+
+} // namespace Logicsim

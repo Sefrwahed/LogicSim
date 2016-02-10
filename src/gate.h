@@ -12,31 +12,17 @@ namespace Logicsim
 class Gate : public Component
 {
 public:
-//    enum Type
-//    {
-//        AndGate = 0,
-//        OrGate,
-//        NotGate,
-//        NandGate,
-//        NorGate,
-//        XorGate,
-//        XnorGate
-//    };
-
-public:
     ~Gate();
 
     qint16 maxInput();
     Node* outputNode();
     void setInput(QList<Node*>& n);
-    Type gateType() const;
 
     virtual void calcOutput() = 0;
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
     QRectF boundingRect() const;
-    //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
     Gate(Type t);

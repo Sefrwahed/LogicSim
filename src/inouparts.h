@@ -11,64 +11,36 @@
 
 namespace Logicsim
 {
-
-class InputComponentBody : public QGraphicsObject
-{
-private:
-    Node *pnode;
-public:
-   InputComponentBody(QGraphicsItem *parent = 0);
-   void mousePressEvent(QGraphicsSceneMouseEvent *event);
-   QRectF boundingRect() const;
-   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-   Node * GetBodyNode();
-   void SetBodyNode(Node *n);
-};
-
-// ==============================================
-
 class InputComponentNode : public QGraphicsObject
 {
-private:
-    Node node;
 public:
     InputComponentNode(QGraphicsItem *parent = 0);
+
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QRectF boundingRect() const;
     void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    Node& GetNodeNode();
-    void SetNodeNode(Node &n);
-};
+    Node& nodeNode();
+    void setNodeNode(Node &n);
 
-// ==============================================
-
-class OutputComponentBody : public QGraphicsObject
-{
 private:
-    Node *pnode;
-public:
-   OutputComponentBody(QGraphicsItem *parent = 0);
-   void mousePressEvent(QGraphicsSceneMouseEvent *event);
-   QRectF boundingRect() const;
-   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-   Node * GetBodyNode();
-   void SetBodyNode(Node *n);
+    Node node;
 };
 
 // ==============================================
 
 class OutputComponentNode : public QGraphicsObject
 {
-private:
-    Node *node;
-//    Node Test;
 public:
     OutputComponentNode(QGraphicsItem *parent = 0);
+
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QRectF boundingRect() const;
     void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    Node* GetNodeNode();
-    void SetNodeNode(Node *n);
+    Node* nodeNode();
+    void setNodeNode(Node *n);
+
+private:
+    Node *node;
 };
 
 } // namespace Logicsim

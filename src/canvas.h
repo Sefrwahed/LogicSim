@@ -7,6 +7,7 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QMimeData>
+#include <QKeyEvent>
 
 // Local includes
 #include "gateparts.h"
@@ -29,6 +30,7 @@ public:
 
     int tabIndex() const;
     void setTabIndex(int index);
+    CanvasManager *canvasManager();
 
 protected:
     void dropEvent(QGraphicsSceneDragDropEvent * event);
@@ -39,6 +41,8 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+
+    void keyPressEvent(QKeyEvent *event);
 
     void drawBackground(QPainter *painter, const QRectF &rect);
 

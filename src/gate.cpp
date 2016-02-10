@@ -15,17 +15,16 @@ public:
     {
     }
 
-    QList<Node*> input;
-    Node*        output;
-    qint16       maxInput;
-    Component::Type   type;
-    int          metaTypeId;
+    QList<Node*>    input;
+    Node*           output;
+    qint16          maxInput;
+    Component::Type type;
+    int             metaTypeId;
 };
 
 Gate::Gate(Type t)
-    : d(new Private), Component::Component(t)
+    : Component(t), d(new Private)
 {
-    d->type = t;
     d->output = new Node;
     d->maxInput = 2;
 
@@ -76,11 +75,6 @@ QList<Node*> Gate::inputList() const
 void Gate::setInput(QList<Node *> & n)
 {
     d->input = n;
-}
-
-Gate::Type Gate::gateType() const
-{
-    return d->type;
 }
 
 void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

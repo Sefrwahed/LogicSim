@@ -36,9 +36,8 @@ Canvas::Canvas(QObject *parent)
     : QGraphicsScene(parent), d(new Private)
 {
     d->view = new QGraphicsView(this);
-
     d->view->setSceneRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-    //    d->view->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
     d->mCanvasManager = new CanvasManager(parent, this);
 }
 
@@ -61,6 +60,11 @@ void Canvas::setTabIndex(int index)
 {
     qDebug() << "I am: " << this << " My new tab index: " << index;
     d->tabIndex = index;
+}
+
+CanvasManager *Canvas::canvasManager()
+{
+    return d->mCanvasManager;
 }
 
 bool Canvas::tabAboutToBeClosed(int index)
@@ -87,11 +91,8 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
         int typeId = event->mimeData()->property("typeId").toInt();
         event->acceptProposedAction();
 
-        Component* g = static_cast<Component*>(QMetaType::create(typeId));
-        g->setPos(event->scenePos().x()-g->boundingRect().width()/2,
-                  event->scenePos().y()-g->boundingRect().height()/2);
-        addItem(g);
-        d->mCanvasManager->addGate(g, event->scenePos());
+        Component* component = static_cast<Component*>(QMetaType::create(typeId));
+        d->mCanvasManager->addComponent(component, event->scenePos());
     }
     else
     {
@@ -138,14 +139,29 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mouseGrabberItem() != 0)
     {
-        Component *gate = dynamic_cast<Component*>(mouseGrabberItem());
-        if(gate)
+        Component *component = dynamic_cast<Component*>(mouseGrabberItem());
+        if(component)
         {
-            d->mCanvasManager->gateMoved(gate, event->scenePos());
+            d->mCanvasManager->selectComponent(component);
+            d->mCanvasManager->movingComponent(component);
+            d->mCanvasManager->componentMoved(component, event->scenePos());
         }
     }
-
     QGraphicsScene::mouseReleaseEvent(event);
+}
+
+void Canvas::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+        case Qt::Key_Delete:
+        if(d->mCanvasManager->selectedComponentIndex() != -1)
+        {
+            qDebug() << "Delete";
+            d->mCanvasManager->deleteComponent(d->mCanvasManager->selectedComponentIndex());
+        }
+        break;
+    }
 }
 
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
@@ -179,16 +195,19 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
 void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
+    d->mCanvasManager->unSelectComponent();
+    Canvas::mouseMoveEvent(event);
 }
 
 void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mouseGrabberItem() != 0)
     {
-        Component *gate = dynamic_cast<Component*>(mouseGrabberItem());
-        if(gate)
+        Component *component = dynamic_cast<Component*>(mouseGrabberItem());
+        if(component)
         {
-            d->mCanvasManager->movingGate(gate);
+            d->mCanvasManager->selectComponent(component);
+            d->mCanvasManager->movingComponent(component);
         }
     }
     QGraphicsScene::mouseMoveEvent(event);

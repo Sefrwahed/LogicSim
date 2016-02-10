@@ -12,27 +12,38 @@ namespace Logicsim
 {
 class InputComponent : public Component
 {
+private:
+    Node *pnode;
 public:
-    InputComponent(QGraphicsItem *parent = 0);
+    InputComponent();
     InputComponent(const InputComponent& g);
-    InputComponent(double xPos, double yPos, QGraphicsItem *parent = 0);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QString imageUrl() const;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    //QRectF boundingRect() const;
+    //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    Node * GetBodyNode();
+    void SetBodyNode(Node *n);
 };
 
 
 class OutputComponent : public Component
-{
+{ 
+private:
+    Node *pnode;
 public:
-    OutputComponent(QGraphicsItem *parent = 0);
+    OutputComponent();
     OutputComponent(const OutputComponent& g);
-    OutputComponent(double xPos, double yPos, QGraphicsItem *parent = 0);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QString imageUrl() const;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    Node * bodyNode();
+    void setBodyNode(Node *n);
 };
 
 }
