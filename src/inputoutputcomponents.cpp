@@ -6,7 +6,8 @@
 
 namespace Logicsim {
 
-InputComponent::InputComponent(): Component(Component::InputComponent)
+InputComponent::InputComponent()
+    : Component(Component::InputComponent)
 {
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -15,7 +16,7 @@ InputComponent::InputComponent(): Component(Component::InputComponent)
     InputComponentNode *inN = new InputComponentNode(this);
     ConnectingLine *Li = new ConnectingLine(inN);
 
-    pnode = &inN->GetNodeNode();
+    pnode = &inN->nodeNode();
 
     inN->setPos(40,15);
     Li->setPos(-10,2.5);
@@ -68,12 +69,16 @@ void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void InputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-     Q_UNUSED(event);
-    if(pnode->value()==false){
-       pnode->setValue(true);
-    }else if(pnode->value() == true) {
+    Q_UNUSED(event);
+
+    if(pnode->value()==false)
+    {
+        pnode->setValue(true);
+    }
+    else if(pnode->value() == true) {
         pnode->setValue(false);
     }
+
     qDebug()<<"Body clicked";
     qDebug()<<"input changed to : "<<pnode->value();
 }
@@ -89,7 +94,8 @@ void InputComponent::SetBodyNode(Node *n)
 
 // ==============================================
 
-OutputComponent::OutputComponent(): Component(Component::OutputComponent)
+OutputComponent::OutputComponent()
+    : Component(Component::OutputComponent)
 {
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -98,7 +104,7 @@ OutputComponent::OutputComponent(): Component(Component::OutputComponent)
     OutputComponentNode *outN = new OutputComponentNode(this);
     ConnectingLine *Lo = new ConnectingLine(outN);
 
-    pnode = outN->GetNodeNode();
+    pnode = outN->nodeNode();
 
     outN->setPos(-15,15);
     Lo->setPos(5,2.5);
@@ -149,21 +155,19 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
 void OutputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-     Q_UNUSED(event);
+    Q_UNUSED(event);
     qDebug()<<"Body clicked";
-
 }
 
-Node* OutputComponent::GetBodyNode()
+Node* OutputComponent::bodyNode()
 {
     return pnode;
 }
-void OutputComponent::SetBodyNode(Node *n)
+void OutputComponent::setBodyNode(Node *n)
 {
     pnode = n;
 }
 
-}
+} // namespace Logicsim

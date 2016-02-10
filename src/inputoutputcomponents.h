@@ -42,8 +42,8 @@ public:
     QString imageUrl() const;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    Node * GetBodyNode();
-    void SetBodyNode(Node *n);
+    Node * bodyNode();
+    void setBodyNode(Node *n);
 };
 
 }

@@ -11,7 +11,8 @@
 namespace Logicsim
 {
 
-InputComponentNode::InputComponentNode(QGraphicsItem *parent):QGraphicsObject(parent)
+InputComponentNode::InputComponentNode(QGraphicsItem *parent)
+    : QGraphicsObject(parent)
 {
     node.setValue(false);
 }
@@ -35,20 +36,20 @@ void InputComponentNode::paint (QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawEllipse(0,0,5,5);
 }
 
-Node & InputComponentNode::GetNodeNode()
+Node & InputComponentNode::nodeNode()
 {
     return node;
 }
-void InputComponentNode::SetNodeNode(Node& n)
+void InputComponentNode::setNodeNode(Node& n)
 {
     node = n;
 }
 
 // ==============================================
 
-OutputComponentNode::OutputComponentNode(QGraphicsItem *parent):QGraphicsObject(parent)
+OutputComponentNode::OutputComponentNode(QGraphicsItem *parent)
+    : QGraphicsObject(parent)
 {
-
 }
 
 void OutputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -70,11 +71,12 @@ void OutputComponentNode::paint (QPainter *painter, const QStyleOptionGraphicsIt
     painter->drawEllipse(0,0,5,5);
 }
 
-Node * OutputComponentNode::GetNodeNode()
+Node * OutputComponentNode::nodeNode()
 {
     return node;
 }
-void OutputComponentNode::SetNodeNode(Node* n)
+
+void OutputComponentNode::setNodeNode(Node* n)
 {
     node = n;
 }

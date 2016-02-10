@@ -1,10 +1,12 @@
 #include "component.h"
 
+// Qt includes
+
+#include <QPainter>
+
 // Local includes
 
 #include "logicsim_global.h"
-
-#include <QPainter>
 
 namespace Logicsim
 {
@@ -15,10 +17,10 @@ public:
     Private()
     {}
 
-    int metaTypeId;
+    int             metaTypeId;
     Component::Type type;
-    bool selected;
-    QString name;
+    bool            selected;
+    QString         name;
 };
 
 Component::Component(Type t)
@@ -27,7 +29,6 @@ Component::Component(Type t)
     d->type = t;
     d->selected = false;
 }
-
 
 Component::~Component()
 {
@@ -56,6 +57,9 @@ QRectF Component::boundingRect() const
 
 void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
     if(d->selected)
     {
         painter->setPen(QPen(QColor(123,183,243),2));
@@ -64,8 +68,6 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     {
         painter->setPen(QPen(Qt::black));
     }
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
 }
 
 void Component::setSelection(bool selection)
