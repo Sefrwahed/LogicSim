@@ -112,7 +112,7 @@ void CanvasManager::movingComponent(Component *component)
     d->oldSquareNumberOfMovingComponent = calculateSquareNumber(d->oldCellOfMovingComponent);
 }
 
-void CanvasManager::componentMoved(Component* gate, QPointF scenePos)
+void CanvasManager::componentMoved(Component* component, QPointF scenePos)
 {
     Cell newCell = findSuitableCell(scenePos);
     if(!newCell.isNull() &&
@@ -121,14 +121,14 @@ void CanvasManager::componentMoved(Component* gate, QPointF scenePos)
        scenePos.x() < CANVAS_WIDTH && scenePos.y() < CANVAS_HEIGHT)
     {
         qDebug() << "Gate Moved";
-        parkComponent(gate, newCell);
+        parkComponent(component, newCell);
         d->acquiredSquares.remove(d->oldSquareNumberOfMovingComponent);
         d->acquiredSquares.insert(calculateSquareNumber(newCell));
     }
     else
     {
         qDebug() << "Gate Not Moved";
-        parkComponent(gate, d->oldCellOfMovingComponent);
+        parkComponent(component, d->oldCellOfMovingComponent);
     }
 
     d->oldCellOfMovingComponent.erase();
@@ -169,13 +169,13 @@ Cell CanvasManager::findSuitableCell(QPointF scenePos)
     return Cell();
 }
 
-void CanvasManager::parkComponent(Component * g, Cell c)
+void CanvasManager::parkComponent(Component * component, Cell c)
 {
     qreal x = (c.col() - 1) * GRID_STEP + GRID_STEP/2;
     qreal y = (c.row() - 1) * GRID_STEP + GRID_STEP/2;
 
-    g->setPos(x - g->boundingRect().width()/2,
-              y - g->boundingRect().height()/2);
+    component->setPos(x - component->boundingRect().width()/2,
+              y - component->boundingRect().height()/2);
 }
 
 QList<Cell> CanvasManager::alternativePlaces(Cell c) const

@@ -20,7 +20,7 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
 {
     verticalHeader()->setVisible(false);
     horizontalHeader()->setVisible(false);
-    setSelectionMode(QAbstractItemView::SingleSelection); // TODO remove this
+    setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setColumnCount(1);
     setRowCount(0);
