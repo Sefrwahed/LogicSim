@@ -5,7 +5,13 @@ Simulator* Simulator::instance = 0;
 Simulator* Simulator::getInstance()
 {
     if(instance == 0) instance = new Simulator();
-            return instance;
+    return instance;
+}
+
+void Simulator::simulate(QList<Component *> g)
+{
+
+
 }
 
 Simulator::Simulator()
