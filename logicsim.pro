@@ -21,7 +21,7 @@ SOURCES += src/main.cpp \
     src/gate.cpp \
     src/gates.cpp \
     src/gateparts.cpp \
-    src/simulator.cpp
+    src/simulator.cpp \
     src/inouparts.cpp \
     src/component.cpp
 
@@ -36,7 +36,7 @@ HEADERS += src/mainwindow.h \
     src/gate.h \
     src/gates.h \
     src/gateparts.h \
-    src/simulator.h
+    src/simulator.h \
     src/inouparts.h \
     src/component.h
 
