@@ -117,7 +117,8 @@ void CanvasManager::componentMoved(Component* gate, QPointF scenePos)
     Cell newCell = findSuitableCell(scenePos);
     if(!newCell.isNull() &&
        calculateSquareNumber(newCell) != d->oldSquareNumberOfMovingComponent &&
-       scenePos.x() >= 0 && scenePos.y() >= 0)
+       scenePos.x() > 0 && scenePos.y() > 0 &&
+       scenePos.x() < CANVAS_WIDTH && scenePos.y() < CANVAS_HEIGHT)
     {
         qDebug() << "Gate Moved";
         parkComponent(gate, newCell);
