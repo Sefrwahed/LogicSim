@@ -4,6 +4,7 @@
 // Qt includes
 
 #include <QGraphicsObject>
+#include <QGraphicsSceneMouseEvent>
 
 namespace Logicsim
 {
@@ -24,11 +25,19 @@ public:
         OutputComponent
     };
 
+public:
+    ~Component();
+
+    Type componentType() const;
+
+    QString name();
     int metaTypeId() const;
     virtual QString imageUrl() const = 0;
-    Type componentType() const;
-    ~Component();
+    void setSelection(bool selection);
+    void setName(QString name);
+
     QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
     Component(Type t);

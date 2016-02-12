@@ -29,7 +29,19 @@ public:
     int            tabsCount;
     QTabWidget*    tabWidget;
     ComponentsTab* compTab;
+    WorkspaceTab* workspaceTab;
     QList<Canvas*> canvases;
+
+    ~Private()
+    {
+        foreach (Canvas* c, canvases)
+        {
+            delete c;
+        }
+        delete workspaceTab;
+        delete compTab;
+        delete tabWidget;
+    }
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -38,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     initComponentsTab();
+    initWorkspaceTab();
 
     d->tabWidget = new QTabWidget(ui->frame);
     setMainFrameDisabled(true);
@@ -50,17 +63,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
             this, SLOT(closeTab(int)));
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-
-    foreach (Canvas* c, d->canvases)
-    {
-        delete c;
-    }
-
     delete d;
 }
 
@@ -70,28 +78,49 @@ void MainWindow::initComponentsTab()
     ui->gridLayout_3->addWidget(d->compTab);
 }
 
+void MainWindow::initWorkspaceTab()
+{
+    d->workspaceTab = new WorkspaceTab();
+    ui->gridLayout_6->addWidget(d->workspaceTab);
+}
+
 void MainWindow::setMainFrameDisabled(bool disabled)
 {
     if(disabled)
     {
         ui->frame->setStyleSheet("background-color: #D3D3D3");
         d->compTab->setDisabled(true);
+        d->workspaceTab->setDisabled(true);
+        d->workspaceTab->clear();
     }
     else
     {
         ui->frame->setStyleSheet("");
         d->compTab->setDisabled(false);
+        d->workspaceTab->setDisabled(false);
     }
 }
 
 void MainWindow::newFile()
 {
     if(d->tabsCount >= MAX_TAB_COUNT) return;
+
     Canvas* c = new Canvas(d->tabWidget);
+    d->canvases << c;
+    if(d->tabsCount == 0)
+    {
+        connect(d->tabWidget, SIGNAL(currentChanged(int)),
+                this, SLOT(changeManager(int)));
+        connect(d->tabWidget, SIGNAL(currentChanged(int)),
+                d->workspaceTab, SLOT(updateComponents()));
+        connect(this, SIGNAL(notLastTabClosed(int)),
+                this, SLOT(changeManager(int)));
+        connect(this, SIGNAL(notLastTabClosed(int)),
+                d->workspaceTab, SLOT(updateComponents()));
+    }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
     c->setTabIndex(tabIndex);
-    d->canvases << c;
     setMainFrameDisabled(false);
 }
 
@@ -100,17 +129,36 @@ void MainWindow::closeTab(int tabIndex)
     qDebug() << "Tab is closing: " << tabIndex;
 
     int tmp = tabIndex;
+    if(d->canvases.length() == 1)
+    {
+        disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
+                   this, SLOT(changeManager(int)));
+        disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
+                   d->workspaceTab, SLOT(updateComponents()));
+        disconnect(this, SIGNAL(notLastTabClosed(int)),
+                   this, SLOT(changeManager(int)));
+        disconnect(this, SIGNAL(notLastTabClosed(int)),
+                   d->workspaceTab, SLOT(updateComponents()));
 
+    }
     d->tabWidget->removeTab(tabIndex);
 
     for (int i = tabIndex+1; i < d->canvases.length(); ++i)
     {
         d->canvases.at(i)->setTabIndex(tmp++);
     }
-
     delete d->canvases.at(tabIndex);
     d->canvases.removeAt(tabIndex);
+    if(tabIndex < d->tabsCount - 1)
+    {
+        emit notLastTabClosed(tabIndex);
+    }
     setMainFrameDisabled(!--d->tabsCount);
+}
+
+void MainWindow::changeManager(int index)
+{
+    d->workspaceTab->setManager(d->canvases.at(index)->canvasManager());
 }
 
 } // namespace Logicsim
