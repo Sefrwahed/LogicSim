@@ -20,6 +20,8 @@ InputComponent::InputComponent()
 
     inN->setPos(40,15);
     Li->setPos(-10,2.5);
+
+    setToolTip("Input Component");
 }
 
 InputComponent::InputComponent(const InputComponent &g):Component(g.componentType())
@@ -108,6 +110,8 @@ OutputComponent::OutputComponent()
 
     outN->setPos(-15,15);
     Lo->setPos(5,2.5);
+
+    setToolTip("Output Component");
 }
 
 OutputComponent::OutputComponent(const OutputComponent &g): Component(Component::OutputComponent)

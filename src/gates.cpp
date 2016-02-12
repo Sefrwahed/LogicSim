@@ -14,6 +14,7 @@ AndGate::AndGate()
     :Gate(Component::AndGate)
 {
     setMetaTypeId(qRegisterMetaType<AndGate>("AndGate"));
+    setToolTip("And Gate");
 }
 
 AndGate::AndGate(const AndGate &g)
@@ -60,6 +61,7 @@ OrGate::OrGate()
     : Gate(Component::OrGate)
 {
     setMetaTypeId(qRegisterMetaType<OrGate>("OrGate"));
+    setToolTip("Or Gate");
 }
 
 OrGate::OrGate(const OrGate &g)
@@ -107,6 +109,7 @@ NotGate::NotGate()
 {
     setMaxInput(1);
     setMetaTypeId(qRegisterMetaType<NotGate>("NotGate"));
+    setToolTip("Not Gate");
 }
 
 NotGate::NotGate(const NotGate &g)
@@ -147,6 +150,7 @@ NandGate::NandGate()
     : Gate(Component::NandGate)
 {
     setMetaTypeId(qRegisterMetaType<NandGate>("NandGate"));
+    setToolTip("Nand Gate");
 }
 
 NandGate::NandGate(const NandGate &g)
@@ -192,6 +196,7 @@ NorGate::NorGate()
     : Gate(Component::NorGate)
 {
     setMetaTypeId(qRegisterMetaType<NorGate>("NorGate"));
+    setToolTip("Nor Gate");
 }
 
 NorGate::NorGate(const NorGate &g)
@@ -233,6 +238,7 @@ XorGate::XorGate()
     : Gate(Component::XorGate)
 {
     setMetaTypeId(qRegisterMetaType<XorGate>("XorGate"));
+    setToolTip("Xor Gate");
 }
 
 XorGate::XorGate(const XorGate &g)
@@ -278,6 +284,7 @@ XnorGate::XnorGate()
     : Gate(Component::XnorGate)
 {
     setMetaTypeId(qRegisterMetaType<XnorGate>("XnorGate"));
+    setToolTip("Xnor Gate");
 }
 
 XnorGate::XnorGate(const XnorGate &g)
