@@ -22,7 +22,7 @@ public:
     QString imageUrl() const;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     //QRectF boundingRect() const;
     //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     Node * GetBodyNode();
@@ -41,7 +41,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QString imageUrl() const;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     Node * bodyNode();
     void setBodyNode(Node *n);
 };

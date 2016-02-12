@@ -37,6 +37,16 @@ QRectF InputComponent::boundingRect() const
 void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Component::paint(painter, option, widget);
+    if(pnode->value() == true)
+    {
+        painter->setBrush(Qt::SolidPattern);
+        painter->setBrush(Qt::green);
+    }
+    else if(pnode->value() == false)
+    {
+        painter->setBrush(Qt::SolidPattern);
+        painter->setBrush(Qt::red);
+    }
     painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -69,7 +79,7 @@ void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void InputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void InputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
 
@@ -80,7 +90,7 @@ void InputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
     else if(pnode->value() == true) {
         pnode->setValue(false);
     }
-
+    update();
     qDebug()<<"Body clicked";
     qDebug()<<"input changed to : "<<pnode->value();
 }
@@ -127,6 +137,19 @@ QRectF OutputComponent::boundingRect() const
 void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Component::paint(painter, option, widget);
+    if(pnode != NULL)
+    {
+        if(pnode->value() == true)
+        {
+            painter->setBrush(Qt::SolidPattern);
+            painter->setBrush(Qt::green);
+        }
+        else if(pnode->value() == false)
+        {
+            painter->setBrush(Qt::SolidPattern);
+            painter->setBrush(Qt::red);
+        }
+    }
     painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -159,10 +182,11 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void OutputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void OutputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-    qDebug()<<"Body clicked";
+    if(pnode != NULL)
+        qDebug()<<"Body clicked"<<pnode->value();
 }
 
 Node* OutputComponent::bodyNode()
