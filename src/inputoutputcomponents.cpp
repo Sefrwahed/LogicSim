@@ -88,7 +88,7 @@ void InputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     else if(pnode->value() == true) {
         pnode->setValue(false);
     }
-
+    update();
     qDebug()<<"Body clicked";
     qDebug()<<"input changed to : "<<pnode->value();
 }
@@ -133,15 +133,18 @@ QRectF OutputComponent::boundingRect() const
 void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Component::paint(painter, option, widget);
-    if(pnode->value() == true)
+    if(pnode != NULL)
     {
-        painter->setBrush(Qt::SolidPattern);
-        painter->setBrush(Qt::green);
-    }
-    else if(pnode->value() == false)
-    {
-        painter->setBrush(Qt::SolidPattern);
-        painter->setBrush(Qt::red);
+        if(pnode->value() == true)
+        {
+            painter->setBrush(Qt::SolidPattern);
+            painter->setBrush(Qt::green);
+        }
+        else if(pnode->value() == false)
+        {
+            painter->setBrush(Qt::SolidPattern);
+            painter->setBrush(Qt::red);
+        }
     }
     painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
@@ -178,7 +181,8 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void OutputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-    qDebug()<<"Body clicked"<<pnode->value();
+    if(pnode != NULL)
+        qDebug()<<"Body clicked"<<pnode->value();
 }
 
 Node* OutputComponent::bodyNode()
