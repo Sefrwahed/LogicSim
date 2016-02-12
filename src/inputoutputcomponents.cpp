@@ -35,6 +35,16 @@ QRectF InputComponent::boundingRect() const
 void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Component::paint(painter, option, widget);
+    if(pnode->value() == true)
+    {
+        painter->setBrush(Qt::SolidPattern);
+        painter->setBrush(Qt::green);
+    }
+    else if(pnode->value() == false)
+    {
+        painter->setBrush(Qt::SolidPattern);
+        painter->setBrush(Qt::red);
+    }
     painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -123,6 +133,16 @@ QRectF OutputComponent::boundingRect() const
 void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Component::paint(painter, option, widget);
+    if(pnode->value() == true)
+    {
+        painter->setBrush(Qt::SolidPattern);
+        painter->setBrush(Qt::green);
+    }
+    else if(pnode->value() == false)
+    {
+        painter->setBrush(Qt::SolidPattern);
+        painter->setBrush(Qt::red);
+    }
     painter->drawEllipse(0,0,30,30);
     Q_UNUSED(option);
     Q_UNUSED(widget);
