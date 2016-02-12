@@ -77,7 +77,7 @@ void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void InputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void InputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
 
@@ -175,10 +175,10 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void OutputComponent::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void OutputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-    qDebug()<<"Body clicked";
+    qDebug()<<"Body clicked"<<pnode->value();
 }
 
 Node* OutputComponent::bodyNode()
