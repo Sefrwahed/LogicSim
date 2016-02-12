@@ -54,8 +54,7 @@ void CanvasManager::addComponent(Component *component, QPointF scenePos)
         parkComponent(component, c);
         int squareNumber = calculateSquareNumber(c);
         d->acquiredSquares.insert(squareNumber);
-        component->setName("component " + QString::number(d->componentId));
-        d->componentId++;
+        component->setName("component " + QString::number(d->componentId++));
         d->canvas->addItem(component);
         d->componentCount++;
         d->mComponents << component;
