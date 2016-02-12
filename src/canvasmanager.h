@@ -75,6 +75,7 @@ private:
 
 public Q_SLOTS:
     void selectedFromWorkspace(int index);
+    void renameComponent(QTableWidgetItem* item);
 
 Q_SIGNALS:
     void componentUpdated();
