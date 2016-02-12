@@ -17,7 +17,6 @@ public:
     {}
 
     QList<Component *> mComponents;
-    QList<QPointF>       mGatePositions;
     int                  componentCount;
     QGraphicsScene*      canvas;
     QSet<int>            acquiredSquares;
@@ -236,6 +235,14 @@ void CanvasManager::selectedFromWorkspace(int index)
 {
     unSelectComponent();
     selectComponent(d->mComponents.at(index));
+}
+
+void CanvasManager::renameComponent(QTableWidgetItem *item)
+{
+    if(item->row() < d->componentCount)
+    {
+        d->mComponents.at(item->row())->setName(item->text());
+    }
 }
 
 CanvasManager::~CanvasManager()

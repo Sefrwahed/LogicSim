@@ -7,7 +7,6 @@
 #include <QKeyEvent>
 
 #include "canvasmanager.h"
-#include "graphicgate.h"
 
 namespace Logicsim
 {

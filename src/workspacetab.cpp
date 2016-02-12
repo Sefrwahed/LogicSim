@@ -27,7 +27,7 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
     setShowGrid(false);
 
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 WorkspaceTab::~WorkspaceTab()
@@ -40,16 +40,28 @@ void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
     if(d->currentCanvasManager != NULL)
     {
-        disconnect(this, SIGNAL(componentSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
-        disconnect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
-        disconnect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
-        disconnect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
+        disconnect(this, SIGNAL(itemChanged(QTableWidgetItem*)),
+                   d->currentCanvasManager, SLOT(renameComponent(QTableWidgetItem*)));
+        disconnect(this, SIGNAL(componentSelectedFromWorkspace(int)),
+                   d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
+        disconnect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)),
+                   this, SLOT(selectedFromCanvas(int)));
+        disconnect(d->currentCanvasManager, SIGNAL(componentAdded(int)),
+                   this, SLOT(addComponentsToWorkspace(int)));
+        disconnect(d->currentCanvasManager, SIGNAL(componentDeleted(int)),
+                   this, SLOT(removeComponentsFromWorkspace(int)));
     }
     d->currentCanvasManager = canvasManager;
-    connect(d->currentCanvasManager, SIGNAL(componentAdded(int)), this, SLOT(addComponentsToWorkspace(int)));
-    connect(d->currentCanvasManager, SIGNAL(componentDeleted(int)), this, SLOT(removeComponentsFromWorkspace(int)));
-    connect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)), this, SLOT(selectedFromCanvas(int)));
-    connect(this, SIGNAL(componentSelectedFromWorkspace(int)), d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
+    connect(d->currentCanvasManager, SIGNAL(componentAdded(int)),
+            this, SLOT(addComponentsToWorkspace(int)));
+    connect(d->currentCanvasManager, SIGNAL(componentDeleted(int)),
+            this, SLOT(removeComponentsFromWorkspace(int)));
+    connect(d->currentCanvasManager, SIGNAL(componentSelectedFromCanvas(int)),
+            this, SLOT(selectedFromCanvas(int)));
+    connect(this, SIGNAL(componentSelectedFromWorkspace(int)),
+            d->currentCanvasManager, SLOT(selectedFromWorkspace(int)));
+    connect(this, SIGNAL(itemChanged(QTableWidgetItem*)),
+            d->currentCanvasManager, SLOT(renameComponent(QTableWidgetItem*)));
 }
 
 void WorkspaceTab::updateComponents()

@@ -142,7 +142,6 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         Component *component = dynamic_cast<Component*>(mouseGrabberItem());
         if(component)
         {
-            d->mCanvasManager->selectComponent(component);
             d->mCanvasManager->movingComponent(component);
             d->mCanvasManager->componentMoved(component, event->scenePos());
         }
