@@ -84,6 +84,7 @@ QString Component::name()
 void Component::setName(QString name)
 {
     d->name = name;
+    setToolTip(name);
 }
 
 } // namespace Logicsim
