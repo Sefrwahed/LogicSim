@@ -50,6 +50,7 @@ void InputComponentNode::setNodeNode(Node& n)
 OutputComponentNode::OutputComponentNode(QGraphicsItem *parent)
     : QGraphicsObject(parent)
 {
+    node = 0;
 }
 
 void OutputComponentNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
