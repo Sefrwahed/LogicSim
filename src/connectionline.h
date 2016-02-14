@@ -23,6 +23,7 @@ public:
     Pin* output() const;
     Pin* input() const;
 
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 private:
     Pin* m_out;
     Pin* m_in;

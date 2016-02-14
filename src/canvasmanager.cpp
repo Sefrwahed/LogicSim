@@ -74,6 +74,7 @@ void CanvasManager::selectComponent(Component *component)
         d->selectedComponent = component;
         d->selectedComponentIndex = d->mComponents.indexOf(d->selectedComponent);
         d->selectedComponent->setSelection(true);
+
         emit componentSelectedFromCanvas(d->mComponents.indexOf(d->selectedComponent));
     }
 }
@@ -169,6 +170,7 @@ void CanvasManager::pinPressed(Pin *p)
         d->canvas->addItem(line);
 
         qDebug() << "Connected input and output :: Line used: " << line;
+
         d->selectedInput = 0;
         d->selectedOutput = 0;
     }

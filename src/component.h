@@ -23,7 +23,8 @@ public:
         XnorGate,
         InputComponent,
         OutputComponent,
-        ConnectionLine
+        InputPin,
+        OutputPin
     };
 
 public:
@@ -42,7 +43,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
-    Component(Type t);
+    Component(Type t, QGraphicsItem *parent = 0);
     void setMetaTypeId(int t);
 
 private:

@@ -1,5 +1,9 @@
 #include "gate.h"
 
+// Qt includes
+
+#include <QPainter>
+
 // Local includes
 
 #include "pin.h"
@@ -49,7 +53,7 @@ Gate::Gate(Type t)
 
     d->in1->setPos(-20,5);
     d->in2->setPos(-20,35);
-    d->out->setPos(50,20);
+    d->out->setPos(50,22.5);
     Li1->setPos(10,5);
     Li2->setPos(10,5);
     Lo1->setPos(-10,5);
@@ -107,7 +111,12 @@ void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 //    else if( y()+ boundingRect().bottom() + GATE_Y_MARGIN > CANVAS_HEIGHT)
 //    {
 //        setPos(x(), CANVAS_HEIGHT - boundingRect().height() - GATE_Y_MARGIN);
-//    }
+    //    }
+}
+
+void Gate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Component::paint(painter, option, widget);
 }
 
 QRectF Gate::boundingRect() const

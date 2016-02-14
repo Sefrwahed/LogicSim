@@ -44,16 +44,15 @@ QRectF InputComponent::boundingRect() const
 
 void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter->setRenderHint(QPainter::Antialiasing);
     Component::paint(painter, option, widget);
     if(pnode->value() == true)
     {
-        painter->setBrush(Qt::SolidPattern);
-        painter->setBrush(Qt::green);
+        painter->setBrush(QColor(0,255,0,180));
     }
     else if(pnode->value() == false)
     {
-        painter->setBrush(Qt::SolidPattern);
-        painter->setBrush(Qt::red);
+        painter->setBrush(QColor(255,0,0,180));
     }
     painter->drawEllipse(0,0,30,30);
 }
@@ -147,6 +146,7 @@ QRectF OutputComponent::boundingRect() const
 
 void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter->setRenderHint(QPainter::Antialiasing);
     Component::paint(painter, option, widget);
     if(pnode != 0)
     {

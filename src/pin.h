@@ -47,7 +47,7 @@ public:
 
 private:
     Type m_type;
-    ConnectionLine* m_line;
+    QList<ConnectionLine*> m_lines;
     Component* m_parent;
 };
 

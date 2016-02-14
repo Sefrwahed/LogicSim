@@ -12,8 +12,9 @@ namespace Logicsim
 {
 
 Pin::Pin(Type t, Component *parent)
-    : QGraphicsObject(parent), m_line(0)
+    : QGraphicsObject(parent)
 {
+    setFlag(QGraphicsItem::ItemIsSelectable);
     m_type = t;
     m_parent = parent;
 }
@@ -24,28 +25,33 @@ Pin::~Pin()
 
 bool Pin::isConnected()
 {
-    return m_line != 0;
+    return m_lines.length() != 0;
 }
 
 void Pin::setConnected(ConnectionLine *line)
 {
-    m_line = line;
+    if(m_type == Input && m_lines.length() == 0)
+        m_lines << line;
+    else
+        m_lines << line;
 }
 
 void Pin::updateConnectedLine()
 {
     if(isConnected())
     {
-        qDebug() << "It's connected";
         if(m_type == Input)
         {
-            QLineF oldLine = m_line->line();
-            m_line->setLine(QLineF(centerPos(), oldLine.p2()));
+            QLineF oldLine = m_lines[0]->line();
+            m_lines.at(0)->setLine(QLineF(centerPos(), oldLine.p2()));
         }
         else
         {
-            QLineF oldLine = m_line->line();
-            m_line->setLine(QLineF(oldLine.p1(), centerPos()));
+            foreach(ConnectionLine* l, m_lines)
+            {
+                QLineF oldLine = l->line();
+                l->setLine(QLineF(oldLine.p1(), centerPos()));
+            }
         }
     }
 }
@@ -75,6 +81,20 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    QPen p;
+    p.setWidthF(2);
+    painter->setPen(p);
+    painter->setRenderHint(painter->Antialiasing);
+    if(isSelected())
+    {
+        p.setColor(QColor(30,144,255));
+        painter->setPen(p);
+    }
+    else
+    {
+        p.setColor(Qt::black);
+        painter->setPen(p);
+    }
     painter->drawEllipse(boundingRect());
 }
 
