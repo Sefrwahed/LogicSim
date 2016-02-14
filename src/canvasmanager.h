@@ -64,6 +64,8 @@ public:
     void deleteComponent(int index);
     void movingComponent(Component* gate);
     void componentMoved(Component* gate, QPointF scenePos);
+    void pinPressed(Pin* p);
+
     int selectedComponentIndex();
 
 private:

@@ -22,7 +22,8 @@ public:
         XorGate,
         XnorGate,
         InputComponent,
-        OutputComponent
+        OutputComponent,
+        ConnectionLine
     };
 
 public:
@@ -37,6 +38,7 @@ public:
     void setName(QString name);
 
     QRectF boundingRect() const;
+    virtual void updateConnection() = 0;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:

@@ -7,6 +7,7 @@
 
 // Local includes
 
+#include "pin.h"
 #include "logicsim_global.h"
 
 namespace Logicsim
@@ -195,6 +196,16 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
     d->mCanvasManager->unSelectComponent();
+
+    if(mouseGrabberItem() != 0)
+    {
+        Pin* p = dynamic_cast<Pin*>(mouseGrabberItem());
+        if(p)
+        {
+            d->mCanvasManager->pinPressed(p);
+        }
+    }
+
     Canvas::mouseMoveEvent(event);
 }
 

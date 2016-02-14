@@ -48,7 +48,7 @@ void InputComponentNode::setNodeNode(Node& n)
 // ==============================================
 
 OutputComponentNode::OutputComponentNode(QGraphicsItem *parent)
-    : QGraphicsObject(parent)
+    : QGraphicsObject(parent), node(0)
 {
 }
 

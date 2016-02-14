@@ -23,6 +23,7 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
     QRectF boundingRect() const;
+    void updateConnection();
 
 protected:
     Gate(Type t);
