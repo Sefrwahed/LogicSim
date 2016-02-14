@@ -17,6 +17,7 @@ public:
     qint16 maxInput();
     Node* outputNode();
     void setInput(QList<Node*>& n);
+    QList<Node*> inputList() const;
 
     virtual void calcOutput() = 0;
 
@@ -28,7 +29,7 @@ protected:
     Gate(Type t);
 
     void setMaxInput(qint16 mi);
-    QList<Node*> inputList() const;
+
 
 private:
     class Private;

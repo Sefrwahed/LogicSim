@@ -17,7 +17,8 @@ class Simulator
 {
 public:
     static Simulator * getInstance();
-    void simulate(QList<Component *> g);
+    void simulate(QList<Component *> list);
+    QList<Gate *>GatesFromComponets(QList<Component *> list);
 private:
     static Simulator * instance;
     Simulator();
