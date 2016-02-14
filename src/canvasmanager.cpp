@@ -169,8 +169,6 @@ void CanvasManager::pinPressed(Pin *p)
         d->connectionLines.append(line);
         d->canvas->addItem(line);
 
-        qDebug() << "Connected input and output :: Line used: " << line;
-
         d->selectedInput = 0;
         d->selectedOutput = 0;
     }

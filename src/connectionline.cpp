@@ -33,6 +33,16 @@ void ConnectionLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 {
     painter->setRenderHint(QPainter::Antialiasing);
     QGraphicsLineItem::paint(painter, option, widget);
+
+    if(isSelected())
+    {
+        QPen p;
+        p.setWidthF(2);
+        p.setColor(QColor(0,191,255));
+        painter->setPen(QColor(Qt::blue));
+        painter->drawLine(line());
+    }
+
 }
 
 } // namespace Logicsim

@@ -4,6 +4,7 @@
 // Qt includes
 
 #include <QGraphicsLineItem>
+#include <QObject>
 
 // Local includes
 
@@ -14,8 +15,9 @@ namespace Logicsim
 
 class Pin;
 
-class ConnectionLine : public QGraphicsLineItem
+class ConnectionLine : public QObject, public QGraphicsLineItem
 {
+    Q_OBJECT
 public:
     ConnectionLine(const QLineF &line, QGraphicsItem* parent=0);
     ~ConnectionLine();
@@ -24,6 +26,7 @@ public:
     Pin* input() const;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 private:
     Pin* m_out;
     Pin* m_in;
