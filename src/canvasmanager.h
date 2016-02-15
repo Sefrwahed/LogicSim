@@ -13,7 +13,9 @@
 // Local includes
 
 #include "logicsim_global.h"
-#include "graphicgate.h"
+#include "gate.h"
+#include "inputoutputcomponents.h"
+#include "component.h"
 
 namespace Logicsim
 {
@@ -53,18 +55,33 @@ public:
     CanvasManager(QObject *parent = 0, QGraphicsScene *canvas = 0);
     ~CanvasManager();
 
-    QList<GraphicGate *> gates();
+    QList<Component *> components();
     QGraphicsScene* canvas();
 
-    void addGate(GraphicGate* gate, QPointF scenePos);
-    void movingGate(GraphicGate* gate);
-    void gateMoved(GraphicGate* gate, QPointF scenePos);
+    void addComponent(Component* gate, QPointF scenePos);
+    void selectComponent(Component* gate);
+    void unSelectComponent();
+    void deleteComponent(int index);
+    void movingComponent(Component* gate);
+    void componentMoved(Component* gate, QPointF scenePos);
+    int selectedComponentIndex();
 
 private:
     Cell findSuitableCell(QPointF scenePos);
-    void parkGate(GraphicGate* g, Cell c);
+    void parkComponent(Component* g, Cell c);
     QList<Cell> alternativePlaces(Cell c) const;
     int calculateSquareNumber(Cell c) const;
+    int selectedComponentSquare(int index) const;
+
+public Q_SLOTS:
+    void selectedFromWorkspace(int index);
+    void renameComponent(QTableWidgetItem* item);
+
+Q_SIGNALS:
+    void componentUpdated();
+    void componentDeleted(int index);
+    void componentAdded(int index);
+    void componentSelectedFromCanvas(int index);
 
 private:
     class Private;

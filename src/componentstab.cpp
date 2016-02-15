@@ -15,25 +15,30 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     setShowGrid(false);
     setDragEnabled(true);
 
-    m_gates << new AndGate() << new OrGate() << new NotGate() << new NandGate() << new NorGate()  << new XorGate()   << new XnorGate();
-    int gatesCount = 7;
+    m_gates << new InputComponent() << new OutputComponent()
+            << new AndGate() << new OrGate() << new NotGate()
+            << new NandGate() << new NorGate() << new XorGate()
+            << new XnorGate();
 
-    if(gatesCount % 2 != 0)
+
+    if(m_gates.length() % 2 != 0)
     {
-        setRowCount(gatesCount/2 + 1);
+        setRowCount(m_gates.length()/2 + 1);
     }
     else
     {
-        setRowCount(gatesCount/2);
+        setRowCount(m_gates.length()/2);
     }
 
     int index = 0;
-    foreach (GraphicGate* g, m_gates)
+    foreach (Component* g, m_gates)
     {
-        QTableWidgetItem* item = new QTableWidgetItem(g->gateType());
+        QTableWidgetItem* item = new QTableWidgetItem(g->componentType());
         item->setData(QTableWidgetItem::UserType, g->metaTypeId());
         item->setData(Qt::DecorationRole, QPixmap(g->imageUrl())
                            .scaled(120, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        item->setToolTip(g->toolTip());
+
         if (index % 2 == 0)
         {
             setItem(index/2, 0, item);
@@ -46,7 +51,7 @@ ComponentsTab::ComponentsTab(QWidget* parent)
         index++;
     }
 
-    if(gatesCount % 2 != 0)
+    if(m_gates.length() % 2 != 0)
     {
         //create a transperent pixmap and set it to the empty item
         QPixmap pixmap(16, 16);
@@ -55,7 +60,7 @@ ComponentsTab::ComponentsTab(QWidget* parent)
         emptySlot->setData(Qt::DecorationRole, pixmap);
         //make the item selectable which makes the pixmap not selectable
         emptySlot->setFlags(Qt::ItemIsSelectable);
-        setItem((gatesCount)/2, 1,emptySlot);
+        setItem((m_gates.length())/2, 1,emptySlot);
     }
 
     resizeRowsToContents();

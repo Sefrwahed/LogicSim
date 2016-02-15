@@ -11,28 +11,33 @@ class CanvasManager::Private
 {
 public:
     Private() :
-        gatesCount(0),
+        componentCount(0),
         canvas(0),
-        oldSquareNumberOfMovingGate(0)
+        oldSquareNumberOfMovingComponent(0)
     {}
 
-    QList<GraphicGate *> mGates;
-    QList<QPointF>       mGatePositions;
-    int                  gatesCount;
+    QList<Component *> mComponents;
+    int                  componentCount;
     QGraphicsScene*      canvas;
     QSet<int>            acquiredSquares;
-    int                  oldSquareNumberOfMovingGate;
-    Cell                 oldCellOfMovingGate;
+    int                  oldSquareNumberOfMovingComponent;
+    Cell                 oldCellOfMovingComponent;
+    Component *selectedComponent;
+    int selectedComponentIndex;
+    int componentId;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas) : QObject(parent), d(new Private)
 {
+    d->selectedComponentIndex = -1;
+    d->componentId = 0;
+    d->selectedComponent = NULL;
     d->canvas = canvas;
 }
 
-QList<GraphicGate *> CanvasManager::gates()
+QList<Component *> CanvasManager::components()
 {
-    return d->mGates;
+    return d->mComponents;
 }
 
 QGraphicsScene *CanvasManager::canvas()
@@ -40,55 +45,97 @@ QGraphicsScene *CanvasManager::canvas()
     return d->canvas;
 }
 
-void CanvasManager::addGate(GraphicGate *gate, QPointF scenePos)
+void CanvasManager::addComponent(Component *component, QPointF scenePos)
 {
     Cell c = findSuitableCell(scenePos);
     if (!c.isNull())
     {
-        parkGate(gate, c);
+        parkComponent(component, c);
         int squareNumber = calculateSquareNumber(c);
         d->acquiredSquares.insert(squareNumber);
-        d->canvas->addItem(gate);
-        d->gatesCount++;
-        d->mGates << gate;
+        component->setName("component " + QString::number(d->componentId++));
+        d->canvas->addItem(component);
+        d->componentCount++;
+        d->mComponents << component;
+        emit componentAdded(d->componentCount - 1);
     }
 }
 
-void CanvasManager::movingGate(GraphicGate *gate)
+void CanvasManager::selectComponent(Component *component)
 {
-    if (d->oldSquareNumberOfMovingGate != 0)
+    if(d->selectedComponent != component)
+    {
+        qDebug() << "selected: " << component->name();
+        d->selectedComponent = component;
+        d->selectedComponentIndex = d->mComponents.indexOf(d->selectedComponent);
+        d->selectedComponent->setSelection(true);
+        emit componentSelectedFromCanvas(d->mComponents.indexOf(d->selectedComponent));
+    }
+}
+
+void CanvasManager::unSelectComponent()
+{
+    if(d->selectedComponent != NULL)
+    {
+        qDebug() << "Unselected: " << d->selectedComponent->name();
+        d->selectedComponentIndex = -1;
+        d->selectedComponent->setSelection(false);
+        d->selectedComponent = NULL;
+    }
+}
+
+void CanvasManager::deleteComponent(int index)
+{
+    unSelectComponent();
+    d->canvas->removeItem(d->mComponents.at(index));
+    d->acquiredSquares.remove(selectedComponentSquare(index));
+    d->mComponents.removeAt(index);
+    d->componentCount--;
+    emit componentDeleted(index);
+}
+
+void CanvasManager::movingComponent(Component *component)
+{
+    if (d->oldSquareNumberOfMovingComponent != 0)
         return;
 
-    qreal x = gate->pos().x() + gate->boundingRect().width()/2;
-    qreal y = gate->pos().y() + gate->boundingRect().height()/2;
+    qreal x = component->pos().x() + component->boundingRect().width()/2;
+    qreal y = component->pos().y() + component->boundingRect().height()/2;
 
     int col = ((x - GRID_STEP/2) / GRID_STEP) + 1;
     int row = ((y - GRID_STEP/2) / GRID_STEP) + 1;
 
-    d->oldCellOfMovingGate.setCol(col);
-    d->oldCellOfMovingGate.setRow(row);
-    d->oldSquareNumberOfMovingGate = calculateSquareNumber(d->oldCellOfMovingGate);
+    d->oldCellOfMovingComponent.setCol(col);
+    d->oldCellOfMovingComponent.setRow(row);
+    d->oldSquareNumberOfMovingComponent = calculateSquareNumber(d->oldCellOfMovingComponent);
 }
 
-void CanvasManager::gateMoved(GraphicGate* gate, QPointF scenePos)
+void CanvasManager::componentMoved(Component* component, QPointF scenePos)
 {
     Cell newCell = findSuitableCell(scenePos);
-
-    if(!newCell.isNull() && calculateSquareNumber(newCell) != d->oldSquareNumberOfMovingGate)
+    if(!newCell.isNull() &&
+       calculateSquareNumber(newCell) != d->oldSquareNumberOfMovingComponent &&
+       scenePos.x() > 0 && scenePos.y() > 0 &&
+       scenePos.x() < CANVAS_WIDTH && scenePos.y() < CANVAS_HEIGHT)
     {
         qDebug() << "Gate Moved";
-        parkGate(gate, newCell);
-        d->acquiredSquares.remove(d->oldSquareNumberOfMovingGate);
+        parkComponent(component, newCell);
+        d->acquiredSquares.remove(d->oldSquareNumberOfMovingComponent);
         d->acquiredSquares.insert(calculateSquareNumber(newCell));
     }
     else
     {
         qDebug() << "Gate Not Moved";
-        parkGate(gate, d->oldCellOfMovingGate);
+        parkComponent(component, d->oldCellOfMovingComponent);
     }
 
-    d->oldCellOfMovingGate.erase();
-    d->oldSquareNumberOfMovingGate = 0;
+    d->oldCellOfMovingComponent.erase();
+    d->oldSquareNumberOfMovingComponent = 0;
+}
+
+int CanvasManager::selectedComponentIndex()
+{
+    return d->selectedComponentIndex;
 }
 
 Cell CanvasManager::findSuitableCell(QPointF scenePos)
@@ -98,7 +145,7 @@ Cell CanvasManager::findSuitableCell(QPointF scenePos)
     Cell c(col, row);
     int squareNumber = calculateSquareNumber(c);
 
-    if (d->acquiredSquares.contains(squareNumber) && squareNumber != d->oldSquareNumberOfMovingGate)
+    if (d->acquiredSquares.contains(squareNumber) && squareNumber != d->oldSquareNumberOfMovingComponent)
     {
         foreach(Cell i, alternativePlaces(c))
         {
@@ -120,13 +167,13 @@ Cell CanvasManager::findSuitableCell(QPointF scenePos)
     return Cell();
 }
 
-void CanvasManager::parkGate(GraphicGate * g, Cell c)
+void CanvasManager::parkComponent(Component * component, Cell c)
 {
     qreal x = (c.col() - 1) * GRID_STEP + GRID_STEP/2;
     qreal y = (c.row() - 1) * GRID_STEP + GRID_STEP/2;
 
-    g->setPos(x - g->boundingRect().width()/2,
-              y - g->boundingRect().height()/2);
+    component->setPos(x - component->boundingRect().width()/2,
+              y - component->boundingRect().height()/2);
 }
 
 QList<Cell> CanvasManager::alternativePlaces(Cell c) const
@@ -173,6 +220,29 @@ QList<Cell> CanvasManager::alternativePlaces(Cell c) const
 int CanvasManager::calculateSquareNumber(Cell c) const
 {
     return c.col() + ((c.row() - 1) * NUMBER_OF_SQUARES_IN_ROW);
+}
+
+int CanvasManager::selectedComponentSquare(int index) const
+{
+    QPointF position = d->mComponents.at(index)->pos();
+    int col = qCeil(position.x() / GRID_STEP);
+    int row = qCeil(position.y() / GRID_STEP);
+    Cell c(col, row);
+    return calculateSquareNumber(c);
+}
+
+void CanvasManager::selectedFromWorkspace(int index)
+{
+    unSelectComponent();
+    selectComponent(d->mComponents.at(index));
+}
+
+void CanvasManager::renameComponent(QTableWidgetItem *item)
+{
+    if(item->row() < d->componentCount)
+    {
+        d->mComponents.at(item->row())->setName(item->text());
+    }
 }
 
 CanvasManager::~CanvasManager()

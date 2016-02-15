@@ -17,21 +17,27 @@ SOURCES += src/main.cpp \
     src/canvas.cpp \
     src/canvasmanager.cpp \
     src/componentstab.cpp \
-    src/graphicgate.cpp \
-    src/abstractgate.cpp \
+    src/inputoutputcomponents.cpp \
+    src/gate.cpp \
     src/gates.cpp \
-    src/gateparts.cpp
+    src/gateparts.cpp \
+    src/workspacetab.cpp \
+    src/inouparts.cpp \
+    src/component.cpp
 
 HEADERS += src/mainwindow.h \
     src/node.h \
     src/canvas.h \
     src/componentstab.h \
+    src/inputoutputcomponents.h \
     src/canvasmanager.h \
     src/logicsim_global.h \
-    src/graphicgate.h \
-    src/abstractgate.h \
+    src/gate.h \
     src/gates.h \
-    src/gateparts.h
+    src/gateparts.h \
+    src/workspacetab.h \
+    src/inouparts.h \
+    src/component.h
 
 FORMS += src/mainwindow.ui
 

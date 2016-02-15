@@ -11,6 +11,7 @@
 
 #include "logicsim_global.h"
 #include "gates.h"
+#include "inputoutputcomponents.h"
 
 namespace Logicsim
 {
@@ -28,7 +29,7 @@ protected:
 
 private:
     QList<QTableWidgetItem*> m_items;
-    QList<GraphicGate*> m_gates;
+    QList<Component*> m_gates;
 };
 
 } // namespace Logicsim
