@@ -13,16 +13,19 @@ public:
     Private() :
         componentCount(0),
         selectedComponentIndex(-1),
+        selectedLineIndex(-1),
         componentId(0),
         oldSquareNumberOfMovingComponent(0),
         selectedComponent(0),
         canvas(0),
         selectedInput(0),
-        selectedOutput(0)
+        selectedOutput(0),
+        selectedLine(0)
     {}
 
     int                    componentCount;
     int                    selectedComponentIndex;
+    int                    selectedLineIndex;
     int                    componentId;
     int                    oldSquareNumberOfMovingComponent;
     Component*             selectedComponent;
@@ -33,6 +36,7 @@ public:
     QSet<int>              acquiredSquares;
     QList<Component *>     mComponents;
     QList<ConnectionLine*> connectionLines;
+    ConnectionLine* selectedLine;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
@@ -187,6 +191,11 @@ int CanvasManager::selectedComponentIndex()
     return d->selectedComponentIndex;
 }
 
+int CanvasManager::selectedLineIndex()
+{
+    return d->selectedLineIndex;
+}
+
 Cell CanvasManager::findSuitableCell(QPointF scenePos)
 {
     int col = qCeil(scenePos.x() / GRID_STEP);
@@ -297,11 +306,24 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
 
 void CanvasManager::selectLine()
 {
-    // TODO: you can catch line which emited the signal
-    // using "sneder()" method and static cast it to
-    // ConnectionLine like this:
-    // static_cast<ConnectionLine*>(sender())
-    qDebug() << "Ana 7seet be line clicked, Msh kda?!";
+    d->selectedLine = static_cast<ConnectionLine*>(sender());
+    d->selectedLineIndex = d->connectionLines.indexOf(d->selectedLine);
+}
+
+void CanvasManager::unSelectLine()
+{
+    if(d->selectedLine != 0)
+    {
+        d->selectedLine = 0;
+        d->selectedLineIndex = -1;
+    }
+}
+
+void CanvasManager::deleteLine(int index)
+{
+    unSelectLine();
+    d->canvas->removeItem(d->connectionLines.at(index));
+    d->connectionLines.removeAt(index);
 }
 
 CanvasManager::~CanvasManager()

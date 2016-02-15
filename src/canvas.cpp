@@ -157,8 +157,13 @@ void Canvas::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Delete:
         if(d->mCanvasManager->selectedComponentIndex() != -1)
         {
-            qDebug() << "Delete";
+            qDebug() << "Delete Component";
             d->mCanvasManager->deleteComponent(d->mCanvasManager->selectedComponentIndex());
+        }
+        else if(d->mCanvasManager->selectedLineIndex() != -1)
+        {
+            qDebug() << "Delete Line";
+            d->mCanvasManager->deleteLine(d->mCanvasManager->selectedLineIndex());
         }
         break;
     }
@@ -196,7 +201,7 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
     d->mCanvasManager->unSelectComponent();
-
+    d->mCanvasManager->unSelectLine();
     if(mouseGrabberItem() != 0)
     {
         Pin* p = dynamic_cast<Pin*>(mouseGrabberItem());

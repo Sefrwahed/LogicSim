@@ -67,6 +67,10 @@ public:
     void pinPressed(Pin* p);
 
     int selectedComponentIndex();
+    int selectedLineIndex();
+
+    void unSelectLine();
+    void deleteLine(int index);
 
 private:
     Cell findSuitableCell(QPointF scenePos);
