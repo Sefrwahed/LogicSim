@@ -224,10 +224,13 @@ QString NorGate::imageUrl() const
 void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawArc(QRect(-22,-5,25,60), -800, 1500);
-    painter->drawArc(QRect(-23,-2,60,50), -1700, 1500);
-    painter->drawArc(QRect(-23,4,60,50),  200, 1500);
-    painter->drawEllipse(36,24,5,5);
+    QPainterPath path;
+    path.arcMoveTo(QRect(-22,-5,25,60), -50);
+    path.arcTo(QRect(-22,-2,60,50), -106.25, 93.75);
+    path.arcTo(QRect(36,25,5,5), 180, -360);
+    path.arcTo(QRect(-22,4,60,50), 12.5, 93.75);
+    path.arcTo(QRect(-22,-5,25,60), 43.75, -93.75);
+    painter->drawPath(path);
 }
 
 // ===================== XorGate ===================
