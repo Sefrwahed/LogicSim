@@ -29,8 +29,6 @@ QRectF AndGate::boundingRect() const
 
 void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
     Gate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,20,0);
@@ -92,8 +90,6 @@ QRectF OrGate::boundingRect() const
 
 void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option)
-    Q_UNUSED(widget)
     Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-22,-5,25,60), -800 , 1500);
     painter->drawArc(QRect(-30,-2,70,50), -1600, 1500);
@@ -135,8 +131,6 @@ QRectF NotGate::boundingRect() const
 
 void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option)
-    Q_UNUSED(widget)
     Gate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,35,27);
@@ -178,16 +172,12 @@ QString NandGate::imageUrl() const
 
 void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
     Gate::paint(painter, option, widget);
     painter->drawLine(0,0,0,50);
     painter->drawLine(0,0,17,0);
     painter->drawLine(0,50,17,50);
     painter->drawArc(QRect(-4,0,40,50), -1400, 3000);
     painter->drawEllipse(35,25,5,5);
-
-
 }
 
 // ===================== NorGate ===================
@@ -223,8 +213,6 @@ QString NorGate::imageUrl() const
 
 void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
     Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-22,-5,25,60), -800, 1500);
     painter->drawArc(QRect(-23,-2,60,50), -1700, 1500);
@@ -268,14 +256,11 @@ QString XorGate::imageUrl() const
 
 void XorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
     Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
     painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
     painter->drawArc(QRect(-19,-2,60,50), -1700, 1600);
     painter->drawArc(QRect(-19,4,60,50),  200, 1500);
-
 }
 
 // ===================== XnorGate ===================
@@ -314,8 +299,6 @@ QString XnorGate::imageUrl() const
 
 void XnorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
     Gate::paint(painter, option, widget);
     painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
     painter->drawArc(QRect(-23,-5,25,60), -750, 1350);

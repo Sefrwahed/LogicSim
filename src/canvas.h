@@ -10,7 +10,7 @@
 #include <QKeyEvent>
 
 // Local includes
-#include "gateparts.h"
+#include "pin.h"
 #include "gates.h"
 #include "componentstab.h"
 #include "canvasmanager.h"

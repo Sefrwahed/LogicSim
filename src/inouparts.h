@@ -1,9 +1,12 @@
 #ifndef INOUT
 #define INOUT
 
-// Qt includes
+// Local includes
 
 #include "node.h"
+
+// Qt includes
+
 #include <QGraphicsItem>
 #include <QGraphicsObject>
 #include <QDebug>

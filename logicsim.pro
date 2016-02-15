@@ -20,10 +20,11 @@ SOURCES += src/main.cpp \
     src/inputoutputcomponents.cpp \
     src/gate.cpp \
     src/gates.cpp \
-    src/gateparts.cpp \
+    src/connectionline.cpp \
     src/workspacetab.cpp \
     src/inouparts.cpp \
-    src/component.cpp
+    src/component.cpp \
+    src/pin.cpp
 
 HEADERS += src/mainwindow.h \
     src/node.h \
@@ -33,11 +34,12 @@ HEADERS += src/mainwindow.h \
     src/canvasmanager.h \
     src/logicsim_global.h \
     src/gate.h \
+    src/connectionline.h \
     src/gates.h \
-    src/gateparts.h \
     src/workspacetab.h \
     src/inouparts.h \
-    src/component.h
+    src/component.h \
+    src/pin.h
 
 FORMS += src/mainwindow.ui
 

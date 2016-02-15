@@ -9,7 +9,7 @@
 
 #include "logicsim_global.h"
 #include "node.h"
-#include "gateparts.h"
+#include "pin.h"
 #include "gate.h"
 
 namespace Logicsim

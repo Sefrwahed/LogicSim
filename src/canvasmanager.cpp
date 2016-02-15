@@ -12,26 +12,32 @@ class CanvasManager::Private
 public:
     Private() :
         componentCount(0),
+        selectedComponentIndex(-1),
+        componentId(0),
+        oldSquareNumberOfMovingComponent(0),
+        selectedComponent(0),
         canvas(0),
-        oldSquareNumberOfMovingComponent(0)
+        selectedInput(0),
+        selectedOutput(0)
     {}
 
-    QList<Component *> mComponents;
-    int                  componentCount;
-    QGraphicsScene*      canvas;
-    QSet<int>            acquiredSquares;
-    int                  oldSquareNumberOfMovingComponent;
-    Cell                 oldCellOfMovingComponent;
-    Component *selectedComponent;
-    int selectedComponentIndex;
-    int componentId;
+    int                    componentCount;
+    int                    selectedComponentIndex;
+    int                    componentId;
+    int                    oldSquareNumberOfMovingComponent;
+    Component*             selectedComponent;
+    QGraphicsScene*        canvas;
+    Pin*                   selectedInput;
+    Pin*                   selectedOutput;
+    Cell                   oldCellOfMovingComponent;
+    QSet<int>              acquiredSquares;
+    QList<Component *>     mComponents;
+    QList<ConnectionLine*> connectionLines;
 };
 
-CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas) : QObject(parent), d(new Private)
+CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
+    : QObject(parent), d(new Private)
 {
-    d->selectedComponentIndex = -1;
-    d->componentId = 0;
-    d->selectedComponent = NULL;
     d->canvas = canvas;
 }
 
@@ -69,18 +75,19 @@ void CanvasManager::selectComponent(Component *component)
         d->selectedComponent = component;
         d->selectedComponentIndex = d->mComponents.indexOf(d->selectedComponent);
         d->selectedComponent->setSelection(true);
+
         emit componentSelectedFromCanvas(d->mComponents.indexOf(d->selectedComponent));
     }
 }
 
 void CanvasManager::unSelectComponent()
 {
-    if(d->selectedComponent != NULL)
+    if(d->selectedComponent != 0)
     {
         qDebug() << "Unselected: " << d->selectedComponent->name();
         d->selectedComponentIndex = -1;
         d->selectedComponent->setSelection(false);
-        d->selectedComponent = NULL;
+        d->selectedComponent = 0;
     }
 }
 
@@ -133,6 +140,48 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
     d->oldSquareNumberOfMovingComponent = 0;
 }
 
+void CanvasManager::pinPressed(Pin *p)
+{
+    if(p->type() == Pin::Input)
+    {
+        if(p->isConnected())
+        {
+            d->selectedOutput = 0;
+            return;
+        }
+
+        qDebug() << "Disconnected Input pin was clicked";
+        d->selectedInput = p;
+    }
+    else
+    {
+        qDebug() << "Output pin was clicked";
+        d->selectedOutput = p;
+    }
+
+    if(d->selectedInput && d->selectedOutput
+            && d->selectedInput->parentComponent() != d->selectedOutput->parentComponent())
+    {
+        ConnectionLine* line = new ConnectionLine(d->selectedInput, d->selectedOutput);
+        line->setZValue(-1);
+        d->selectedInput->setConnected(line);
+        d->selectedOutput->setConnected(line);
+        d->connectionLines.append(line);
+
+        connect(line, SIGNAL(lineSelected()),
+                this, SLOT(selectLine()));
+
+        d->canvas->addItem(line);
+
+        d->selectedInput = 0;
+        d->selectedOutput = 0;
+    }
+
+    qDebug() << "Selected input: " << d->selectedInput;
+    qDebug() << "Selected output: " << d->selectedOutput;
+
+}
+
 int CanvasManager::selectedComponentIndex()
 {
     return d->selectedComponentIndex;
@@ -174,6 +223,7 @@ void CanvasManager::parkComponent(Component * component, Cell c)
 
     component->setPos(x - component->boundingRect().width()/2,
               y - component->boundingRect().height()/2);
+    component->updateConnection();
 }
 
 QList<Cell> CanvasManager::alternativePlaces(Cell c) const
@@ -243,6 +293,15 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
     {
         d->mComponents.at(item->row())->setName(item->text());
     }
+}
+
+void CanvasManager::selectLine()
+{
+    // TODO: you can catch line which emited the signal
+    // using "sneder()" method and static cast it to
+    // ConnectionLine like this:
+    // static_cast<ConnectionLine*>(sender())
+    qDebug() << "Ana 7seet be line clicked, Msh kda?!";
 }
 
 CanvasManager::~CanvasManager()
