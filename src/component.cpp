@@ -64,7 +64,6 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     QPen p;
     p.setWidthF(2);
-
     if(d->selected)
     {
         p.setColor(QColor(30,144,255));

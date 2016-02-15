@@ -270,10 +270,14 @@ QString XorGate::imageUrl() const
 void XorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
-    painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
-    painter->drawArc(QRect(-19,-2,60,50), -1700, 1600);
-    painter->drawArc(QRect(-19,4,60,50),  200, 1500);
+    QPainterPath path;
+    path.arcMoveTo(QRect(-18,-5,25,60), -50);
+    path.arcTo(QRect(-19,-2,60,50), -106.25, 93.75);
+    path.arcTo(QRect(-19,4,60,50), 12.5, 93.75);
+    path.arcTo(QRect(-18,-5,25,60), 43.75, -93.75);
+    path.arcMoveTo(QRect(-23,-5,25,60), -46.875);
+    path.arcTo(QRect(-23,-5,25,60), -46.875, 84.375);
+    painter->drawPath(path);
 }
 
 // ===================== XnorGate ===================
