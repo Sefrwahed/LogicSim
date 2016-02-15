@@ -134,10 +134,12 @@ QRectF NotGate::boundingRect() const
 void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawLine(0,0,0,50);
-    painter->drawLine(0,0,35,27);
-    painter->drawLine(0,50,35,27);
-    painter->drawEllipse(35,25,5,5);
+    QPainterPath path(QPointF(35,27));
+    path.lineTo(0,50);
+    path.lineTo(0,0);
+    path.lineTo(35,27);
+    path.addEllipse(35,25,5,5);
+    painter->drawPath(path);
 }
 
 // ===================== NandGate ===================
