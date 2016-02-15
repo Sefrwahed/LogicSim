@@ -93,9 +93,12 @@ QRectF OrGate::boundingRect() const
 void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawArc(QRect(-22,-5,25,60), -800 , 1500);
-    painter->drawArc(QRect(-30,-2,70,50), -1600, 1500);
-    painter->drawArc(QRect(-30, 4,70,50),  100 , 1500);
+    QPainterPath path;
+    path.arcMoveTo(QRect(-22,-5,25,60), -50);
+    path.arcTo(QRect(-30,-2,70,50), -100, 93.75);
+    path.arcTo(QRect(-30,4,70,50), 6.25, 93.75);
+    path.arcTo(QRect(-22,-5,25,60), 43.75, -93.75);
+    painter->drawPath(path);
 }
 
 
