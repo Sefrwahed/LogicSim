@@ -177,11 +177,14 @@ QString NandGate::imageUrl() const
 void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawLine(0,0,0,50);
-    painter->drawLine(0,0,17,0);
-    painter->drawLine(0,50,17,50);
-    painter->drawArc(QRect(-4,0,40,50), -1400, 3000);
-    painter->drawEllipse(35,25,5,5);
+    QPainterPath path(QPointF(0,0));
+    path.arcTo(QRect(-4,0,40,50), 90, -90);
+    path.arcTo(QRect(36,25,5,5), 180, -360);
+    path.arcTo(QRect(-4,0,40,50), 0, -90);
+    path.lineTo(20,50);
+    path.lineTo(0,50);
+    path.lineTo(0,0);
+    painter->drawPath(path);
 }
 
 // ===================== NorGate ===================
