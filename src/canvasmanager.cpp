@@ -55,6 +55,16 @@ QGraphicsScene *CanvasManager::canvas()
     return d->canvas;
 }
 
+int CanvasManager::selectedComponentIndex()
+{
+    return d->selectedComponentIndex;
+}
+
+int CanvasManager::selectedLineIndex()
+{
+    return d->selectedLineIndex;
+}
+
 void CanvasManager::addComponent(Component *component, QPointF scenePos)
 {
     Cell c = findSuitableCell(scenePos);
@@ -184,16 +194,6 @@ void CanvasManager::pinPressed(Pin *p)
     qDebug() << "Selected input: " << d->selectedInput;
     qDebug() << "Selected output: " << d->selectedOutput;
 
-}
-
-int CanvasManager::selectedComponentIndex()
-{
-    return d->selectedComponentIndex;
-}
-
-int CanvasManager::selectedLineIndex()
-{
-    return d->selectedLineIndex;
 }
 
 Cell CanvasManager::findSuitableCell(QPointF scenePos)

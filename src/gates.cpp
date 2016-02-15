@@ -30,10 +30,12 @@ QRectF AndGate::boundingRect() const
 void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawLine(0,0,0,50);
-    painter->drawLine(0,0,20,0);
-    painter->drawLine(0,50,20,50);
-    painter->drawArc(QRect(0,0,40,50), -1400, 3000);
+    QPainterPath path(QPointF(0,0));
+    path.arcTo(QRect(0,0,40,50), 90, -180);
+    path.lineTo(20,50);
+    path.lineTo(0,50);
+    path.lineTo(0,0);
+    painter->drawPath(path);
 }
 
 void AndGate::calcOutput()
