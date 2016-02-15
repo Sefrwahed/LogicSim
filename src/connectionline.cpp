@@ -6,11 +6,14 @@
 namespace Logicsim
 {
 
-ConnectionLine::ConnectionLine(const QLineF &line,QGraphicsItem* parent)
-    : QGraphicsLineItem(line, parent), m_out(0), m_in(0)
+ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
+    : QGraphicsLineItem(parent), m_out(out), m_in(in)
 {
     setAcceptHoverEvents(true);
-//    setToolTip(m_out->toolTip() + " <-> " + m_in->toolTip());
+    setToolTip(m_out->parentComponent()->toolTip()
+               + " <-> "
+               + m_in->parentComponent()->toolTip());
+    setLine(QLineF(m_in->centerPos(), m_out->centerPos()));
     setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
@@ -23,9 +26,19 @@ Pin *ConnectionLine::output() const
     return m_out;
 }
 
+void ConnectionLine::setOutputPin(Pin *out)
+{
+    m_out = out;
+}
+
 Pin *ConnectionLine::input() const
 {
     return m_in;
+}
+
+void ConnectionLine::setInputPin(Pin *in)
+{
+    m_in = in;
 }
 
 void ConnectionLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -50,6 +63,14 @@ void ConnectionLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     }
 
     QGraphicsLineItem::paint(painter, option, widget);
+}
+
+void ConnectionLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+    qDebug() << "Line pressed bayn kedda";
+
+    emit lineSelected();
 }
 
 } // namespace Logicsim

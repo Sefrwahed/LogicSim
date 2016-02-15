@@ -19,13 +19,20 @@ class ConnectionLine : public QObject, public QGraphicsLineItem
 {
     Q_OBJECT
 public:
-    ConnectionLine(const QLineF &line, QGraphicsItem* parent=0);
+    ConnectionLine(Pin* in, Pin* out, QGraphicsItem* parent=0);
     ~ConnectionLine();
 
-    Pin* output() const;
     Pin* input() const;
+    void setInputPin(Pin * in);
+
+    Pin* output() const;
+    void setOutputPin(Pin * out);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+Q_SIGNALS:
+    void lineSelected();
 
 private:
     Pin* m_out;

@@ -35,7 +35,8 @@ public:
     QList<ConnectionLine*> connectionLines;
 };
 
-CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas) : QObject(parent), d(new Private)
+CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
+    : QObject(parent), d(new Private)
 {
     d->canvas = canvas;
 }
@@ -161,12 +162,15 @@ void CanvasManager::pinPressed(Pin *p)
     if(d->selectedInput && d->selectedOutput
             && d->selectedInput->parentComponent() != d->selectedOutput->parentComponent())
     {
-        ConnectionLine* line =
-                new ConnectionLine(QLineF(d->selectedInput->centerPos(), d->selectedOutput->centerPos()));
+        ConnectionLine* line = new ConnectionLine(d->selectedInput, d->selectedOutput);
         line->setZValue(-1);
         d->selectedInput->setConnected(line);
         d->selectedOutput->setConnected(line);
         d->connectionLines.append(line);
+
+        connect(line, SIGNAL(lineSelected()),
+                this, SLOT(selectLine()));
+
         d->canvas->addItem(line);
 
         d->selectedInput = 0;
@@ -289,6 +293,15 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
     {
         d->mComponents.at(item->row())->setName(item->text());
     }
+}
+
+void CanvasManager::selectLine()
+{
+    // TODO: you can catch line which emited the signal
+    // using "sneder()" method and static cast it to
+    // ConnectionLine like this:
+    // static_cast<ConnectionLine*>(sender())
+    qDebug() << "Ana 7seet be line clicked, Msh kda?!";
 }
 
 CanvasManager::~CanvasManager()
