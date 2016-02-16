@@ -124,7 +124,6 @@ void Pin::disconnectLine()
 void Pin::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-    qDebug()<<"Output Clicked";
 }
 
 void Pin::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

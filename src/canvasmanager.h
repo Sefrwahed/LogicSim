@@ -67,6 +67,7 @@ public:
     void movingComponent(Component* gate);
     void componentMoved(Component* gate, QPointF scenePos);
     void pinPressed(Pin* p);
+    void unSelectPins();
 
     void unSelectLine();
     void deleteLine(int index);

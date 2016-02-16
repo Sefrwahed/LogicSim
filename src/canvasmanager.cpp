@@ -85,11 +85,11 @@ void CanvasManager::selectComponent(Component *component)
 {
     if(d->selectedComponent != component)
     {
+        unSelectPins();
         qDebug() << "selected: " << component->name();
         d->selectedComponent = component;
         d->selectedComponentIndex = d->mComponents.indexOf(d->selectedComponent);
         d->selectedComponent->setSelection(true);
-
         emit componentSelectedFromCanvas(d->mComponents.indexOf(d->selectedComponent));
     }
 }
@@ -200,13 +200,25 @@ void CanvasManager::pinPressed(Pin *p)
 
         d->canvas->addItem(line);
 
-        d->selectedInput = 0;
-        d->selectedOutput = 0;
+        unSelectPins();
     }
 
     qDebug() << "Selected input: " << d->selectedInput;
     qDebug() << "Selected output: " << d->selectedOutput;
+}
 
+void CanvasManager::unSelectPins()
+{
+    if(d->selectedInput != 0)
+    {
+        d->selectedInput->setSelected(false);
+        d->selectedInput = 0;
+    }
+    if(d->selectedOutput != 0)
+    {
+        d->selectedOutput->setSelected(false);
+        d->selectedOutput = 0;
+    }
 }
 
 Cell CanvasManager::findSuitableCell(QPointF scenePos)
@@ -320,6 +332,7 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
 void CanvasManager::selectLine()
 {
     unSelectComponent();
+    unSelectPins();
     d->selectedLine = static_cast<ConnectionLine*>(sender());
     d->selectedLineIndex = d->connectionLines.indexOf(d->selectedLine);
 }
