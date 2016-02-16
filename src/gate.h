@@ -22,8 +22,10 @@ public:
     virtual void calcOutput() = 0;
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     QRectF boundingRect() const;
+    void updateConnection();
 
 protected:
     Gate(Type t);

@@ -64,6 +64,8 @@ public:
     void deleteComponent(int index);
     void movingComponent(Component* gate);
     void componentMoved(Component* gate, QPointF scenePos);
+    void pinPressed(Pin* p);
+
     int selectedComponentIndex();
 
 private:
@@ -76,6 +78,7 @@ private:
 public Q_SLOTS:
     void selectedFromWorkspace(int index);
     void renameComponent(QTableWidgetItem* item);
+    void selectLine();
 
 Q_SIGNALS:
     void componentUpdated();

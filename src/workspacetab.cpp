@@ -38,7 +38,7 @@ WorkspaceTab::~WorkspaceTab()
 
 void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
-    if(d->currentCanvasManager != NULL)
+    if(d->currentCanvasManager != 0)
     {
         disconnect(this, SIGNAL(itemChanged(QTableWidgetItem*)),
                    d->currentCanvasManager, SLOT(renameComponent(QTableWidgetItem*)));
@@ -67,7 +67,7 @@ void WorkspaceTab::setManager(CanvasManager *canvasManager)
 void WorkspaceTab::updateComponents()
 {
     clear();
-    if(d->currentCanvasManager != NULL)
+    if(d->currentCanvasManager != 0)
     {
         d->componentsCount = d->currentCanvasManager->components().length();
         setRowCount(d->componentsCount);

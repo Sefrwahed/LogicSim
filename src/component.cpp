@@ -23,8 +23,8 @@ public:
     QString         name;
 };
 
-Component::Component(Type t)
-    : d(new Private)
+Component::Component(Type t, QGraphicsItem* parent)
+    : QGraphicsObject(parent), d(new Private)
 {
     d->type = t;
     d->selected = false;
@@ -59,14 +59,21 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setBrush(QColor(255,255,255,200));
+
+    QPen p;
+    p.setWidthF(2);
 
     if(d->selected)
     {
-        painter->setPen(QPen(QColor(123,183,243),2));
+        p.setColor(QColor(30,144,255));
+        painter->setPen(p);
     }
     else
     {
-        painter->setPen(QPen(Qt::black));
+        p.setColor(Qt::black);
+        painter->setPen(p);
     }
 }
 
