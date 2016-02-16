@@ -6,8 +6,14 @@
 #include <QGraphicsObject>
 #include <QGraphicsSceneMouseEvent>
 
+// Local includes
+
+#include "pin.h"
+
 namespace Logicsim
 {
+
+class Pin;
 
 class Component: public QGraphicsObject
 {
@@ -41,10 +47,12 @@ public:
     QRectF boundingRect() const;
     virtual void updateConnection() = 0;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    QList<Pin *> &pins();
 
 protected:
     Component(Type t, QGraphicsItem *parent = 0);
     void setMetaTypeId(int t);
+    void addPins(QList<Pin*>& pins);
 
 private:
     class Private;

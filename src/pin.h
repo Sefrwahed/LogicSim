@@ -15,11 +15,13 @@
 
 namespace Logicsim
 {
-
+class Component;
 class ConnectionLine;
 
 class Pin : public QGraphicsObject
 {
+    Q_OBJECT
+
 public:
     enum Type {
         Input,
@@ -34,6 +36,7 @@ public:
     void setConnected(ConnectionLine* line);
 
     void updateConnectedLine();
+    QList<ConnectionLine *> &connectedLines();
 
     QPointF centerPos() const;
 
@@ -44,6 +47,9 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+
+public Q_SLOTS:
+    void disconnectLine();
 
 private:
     Type m_type;

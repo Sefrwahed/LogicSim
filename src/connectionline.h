@@ -33,6 +33,7 @@ public:
 
 Q_SIGNALS:
     void lineSelected();
+    void lineDeleted();
 
 private:
     Pin* m_out;

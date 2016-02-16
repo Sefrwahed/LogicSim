@@ -13,6 +13,7 @@ ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
     setToolTip(m_out->parentComponent()->toolTip()
                + " <-> "
                + m_in->parentComponent()->toolTip());
+
     setLine(QLineF(m_in->centerPos(), m_out->centerPos()));
     setFlag(QGraphicsItem::ItemIsSelectable);
 }

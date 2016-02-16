@@ -57,6 +57,8 @@ public:
 
     QList<Component *> components();
     QGraphicsScene* canvas();
+    int selectedComponentIndex();
+    int selectedLineIndex();
 
     void addComponent(Component* gate, QPointF scenePos);
     void selectComponent(Component* gate);
@@ -65,8 +67,10 @@ public:
     void movingComponent(Component* gate);
     void componentMoved(Component* gate, QPointF scenePos);
     void pinPressed(Pin* p);
+    void unSelectPins();
 
-    int selectedComponentIndex();
+    void unSelectLine();
+    void deleteLine(int index);
 
 private:
     Cell findSuitableCell(QPointF scenePos);

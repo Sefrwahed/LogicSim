@@ -27,7 +27,6 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
     setShowGrid(false);
 
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    //setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 WorkspaceTab::~WorkspaceTab()
