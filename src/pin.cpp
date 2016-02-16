@@ -30,10 +30,22 @@ bool Pin::isConnected()
 
 void Pin::setConnected(ConnectionLine *line)
 {
-    if(m_type == Input && m_lines.length() == 0)
+    if(m_type == Output)
+    {
         m_lines << line;
+
+    }
+    else if( m_lines.length() == 0)
+    {
+        m_lines << line;
+    }
     else
-        m_lines << line;
+    {
+        return;
+    }
+
+    connect(line, SIGNAL(lineDeleted()),
+            this, SLOT(disconnectLine()));
 }
 
 void Pin::updateConnectedLine()
@@ -54,6 +66,11 @@ void Pin::updateConnectedLine()
             }
         }
     }
+}
+
+QList<ConnectionLine *> &Pin::connectedLines()
+{
+    return m_lines;
 }
 
 QPointF Pin::centerPos() const
@@ -96,6 +113,12 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
         painter->setPen(p);
     }
     painter->drawEllipse(boundingRect());
+}
+
+void Pin::disconnectLine()
+{
+    qDebug() << "PIN LINE DISCONNECT";
+    m_lines.removeOne(static_cast<ConnectionLine*>(sender()));
 }
 
 void Pin::mousePressEvent(QGraphicsSceneMouseEvent *event)

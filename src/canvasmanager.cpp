@@ -36,7 +36,7 @@ public:
     QSet<int>              acquiredSquares;
     QList<Component *>     mComponents;
     QList<ConnectionLine*> connectionLines;
-    ConnectionLine* selectedLine;
+    ConnectionLine*        selectedLine;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
@@ -103,16 +103,29 @@ void CanvasManager::unSelectComponent()
         d->selectedComponent->setSelection(false);
         d->selectedComponent = 0;
     }
+    unSelectLine();
 }
 
 void CanvasManager::deleteComponent(int index)
 {
     unSelectComponent();
-    d->canvas->removeItem(d->mComponents.at(index));
+    Component* c = d->mComponents.at(index);
+    d->canvas->removeItem(c);
     d->acquiredSquares.remove(selectedComponentSquare(index));
     d->mComponents.removeAt(index);
     d->componentCount--;
+
+    foreach(Pin* p, c->pins())
+    {
+        foreach(ConnectionLine* l, p->connectedLines())
+        {
+            emit l->lineSelected();
+            deleteLine(d->selectedLineIndex);
+        }
+    }
+
     emit componentDeleted(index);
+    delete c;
 }
 
 void CanvasManager::movingComponent(Component *component)
@@ -306,6 +319,7 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
 
 void CanvasManager::selectLine()
 {
+    unSelectComponent();
     d->selectedLine = static_cast<ConnectionLine*>(sender());
     d->selectedLineIndex = d->connectionLines.indexOf(d->selectedLine);
 }
@@ -314,6 +328,7 @@ void CanvasManager::unSelectLine()
 {
     if(d->selectedLine != 0)
     {
+        d->selectedLine->setSelected(false);
         d->selectedLine = 0;
         d->selectedLineIndex = -1;
     }
@@ -322,8 +337,11 @@ void CanvasManager::unSelectLine()
 void CanvasManager::deleteLine(int index)
 {
     unSelectLine();
-    d->canvas->removeItem(d->connectionLines.at(index));
+    ConnectionLine* l = d->connectionLines.at(index);
+    emit l->lineDeleted();
+    d->canvas->removeItem(l);
     d->connectionLines.removeAt(index);
+    delete l;
 }
 
 CanvasManager::~CanvasManager()

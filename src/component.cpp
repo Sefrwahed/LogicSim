@@ -21,6 +21,7 @@ public:
     Component::Type type;
     bool            selected;
     QString         name;
+    QList<Pin*>     pins;
 };
 
 Component::Component(Type t, QGraphicsItem* parent)
@@ -38,6 +39,11 @@ Component::~Component()
 void Component::setMetaTypeId(int t)
 {
     d->metaTypeId = t;
+}
+
+void Component::addPins(QList<Pin *> &pins)
+{
+    d->pins << pins;
 }
 
 int Component::metaTypeId() const
@@ -74,6 +80,11 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         p.setColor(Qt::black);
         painter->setPen(p);
     }
+}
+
+QList<Pin *> &Component::pins()
+{
+    return d->pins;
 }
 
 void Component::setSelection(bool selection)

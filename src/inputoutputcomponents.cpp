@@ -17,6 +17,8 @@ InputComponent::InputComponent()
     m_pin = new Pin(Pin::Output, this);
     m_pin->setPos(40,10);
 
+    addPins(QList<Pin*>() << m_pin);
+
     QGraphicsLineItem *Li = new QGraphicsLineItem(QLineF(0,0,10,0), m_pin);
     Li->setPos(-10,5);
 
@@ -122,6 +124,8 @@ OutputComponent::OutputComponent()
 
     m_pin = new Pin(Pin::Input, this);
     m_pin->setPos(-20,10);
+
+    addPins(QList<Pin*>() << m_pin);
 
     QGraphicsLineItem* Lo = new QGraphicsLineItem(QLineF(0,0,10,0), m_pin);
     Lo->setPos(10,5);

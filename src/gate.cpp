@@ -46,6 +46,8 @@ Gate::Gate(Type t)
     d->in2 = new Pin(Pin::Input, this);
     d->out = new Pin(Pin::Output, this);
 
+    addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
+
     QLineF line(0,0,10,0);
     QGraphicsLineItem *Li1 = new QGraphicsLineItem(line,d->in1);
     QGraphicsLineItem *Li2 = new QGraphicsLineItem(line,d->in2);
