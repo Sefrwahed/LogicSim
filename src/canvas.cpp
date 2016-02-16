@@ -210,7 +210,10 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
             d->mCanvasManager->pinPressed(p);
         }
     }
-
+    else
+    {
+        d->mCanvasManager->unSelectPins();
+    }
     Canvas::mouseMoveEvent(event);
 }
 

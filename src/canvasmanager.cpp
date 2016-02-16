@@ -103,7 +103,6 @@ void CanvasManager::unSelectComponent()
         d->selectedComponent->setSelection(false);
         d->selectedComponent = 0;
     }
-    unSelectLine();
 }
 
 void CanvasManager::deleteComponent(int index)
@@ -169,6 +168,15 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
 
 void CanvasManager::pinPressed(Pin *p)
 {
+    if(d->selectedOutput && p->parentComponent() == d->selectedOutput->parentComponent())
+    {
+        d->selectedOutput = 0;
+    }
+    else if(d->selectedInput && p->parentComponent() == d->selectedInput->parentComponent())
+    {
+        d->selectedInput = 0;
+    }
+
     if(p->type() == Pin::Input)
     {
         if(p->isConnected())
@@ -202,7 +210,6 @@ void CanvasManager::pinPressed(Pin *p)
 
         unSelectPins();
     }
-
     qDebug() << "Selected input: " << d->selectedInput;
     qDebug() << "Selected output: " << d->selectedOutput;
 }
@@ -332,7 +339,6 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
 void CanvasManager::selectLine()
 {
     unSelectComponent();
-    unSelectPins();
     d->selectedLine = static_cast<ConnectionLine*>(sender());
     d->selectedLineIndex = d->connectionLines.indexOf(d->selectedLine);
 }
