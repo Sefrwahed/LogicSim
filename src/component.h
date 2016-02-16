@@ -28,9 +28,7 @@ public:
         XorGate,
         XnorGate,
         InputComponent,
-        OutputComponent,
-        InputPin,
-        OutputPin
+        OutputComponent
     };
 
 public:
@@ -58,6 +56,9 @@ private:
     class Private;
     Private* const d;
 };
+
+QDataStream &operator<<(QDataStream &out, Component * c);
+QDataStream &operator>>(QDataStream &in, Component *& c);
 
 } // namespace Logicsim
 

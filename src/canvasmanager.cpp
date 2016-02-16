@@ -4,6 +4,10 @@
 
 #include <QtMath>
 
+// Local includes
+
+#include "component.h"
+
 namespace Logicsim
 {
 
@@ -32,11 +36,11 @@ public:
     QGraphicsScene*        canvas;
     Pin*                   selectedInput;
     Pin*                   selectedOutput;
+    ConnectionLine*        selectedLine;
     Cell                   oldCellOfMovingComponent;
-    QSet<int>              acquiredSquares;
+    QSet<qint32>           acquiredSquares;
     QList<Component *>     mComponents;
     QList<ConnectionLine*> connectionLines;
-    ConnectionLine*        selectedLine;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
@@ -50,9 +54,19 @@ QList<Component *> CanvasManager::components()
     return d->mComponents;
 }
 
+void CanvasManager::setComponents(QList<Component *> clist)
+{
+    d->mComponents = clist;
+}
+
 QGraphicsScene *CanvasManager::canvas()
 {
     return d->canvas;
+}
+
+void CanvasManager::setCanvas(QGraphicsScene *s)
+{
+    d->canvas = s;
 }
 
 int CanvasManager::selectedComponentIndex()
@@ -363,9 +377,57 @@ void CanvasManager::deleteLine(int index)
     delete l;
 }
 
+QSet<qint32> &CanvasManager::acquiredSquares()
+{
+    return d->acquiredSquares;
+}
+
+void CanvasManager::setAcquiredSquares(QList<qint32> &list)
+{
+    foreach(qint32 s, list)
+    {
+        d->acquiredSquares.insert(s);
+    }
+}
+
+void CanvasManager::populateLoadedComponents()
+{
+    foreach(Component* c, d->mComponents)
+    {
+        d->canvas->addItem(c);
+        emit componentAdded(d->componentCount++);
+    }
+}
+
 CanvasManager::~CanvasManager()
 {
     delete d;
+}
+
+QDataStream &operator<<(QDataStream &out, CanvasManager * cm)
+{
+    QList<qint32> acquiredSquares;
+    foreach (qint32 s, cm->acquiredSquares())
+    {
+        acquiredSquares << s;
+    }
+    qDebug() << "Saving " << acquiredSquares;
+    out << acquiredSquares << cm->components();
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, CanvasManager *& cm)
+{
+
+    QList<qint32> acquiredSquares;
+    QList<Component*> compList;
+    in >> acquiredSquares >> compList;
+
+    cm = new CanvasManager();
+    cm->setAcquiredSquares(acquiredSquares);
+    cm->setComponents(compList);
+
+    return in;
 }
 
 } // namespace Logicsim

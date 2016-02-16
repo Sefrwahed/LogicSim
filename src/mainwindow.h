@@ -9,6 +9,7 @@
 // Local includes
 #include "componentstab.h"
 #include "workspacetab.h"
+#include "canvas.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,12 +31,17 @@ public:
     void setMainFrameDisabled(bool disabled);
 
 public Q_SLOTS:
-    void newFile();
+    Canvas *newFile();
     void closeTab(int tabIndex);
     void changeManager(int index);
+    void tabChanged(int index);
 
 Q_SIGNALS:
     void notLastTabClosed(int index);
+
+private slots:
+    void on_actionSave_triggered();
+    void on_actionOpen_triggered();
 
 private:
     Ui::MainWindow *ui;

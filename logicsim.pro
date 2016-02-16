@@ -15,6 +15,7 @@ SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/node.cpp \
     src/canvas.cpp \
+    src/component.cpp \
     src/canvasmanager.cpp \
     src/componentstab.cpp \
     src/inputoutputcomponents.cpp \
@@ -23,7 +24,6 @@ SOURCES += src/main.cpp \
     src/connectionline.cpp \
     src/workspacetab.cpp \
     src/inouparts.cpp \
-    src/component.cpp \
     src/pin.cpp
 
 HEADERS += src/mainwindow.h \
@@ -31,6 +31,7 @@ HEADERS += src/mainwindow.h \
     src/canvas.h \
     src/componentstab.h \
     src/inputoutputcomponents.h \
+    src/component.h \
     src/canvasmanager.h \
     src/logicsim_global.h \
     src/gate.h \
@@ -38,7 +39,6 @@ HEADERS += src/mainwindow.h \
     src/gates.h \
     src/workspacetab.h \
     src/inouparts.h \
-    src/component.h \
     src/pin.h
 
 FORMS += src/mainwindow.ui

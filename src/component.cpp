@@ -7,6 +7,7 @@
 // Local includes
 
 #include "logicsim_global.h"
+#include "inputoutputcomponents.h"
 
 namespace Logicsim
 {
@@ -102,6 +103,54 @@ void Component::setName(QString name)
 {
     d->name = name;
     setToolTip(name);
+}
+
+QDataStream &operator<<(QDataStream &out, Component * c)
+{
+    out << static_cast<qint32>(c->componentType())
+        << QPoint(c->pos().x(), c->pos().y())
+        << c->name();
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, Component *& c)
+{
+    qint32 t;
+    QPoint pos;
+    QString name;
+    in >> t >> pos >> name;
+    switch(t)
+    {
+        case Component::AndGate:
+            c = new AndGate();
+            break;
+        case Component::OrGate:
+            c = new OrGate();
+            break;
+        case Component::NotGate:
+            c = new NotGate();
+            break;
+        case Component::NandGate:
+            c = new NandGate();
+            break;
+        case Component::NorGate:
+            c = new NorGate();
+        case Component::XorGate:
+            c = new XorGate();
+            break;
+        case Component::XnorGate:
+            c = new XnorGate();
+            break;
+        case Component::InputComponent:
+            c = new InputComponent();
+            break;
+        case Component::OutputComponent:
+            c = new OutputComponent();
+            break;
+    }
+    c->setPos(pos);
+    c->setName(name);
+    return in;
 }
 
 } // namespace Logicsim

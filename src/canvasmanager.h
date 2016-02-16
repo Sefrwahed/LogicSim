@@ -55,22 +55,30 @@ public:
     CanvasManager(QObject *parent = 0, QGraphicsScene *canvas = 0);
     ~CanvasManager();
 
-    QList<Component *> components();
     QGraphicsScene* canvas();
+    void setCanvas(QGraphicsScene* s);
+
+    QList<Component *> components();
+    void setComponents(QList<Component *> clist);
     int selectedComponentIndex();
     int selectedLineIndex();
-
     void addComponent(Component* gate, QPointF scenePos);
     void selectComponent(Component* gate);
     void unSelectComponent();
     void deleteComponent(int index);
     void movingComponent(Component* gate);
     void componentMoved(Component* gate, QPointF scenePos);
+
     void pinPressed(Pin* p);
     void unSelectPins();
 
     void unSelectLine();
     void deleteLine(int index);
+
+    QSet<qint32> &acquiredSquares();
+    void setAcquiredSquares(QList<qint32> &list);
+
+    void populateLoadedComponents();
 
 private:
     Cell findSuitableCell(QPointF scenePos);
@@ -94,6 +102,9 @@ private:
     class Private;
     Private* const d;
 };
+
+QDataStream &operator<<(QDataStream &out, CanvasManager * cm);
+QDataStream &operator>>(QDataStream &in, CanvasManager *& cm);
 
 }
 

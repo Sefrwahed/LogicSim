@@ -68,6 +68,12 @@ CanvasManager *Canvas::canvasManager()
     return d->mCanvasManager;
 }
 
+void Canvas::setManager(CanvasManager *manager)
+{
+    if(manager)
+        d->mCanvasManager = manager;
+}
+
 bool Canvas::tabAboutToBeClosed(int index)
 {
     if (index == d->tabIndex)
