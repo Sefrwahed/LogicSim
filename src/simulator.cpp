@@ -1,6 +1,11 @@
 #include "simulator.h"
 namespace Logicsim
 {
+Simulator::Simulator()
+{
+
+}
+
 Simulator* Simulator::instance = 0;
 Simulator* Simulator::getInstance()
 {
@@ -8,6 +13,7 @@ Simulator* Simulator::getInstance()
     return instance;
 }
 
+/*
 void Simulator::simulate(QList<Component *> list)
 {
     QList<Gate *> g = GatesFromComponets(list);
@@ -25,24 +31,11 @@ void Simulator::simulate(QList<Component *> list)
     }
     t--;
     }
-}
 
-QList<Gate *> Simulator::GatesFromComponets(QList<Component *> list)
-{
-    QList<Gate *> gates;
-
-    foreach (Component * g, list)
-    {
-        if(/*g is Gate*/0)
-        {
-            //gates.append(g);
-        }
-    }
-    return gates;
-}
+} */
 
 
-Simulator::Simulator()
+void Simulator::simulate(OutputComponent*)
 {
 
 }

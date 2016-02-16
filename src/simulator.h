@@ -13,15 +13,18 @@
 
 namespace Logicsim
 {
-class Simulator
+class Simulator : public QObject
 {
+    Q_OBJECT
 public:
     static Simulator * getInstance();
-    void simulate(QList<Component *> list);
+
     QList<Gate *>GatesFromComponets(QList<Component *> list);
 private:
     static Simulator * instance;
     Simulator();
+public Q_SLOTS:
+    void simulate(OutputComponent *);
 
 };
 } // namespace Logicsim
