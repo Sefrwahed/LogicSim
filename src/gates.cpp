@@ -30,10 +30,12 @@ QRectF AndGate::boundingRect() const
 void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawLine(0,0,0,50);
-    painter->drawLine(0,0,20,0);
-    painter->drawLine(0,50,20,50);
-    painter->drawArc(QRect(0,0,40,50), -1400, 3000);
+    QPainterPath path(QPointF(0,0));
+    path.arcTo(QRect(0,0,40,50), 90, -180);
+    path.lineTo(20,50);
+    path.lineTo(0,50);
+    path.lineTo(0,0);
+    painter->drawPath(path);
 }
 
 void AndGate::calcOutput()
@@ -91,9 +93,12 @@ QRectF OrGate::boundingRect() const
 void OrGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawArc(QRect(-22,-5,25,60), -800 , 1500);
-    painter->drawArc(QRect(-30,-2,70,50), -1600, 1500);
-    painter->drawArc(QRect(-30, 4,70,50),  100 , 1500);
+    QPainterPath path;
+    path.arcMoveTo(QRect(-22,-5,25,60), -50);
+    path.arcTo(QRect(-30,-2,70,50), -100, 93.75);
+    path.arcTo(QRect(-30,4,70,50), 6.25, 93.75);
+    path.arcTo(QRect(-22,-5,25,60), 43.75, -93.75);
+    painter->drawPath(path);
 }
 
 
@@ -132,10 +137,12 @@ QRectF NotGate::boundingRect() const
 void NotGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawLine(0,0,0,50);
-    painter->drawLine(0,0,35,27);
-    painter->drawLine(0,50,35,27);
-    painter->drawEllipse(35,25,5,5);
+    QPainterPath path(QPointF(35,27));
+    path.lineTo(0,50);
+    path.lineTo(0,0);
+    path.lineTo(35,27);
+    path.addEllipse(35,25,5,5);
+    painter->drawPath(path);
 }
 
 // ===================== NandGate ===================
@@ -173,11 +180,14 @@ QString NandGate::imageUrl() const
 void NandGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawLine(0,0,0,50);
-    painter->drawLine(0,0,17,0);
-    painter->drawLine(0,50,17,50);
-    painter->drawArc(QRect(-4,0,40,50), -1400, 3000);
-    painter->drawEllipse(35,25,5,5);
+    QPainterPath path(QPointF(0,0));
+    path.arcTo(QRect(-4,0,40,50), 90, -90);
+    path.arcTo(QRect(36,25,5,5), 180, -360);
+    path.arcTo(QRect(-4,0,40,50), 0, -90);
+    path.lineTo(20,50);
+    path.lineTo(0,50);
+    path.lineTo(0,0);
+    painter->drawPath(path);
 }
 
 // ===================== NorGate ===================
@@ -214,10 +224,13 @@ QString NorGate::imageUrl() const
 void NorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawArc(QRect(-22,-5,25,60), -800, 1500);
-    painter->drawArc(QRect(-23,-2,60,50), -1700, 1500);
-    painter->drawArc(QRect(-23,4,60,50),  200, 1500);
-    painter->drawEllipse(36,24,5,5);
+    QPainterPath path;
+    path.arcMoveTo(QRect(-22,-5,25,60), -50);
+    path.arcTo(QRect(-22,-2,60,50), -106.25, 93.75);
+    path.arcTo(QRect(36,25,5,5), 180, -360);
+    path.arcTo(QRect(-22,4,60,50), 12.5, 93.75);
+    path.arcTo(QRect(-22,-5,25,60), 43.75, -93.75);
+    painter->drawPath(path);
 }
 
 // ===================== XorGate ===================
@@ -257,10 +270,14 @@ QString XorGate::imageUrl() const
 void XorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
-    painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
-    painter->drawArc(QRect(-19,-2,60,50), -1700, 1600);
-    painter->drawArc(QRect(-19,4,60,50),  200, 1500);
+    QPainterPath path;
+    path.arcMoveTo(QRect(-18,-5,25,60), -50);
+    path.arcTo(QRect(-19,-2,60,50), -106.25, 93.75);
+    path.arcTo(QRect(-19,4,60,50), 12.5, 93.75);
+    path.arcTo(QRect(-18,-5,25,60), 43.75, -93.75);
+    path.arcMoveTo(QRect(-22,-5,25,60), -46.875);
+    path.arcTo(QRect(-22,-5,25,60), -46.875, 84.375);
+    painter->drawPath(path);
 }
 
 // ===================== XnorGate ===================
@@ -300,11 +317,15 @@ QString XnorGate::imageUrl() const
 void XnorGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Gate::paint(painter, option, widget);
-    painter->drawArc(QRect(-18,-5,25,60), -800, 1500);
-    painter->drawArc(QRect(-23,-5,25,60), -750, 1350);
-    painter->drawArc(QRect(-24,-2,60,50), -1550, 1400);
-    painter->drawArc(QRect(-24,4,60,50),  200, 1300);
-    painter->drawEllipse(36,24,5,5);
+    QPainterPath path;
+    path.arcMoveTo(QRect(-18,-5,25,60), -50);
+    path.arcTo(QRect(-24,-2,60,50), -96.875, 87.5);
+    path.arcTo(QRect(36,25,5,5), 180, -360);
+    path.arcTo(QRect(-24,4,60,50), 12.5, 81.25);
+    path.arcTo(QRect(-18,-5,25,60), 43.75, -93.75);
+    path.arcMoveTo(QRect(-22,-5,25,60), -46.875);
+    path.arcTo(QRect(-22,-5,25,60), -46.875, 84.375);
+    painter->drawPath(path);
 }
 
 } // namespace Logicsim

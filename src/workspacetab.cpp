@@ -27,7 +27,6 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
     setShowGrid(false);
 
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    //setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 WorkspaceTab::~WorkspaceTab()
@@ -116,8 +115,8 @@ void WorkspaceTab::keyPressEvent(QKeyEvent *event)
 void WorkspaceTab::mousePressEvent(QMouseEvent *event)
 {
     QTableWidget::mousePressEvent(event);
-
-    emit componentSelectedFromWorkspace(selectedItems().at(0)->row());
+    if(selectedItems().length() == 1)
+        emit componentSelectedFromWorkspace(selectedItems().at(0)->row());
 }
 
 }

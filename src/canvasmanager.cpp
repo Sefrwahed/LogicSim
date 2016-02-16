@@ -13,16 +13,19 @@ public:
     Private() :
         componentCount(0),
         selectedComponentIndex(-1),
+        selectedLineIndex(-1),
         componentId(0),
         oldSquareNumberOfMovingComponent(0),
         selectedComponent(0),
         canvas(0),
         selectedInput(0),
-        selectedOutput(0)
+        selectedOutput(0),
+        selectedLine(0)
     {}
 
     int                    componentCount;
     int                    selectedComponentIndex;
+    int                    selectedLineIndex;
     int                    componentId;
     int                    oldSquareNumberOfMovingComponent;
     Component*             selectedComponent;
@@ -33,6 +36,7 @@ public:
     QSet<int>              acquiredSquares;
     QList<Component *>     mComponents;
     QList<ConnectionLine*> connectionLines;
+    ConnectionLine*        selectedLine;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
@@ -49,6 +53,16 @@ QList<Component *> CanvasManager::components()
 QGraphicsScene *CanvasManager::canvas()
 {
     return d->canvas;
+}
+
+int CanvasManager::selectedComponentIndex()
+{
+    return d->selectedComponentIndex;
+}
+
+int CanvasManager::selectedLineIndex()
+{
+    return d->selectedLineIndex;
 }
 
 void CanvasManager::addComponent(Component *component, QPointF scenePos)
@@ -71,11 +85,11 @@ void CanvasManager::selectComponent(Component *component)
 {
     if(d->selectedComponent != component)
     {
+        unSelectPins();
         qDebug() << "selected: " << component->name();
         d->selectedComponent = component;
         d->selectedComponentIndex = d->mComponents.indexOf(d->selectedComponent);
         d->selectedComponent->setSelection(true);
-
         emit componentSelectedFromCanvas(d->mComponents.indexOf(d->selectedComponent));
     }
 }
@@ -94,11 +108,23 @@ void CanvasManager::unSelectComponent()
 void CanvasManager::deleteComponent(int index)
 {
     unSelectComponent();
-    d->canvas->removeItem(d->mComponents.at(index));
+    Component* c = d->mComponents.at(index);
+    d->canvas->removeItem(c);
     d->acquiredSquares.remove(selectedComponentSquare(index));
     d->mComponents.removeAt(index);
     d->componentCount--;
+
+    foreach(Pin* p, c->pins())
+    {
+        foreach(ConnectionLine* l, p->connectedLines())
+        {
+            emit l->lineSelected();
+            deleteLine(d->selectedLineIndex);
+        }
+    }
+
     emit componentDeleted(index);
+    delete c;
 }
 
 void CanvasManager::movingComponent(Component *component)
@@ -142,6 +168,15 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
 
 void CanvasManager::pinPressed(Pin *p)
 {
+    if(d->selectedOutput && p->parentComponent() == d->selectedOutput->parentComponent())
+    {
+        d->selectedOutput = 0;
+    }
+    else if(d->selectedInput && p->parentComponent() == d->selectedInput->parentComponent())
+    {
+        d->selectedInput = 0;
+    }
+
     if(p->type() == Pin::Input)
     {
         if(p->isConnected())
@@ -173,18 +208,24 @@ void CanvasManager::pinPressed(Pin *p)
 
         d->canvas->addItem(line);
 
-        d->selectedInput = 0;
-        d->selectedOutput = 0;
+        unSelectPins();
     }
-
     qDebug() << "Selected input: " << d->selectedInput;
     qDebug() << "Selected output: " << d->selectedOutput;
-
 }
 
-int CanvasManager::selectedComponentIndex()
+void CanvasManager::unSelectPins()
 {
-    return d->selectedComponentIndex;
+    if(d->selectedInput != 0)
+    {
+        d->selectedInput->setSelected(false);
+        d->selectedInput = 0;
+    }
+    if(d->selectedOutput != 0)
+    {
+        d->selectedOutput->setSelected(false);
+        d->selectedOutput = 0;
+    }
 }
 
 Cell CanvasManager::findSuitableCell(QPointF scenePos)
@@ -297,11 +338,29 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
 
 void CanvasManager::selectLine()
 {
-    // TODO: you can catch line which emited the signal
-    // using "sneder()" method and static cast it to
-    // ConnectionLine like this:
-    // static_cast<ConnectionLine*>(sender())
-    qDebug() << "Ana 7seet be line clicked, Msh kda?!";
+    unSelectComponent();
+    d->selectedLine = static_cast<ConnectionLine*>(sender());
+    d->selectedLineIndex = d->connectionLines.indexOf(d->selectedLine);
+}
+
+void CanvasManager::unSelectLine()
+{
+    if(d->selectedLine != 0)
+    {
+        d->selectedLine->setSelected(false);
+        d->selectedLine = 0;
+        d->selectedLineIndex = -1;
+    }
+}
+
+void CanvasManager::deleteLine(int index)
+{
+    unSelectLine();
+    ConnectionLine* l = d->connectionLines.at(index);
+    emit l->lineDeleted();
+    d->canvas->removeItem(l);
+    d->connectionLines.removeAt(index);
+    delete l;
 }
 
 CanvasManager::~CanvasManager()
