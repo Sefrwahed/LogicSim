@@ -116,7 +116,14 @@ void Canvas::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
 {
     if(event->mimeData()->property("acceptable").toBool())
     {
-        event->acceptProposedAction();
+        if(d->mCanvasManager->isDropable(event->scenePos()))
+        {
+            event->acceptProposedAction();
+        }
+        else
+        {
+            event->setAccepted(false);
+        }
     }
     else
     {
@@ -136,20 +143,6 @@ void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
     }
 }
 
-void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(mouseGrabberItem() != 0)
-    {
-        Component *component = dynamic_cast<Component*>(mouseGrabberItem());
-        if(component)
-        {
-            d->mCanvasManager->movingComponent(component);
-            d->mCanvasManager->componentMoved(component, event->scenePos());
-        }
-    }
-    QGraphicsScene::mouseReleaseEvent(event);
-}
-
 void Canvas::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key())
@@ -166,34 +159,6 @@ void Canvas::keyPressEvent(QKeyEvent *event)
             d->mCanvasManager->deleteLine(d->mCanvasManager->selectedLineIndex());
         }
         break;
-    }
-}
-
-void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
-{
-    int step = GRID_STEP;
-    painter->setPen(QPen(QColor(200, 200, 255, 125)));
-
-    // draw horizontal grid
-    qreal start = d->round(rect.top(), step);
-    if (start > rect.top()) {
-        start -= step;
-    }
-
-    for (qreal y = start - step; y < rect.bottom(); ) {
-        y += step;
-        painter->drawLine(rect.left(), y, rect.right(), y);
-    }
-
-    // now draw vertical grid
-    start = d->round(rect.left(), step);
-    if (start > rect.left()) {
-        start -= step;
-    }
-
-    for (qreal x = start - step; x < rect.right(); ) {
-        x += step;
-        painter->drawLine(x, rect.top(), x, rect.bottom());
     }
 }
 
@@ -226,9 +191,60 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             d->mCanvasManager->selectComponent(component);
             d->mCanvasManager->movingComponent(component);
+            if(!d->mCanvasManager->isDropable(event->scenePos()))
+            {
+                d->view->setCursor(Qt::ForbiddenCursor);
+            }
+            else
+            {
+                d->view->setCursor(Qt::ClosedHandCursor);
+            }
         }
     }
     QGraphicsScene::mouseMoveEvent(event);
+}
+
+void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(mouseGrabberItem() != 0)
+    {
+        Component *component = dynamic_cast<Component*>(mouseGrabberItem());
+        if(component)
+        {
+            d->mCanvasManager->movingComponent(component);
+            d->mCanvasManager->componentMoved(component, event->scenePos());
+            d->view->setCursor(Qt::ArrowCursor);
+        }
+    }
+    QGraphicsScene::mouseReleaseEvent(event);
+}
+
+void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    int step = GRID_STEP;
+    painter->setPen(QPen(QColor(200, 200, 255, 125)));
+
+    // draw horizontal grid
+    qreal start = d->round(rect.top(), step);
+    if (start > rect.top()) {
+        start -= step;
+    }
+
+    for (qreal y = start - step; y < rect.bottom(); ) {
+        y += step;
+        painter->drawLine(rect.left(), y, rect.right(), y);
+    }
+
+    // now draw vertical grid
+    start = d->round(rect.left(), step);
+    if (start > rect.left()) {
+        start -= step;
+    }
+
+    for (qreal x = start - step; x < rect.right(); ) {
+        x += step;
+        painter->drawLine(x, rect.top(), x, rect.bottom());
+    }
 }
 
 } // namespace Logicsim

@@ -363,6 +363,12 @@ void CanvasManager::deleteLine(int index)
     delete l;
 }
 
+bool CanvasManager::isDropable(QPointF position)
+{
+    Cell c = findSuitableCell(position);
+    return (!c.isNull());
+}
+
 CanvasManager::~CanvasManager()
 {
     delete d;
