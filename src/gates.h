@@ -8,7 +8,6 @@
 // Local includes
 
 #include "logicsim_global.h"
-#include "node.h"
 #include "pin.h"
 #include "gate.h"
 

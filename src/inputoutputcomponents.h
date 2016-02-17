@@ -7,7 +7,6 @@
 
 // Local includes
 
-#include "node.h"
 #include "pin.h"
 #include "component.h"
 #include "logicsim_global.h"

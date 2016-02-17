@@ -4,7 +4,7 @@
 // Local includes
 
 #include "component.h"
-#include "node.h"
+#include "pin.h"
 
 namespace Logicsim
 {
