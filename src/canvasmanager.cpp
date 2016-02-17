@@ -148,8 +148,7 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
     Cell newCell = findSuitableCell(scenePos);
     if(!newCell.isNull() &&
        calculateSquareNumber(newCell) != d->oldSquareNumberOfMovingComponent &&
-       scenePos.x() > 0 && scenePos.y() > 0 &&
-       scenePos.x() < CANVAS_WIDTH && scenePos.y() < CANVAS_HEIGHT)
+       !isOutOfCanvas(scenePos))
     {
         qDebug() << "Gate Moved";
         parkComponent(component, newCell);
@@ -370,6 +369,28 @@ void CanvasManager::deleteLine(int index)
     d->connectionLines.removeAt(index);
     delete l;
     updateComponents();
+}
+
+bool CanvasManager::isDropable(QPointF position)
+{
+    Cell c = findSuitableCell(position);
+    return (!c.isNull());
+}
+
+bool CanvasManager::isOutOfCanvas(QPointF position)
+{
+    int leftEdge = d->canvas->views().at(0)->horizontalScrollBar()->value();
+    int topEdge = d->canvas->views().at(0)->verticalScrollBar()->value();
+    int rightEdge = d->canvas->views().at(0)->size().width() + leftEdge;
+    int bottomEdge = d->canvas->views().at(0)->size().height() + topEdge;
+    if(position.rx() < leftEdge || position.ry() < topEdge || position.rx() > rightEdge || position.ry() > bottomEdge)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 CanvasManager::~CanvasManager()

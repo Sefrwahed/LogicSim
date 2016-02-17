@@ -72,6 +72,9 @@ public:
     void unSelectLine();
     void deleteLine(int index);
 
+    bool isDropable(QPointF position);
+    bool isOutOfCanvas(QPointF position);
+
 private:
     Cell findSuitableCell(QPointF scenePos);
     void parkComponent(Component* g, Cell c);

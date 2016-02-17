@@ -116,7 +116,7 @@ void WorkspaceTab::mousePressEvent(QMouseEvent *event)
 {
     QTableWidget::mousePressEvent(event);
     if(selectedItems().length() == 1)
-        emit componentSelectedFromWorkspace(selectedItems().at(0)->row());
+        emit componentSelectedFromWorkspace(selectedItems().at(0)->row());\
 }
 
 }
