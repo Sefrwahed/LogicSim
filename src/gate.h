@@ -11,6 +11,7 @@ namespace Logicsim
 
 class Gate : public Component
 {
+    Q_OBJECT
 public:
     ~Gate();
 
@@ -29,10 +30,14 @@ public:
 
 protected:
     Gate(Type t);
+    Pin * in1();
+    Pin * in2();
 
     void setMaxInput(qint16 mi);
 public Q_SLOTS:
     virtual void calcOutput()=0;
+Q_SIGNALS:
+    void outputChanged(bool value);
 
 private:
     class Private;

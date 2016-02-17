@@ -18,7 +18,7 @@ public:
     QString name();
     bool value();
     bool isCalc();
-
+//Q_SIGNAL bool value_changed();
 
 private:
     bool m_value;

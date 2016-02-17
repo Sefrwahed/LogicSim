@@ -46,6 +46,15 @@ Gate::Gate(Type t)
     d->in2 = new Pin(Pin::Input, this);
     d->out = new Pin(Pin::Output, this);
 
+    connect(d->in1, SIGNAL(changed(bool)),
+            this, SLOT(calcOutput()));
+
+    connect(d->in2, SIGNAL(changed(bool)),
+            this, SLOT(calcOutput()));
+
+    connect(this, SIGNAL(outputChanged(bool)),
+            d->out, SLOT(updatePinValue(bool)));
+
     addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
 
     QLineF line(0,0,10,0);
@@ -59,6 +68,16 @@ Gate::Gate(Type t)
     Li1->setPos(10,5);
     Li2->setPos(10,5);
     Lo1->setPos(-10,5);
+}
+
+Pin * Gate::in1()
+{
+    return d->in1;
+}
+
+Pin * Gate::in2()
+{
+    return d->in2;
 }
 
 Gate::~Gate()

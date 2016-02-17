@@ -60,6 +60,7 @@ public:
     Node * bodyNode();
     void setBodyNode(Node *n);
 
+
 private:
     Node *pnode;
     Pin* m_pin;

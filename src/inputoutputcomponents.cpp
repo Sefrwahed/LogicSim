@@ -24,6 +24,7 @@ InputComponent::InputComponent()
 
     pnode = new Node;
     pnode->setValue(false);
+    m_pin->updatePinValue(false);
 
     setToolTip("Input Component");
 }
@@ -48,11 +49,11 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 {
     painter->setRenderHint(QPainter::Antialiasing);
     Component::paint(painter, option, widget);
-    if(pnode->value() == true)
+    if(m_pin->value() == true)
     {
         painter->setBrush(QColor(0,255,0,180));
     }
-    else if(pnode->value() == false)
+    else if(m_pin->value() == false)
     {
         painter->setBrush(QColor(255,0,0,180));
     }
@@ -95,8 +96,8 @@ void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void InputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-
-    pnode->value() ? pnode->setValue(false) : pnode->setValue(true);
+qDebug() << "input component dbl click :: updating pin val";
+    m_pin->value() ? m_pin->updatePinValue(false) : m_pin->updatePinValue(true);
     update();
 
     qDebug()<<"Body clicked";
@@ -152,20 +153,19 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 {
     painter->setRenderHint(QPainter::Antialiasing);
     Component::paint(painter, option, widget);
-    if(pnode != 0)
+    painter->setBrush(Qt::SolidPattern);
+    if(m_pin != 0)
     {
-        if(pnode->value() == true)
+        if(m_pin->value() == true)
         {
-            painter->setBrush(Qt::SolidPattern);
-            painter->setBrush(Qt::green);
+            painter->setBrush(QColor(0,255,0,200));
         }
-        else if(pnode->value() == false)
+        else if(m_pin->value() == false)
         {
-            painter->setBrush(Qt::SolidPattern);
-            painter->setBrush(Qt::red);
+            painter->setBrush(QColor(255,0,0,200));
         }
     }
-    painter->drawEllipse(0,0,30,30);
+    painter->drawRect(0,0,30,30);
 }
 
 QString OutputComponent::imageUrl() const
@@ -204,8 +204,8 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void OutputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-    if(pnode != 0)
-        qDebug()<<"Body clicked"<<pnode->value();
+    if(m_pin != 0)
+        qDebug()<<"Body clicked"<<m_pin->value();
 }
 
 Node* OutputComponent::bodyNode()
