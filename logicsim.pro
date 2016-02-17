@@ -13,7 +13,6 @@ TEMPLATE = app
 
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
-    src/node.cpp \
     src/canvas.cpp \
     src/canvasmanager.cpp \
     src/componentstab.cpp \
@@ -26,7 +25,6 @@ SOURCES += src/main.cpp \
     src/pin.cpp
 
 HEADERS += src/mainwindow.h \
-    src/node.h \
     src/canvas.h \
     src/componentstab.h \
     src/component.h \
