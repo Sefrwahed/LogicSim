@@ -1,7 +1,6 @@
 #include <QtWidgets>
 #include "pin.h"
 #include "pin.h"
-#include "inouparts.h"
 #include "component.h"
 #include "inputoutputcomponents.h"
 
@@ -22,8 +21,6 @@ InputComponent::InputComponent()
     QGraphicsLineItem *Li = new QGraphicsLineItem(QLineF(0,0,10,0), m_pin);
     Li->setPos(-10,5);
 
-    pnode = new Node;
-    pnode->setValue(false);
     m_pin->updatePinValue(false);
 
     setToolTip("Input Component");
@@ -35,10 +32,7 @@ InputComponent::InputComponent(const InputComponent &g)
     Q_UNUSED(g);
 }
 
-InputComponent::~InputComponent()
-{
-    delete pnode;
-}
+InputComponent::~InputComponent(){}
 
 QRectF InputComponent::boundingRect() const
 {
@@ -101,9 +95,9 @@ qDebug() << "input component dbl click :: updating pin val";
     update();
 
     qDebug()<<"Body clicked";
-    qDebug()<<"input changed to : "<<pnode->value();
+    qDebug()<<"input changed to : "<<m_pin->value();
 }
-
+/*
 Node* InputComponent::bodyNode()
 {
     return pnode;
@@ -112,11 +106,11 @@ void InputComponent::setBodyNode(Node *n)
 {
     pnode = n;
 }
-
+*/
 // ==============================================
 
 OutputComponent::OutputComponent()
-    : Component(Component::OutputComponent), pnode(0), m_pin(0)
+    : Component(Component::OutputComponent), m_pin(0)
 {
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -141,7 +135,6 @@ OutputComponent::OutputComponent(const OutputComponent &g): Component(Component:
 
 OutputComponent::~OutputComponent()
 {
-    delete pnode;
 }
 
 QRectF OutputComponent::boundingRect() const
@@ -206,15 +199,6 @@ void OutputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     Q_UNUSED(event);
     if(m_pin != 0)
         qDebug()<<"Body clicked"<<m_pin->value();
-}
-
-Node* OutputComponent::bodyNode()
-{
-    return pnode;
-}
-void OutputComponent::setBodyNode(Node *n)
-{
-    pnode = n;
 }
 
 } // namespace Logicsim

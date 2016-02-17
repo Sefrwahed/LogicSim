@@ -8,7 +8,6 @@
 // Local includes
 
 #include "node.h"
-#include "inouparts.h"
 #include "pin.h"
 #include "component.h"
 #include "logicsim_global.h"
@@ -31,18 +30,15 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
-    Node * bodyNode();
-    void setBodyNode(Node *n);
-
 private:
-    Node *pnode;
+//    Node *pnode;
     Pin* m_pin;
 };
 
 // ==============================================
 
 class OutputComponent : public Component
-{ 
+{
 public:
     OutputComponent();
     OutputComponent(const OutputComponent& g);
@@ -57,12 +53,8 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
-    Node * bodyNode();
-    void setBodyNode(Node *n);
-
-
 private:
-    Node *pnode;
+//    Node *pnode;
     Pin* m_pin;
 };
 

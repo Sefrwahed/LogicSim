@@ -16,11 +16,6 @@ public:
     ~Gate();
 
     qint16 maxInput();
-    Node* outputNode();
-    void setInput(QList<Node*>& n);
-    QList<Node*> inputList() const;
-
-//    virtual void calcOutput() = 0;
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

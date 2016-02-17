@@ -16,27 +16,23 @@ class Gate::Private
 {
 public:
     Private()
-        : output(0),
-          in1(0),
+        : in1(0),
           in2(0),
           out(0)
     {
     }
 
-    Node*           output;
     qint16          maxInput;
     Component::Type type;
     Pin*            in1;
     Pin*            in2;
     Pin*            out;
     int             metaTypeId;
-    QList<Node*>    input;
-};
+    };
 
 Gate::Gate(Type t)
     : Component(t), d(new Private)
 {
-    d->output = new Node;
     d->maxInput = 2;
 
     setFlag(QGraphicsItem::ItemIsMovable);
@@ -95,20 +91,7 @@ qint16 Gate::maxInput()
     return d->maxInput;
 }
 
-Node* Gate::outputNode()
-{
-    return d->output;
-}
 
-QList<Node*> Gate::inputList() const
-{
-    return d->input;
-}
-
-void Gate::setInput(QList<Node *> & n)
-{
-    d->input = n;
-}
 
 void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
