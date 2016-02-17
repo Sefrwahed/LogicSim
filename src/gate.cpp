@@ -33,13 +33,18 @@ public:
 Gate::Gate(Type t)
     : Component(t), d(new Private)
 {
-    d->maxInput = 2;
-
+    if(t == Gate::NotGate)
+    {
+        d->maxInput = 1;
+    }
+    else
+    {
+        d->maxInput = 2;
+    }
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 
     d->in1 = new Pin(Pin::Input, this);
-    d->in2 = new Pin(Pin::Input, this);
     d->out = new Pin(Pin::Output, this);
 
     connect(d->in1, SIGNAL(changed(bool)),
@@ -51,19 +56,31 @@ Gate::Gate(Type t)
     connect(this, SIGNAL(outputChanged(bool)),
             d->out, SLOT(updatePinValue(bool)));
 
-    addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
-
     QLineF line(0,0,10,0);
     QGraphicsLineItem *Li1 = new QGraphicsLineItem(line,d->in1);
-    QGraphicsLineItem *Li2 = new QGraphicsLineItem(line,d->in2);
     QGraphicsLineItem *Lo1 = new QGraphicsLineItem(line,d->out);
 
-    d->in1->setPos(-20,5);
-    d->in2->setPos(-20,35);
-    d->out->setPos(50,22.5);
-    Li1->setPos(10,5);
-    Li2->setPos(10,5);
-    Lo1->setPos(-10,5);
+    if(d->maxInput == 1)
+    {
+        addPins(QList<Pin*>() << d->in1 << d->out);
+        d->in1->setPos(-20,22.5);
+        d->out->setPos(50,22.5);
+        Li1->setPos(10,5);
+        Lo1->setPos(-10,5);
+    }
+    else
+    {
+        d->in2 = new Pin(Pin::Input, this);
+        addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
+
+        QGraphicsLineItem *Li2 = new QGraphicsLineItem(line,d->in2);
+        d->in1->setPos(-20,5);
+        d->in2->setPos(-20,35);
+        d->out->setPos(50,22.5);
+        Li1->setPos(10,5);
+        Li2->setPos(10,5);
+        Lo1->setPos(-10,5);
+    }
 }
 
 Pin * Gate::in1()
@@ -96,9 +113,7 @@ qint16 Gate::maxInput()
 void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsObject::mouseMoveEvent(event);
-    d->in1->updateConnectedLine();
-    d->in2->updateConnectedLine();
-    d->out->updateConnectedLine();
+    updateConnection();
 //    if(x() - GATE_X_MARGIN < 0)
 //    {
 //        setPos(GATE_X_MARGIN, y());
@@ -131,8 +146,9 @@ QRectF Gate::boundingRect() const
 void Gate::updateConnection()
 {
     d->in1->updateConnectedLine();
-    d->in2->updateConnectedLine();
     d->out->updateConnectedLine();
+    if(maxInput() > 1)
+        d->in2->updateConnectedLine();
 }
 
 } // namespace Logicsim

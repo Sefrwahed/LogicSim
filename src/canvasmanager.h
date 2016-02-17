@@ -78,6 +78,7 @@ private:
     QList<Cell> alternativePlaces(Cell c) const;
     int calculateSquareNumber(Cell c) const;
     int selectedComponentSquare(int index) const;
+    void updateComponents();
 
 public Q_SLOTS:
     void selectedFromWorkspace(int index);

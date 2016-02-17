@@ -149,7 +149,11 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     painter->setBrush(Qt::SolidPattern);
     if(m_pin != 0)
     {
-        if(m_pin->value() == true)
+        if(!m_pin->isConnected())
+        {
+            painter->setBrush(QColor(Qt::gray));
+        }
+        else if(m_pin->value() == true)
         {
             painter->setBrush(QColor(0,255,0,200));
         }

@@ -132,6 +132,7 @@ NotGate::NotGate(const NotGate &g)
 void NotGate::calcOutput()
 {
     bool out_logic;
+    out_logic = !in1()->value();
     //bool out_logic = !(inputList()[0]->value());
     //outputNode()->setValue(!out);
     emit Gate::outputChanged(out_logic);
