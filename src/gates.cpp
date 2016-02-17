@@ -1,4 +1,5 @@
 #include "gates.h"
+#include <string>
 
 // Qt includes
 
@@ -40,13 +41,19 @@ void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 void AndGate::calcOutput()
 {
-    bool out = true;
+    bool out_logic = true;
+    /*
     foreach (Node * n, inputList())
     {
-        out &= n->value();
-    }
+        out_logic &= n->value();
+    }*/
 
-    outputNode()->setValue(out);
+    //out_logic = d->
+    //outputNode()->setValue(out);
+   out_logic = in1()->value() && in2()->value();
+   qDebug() << "calculate AND called";
+   qDebug() << out_logic;
+   emit outputChanged(out_logic);
 }
 
 QString AndGate::imageUrl() const
@@ -71,13 +78,17 @@ OrGate::OrGate(const OrGate &g)
 
 void OrGate::calcOutput()
 {
-    bool out = false;
-    foreach (Node * n, inputList())
+    bool out_logic = false;
+    /*foreach (Node * n, inputList())
     {
-        out |= n->value();
-    }
+        out_logic |= n->value();
+    }*/
+    out_logic = in1()->value() || in2()->value();
+    qDebug() << "calculate OR called";
+    qDebug() << out_logic;
 
-    outputNode()->setValue(out);
+    //outputNode()->setValue(out);
+    emit outputChanged(out_logic);
 }
 
 QString OrGate::imageUrl() const
@@ -120,8 +131,10 @@ NotGate::NotGate(const NotGate &g)
 
 void NotGate::calcOutput()
 {
-    bool out = inputList()[0]->value();
-    outputNode()->setValue(!out);
+    bool out_logic;
+    //bool out_logic = !(inputList()[0]->value());
+    //outputNode()->setValue(!out);
+    emit Gate::outputChanged(out_logic);
 }
 
 QString NotGate::imageUrl() const
@@ -161,14 +174,20 @@ NandGate::NandGate(const NandGate &g)
 
 void NandGate::calcOutput()
 {
-    bool out = true;
-    foreach (Node * n, inputList())
+    bool out_logic = true;
+    /*foreach (Node * n, inputList())
     {
-        out &= n->value();
+        out_logic &= n->value();
 
     }
+    */
+    out_logic = in1()->value() && in2()->value();
+    qDebug() << "calculate NAND called";
 
-    outputNode()->setValue(!out);
+    out_logic = !out_logic;
+    qDebug() << out_logic;
+    //outputNode()->setValue(!out);
+    emit outputChanged(out_logic);
 }
 
 QString NandGate::imageUrl() const
@@ -206,14 +225,21 @@ NorGate::NorGate(const NorGate &g)
 
 void NorGate::calcOutput()
 {
-    bool out = false;
-    foreach (Node * n, inputList())
+    bool out_logic = false;
+    /*foreach (Node * n, inputList())
     {
-        out |= n->value();
+        out_logic |= n->value();
 
     }
+    */
+    out_logic = in1()->value() || in2()->value();
+    out_logic = !out_logic;
+    qDebug() << "calculate NOR called";
+    qDebug() << out_logic;
 
-    outputNode()->setValue(!out);
+
+    //outputNode()->setValue(!out);
+    emit outputChanged(out_logic);
 }
 
 QString NorGate::imageUrl() const
@@ -249,8 +275,8 @@ XorGate::XorGate(const XorGate &g)
 
 void XorGate::calcOutput()
 {
-    bool out = inputList()[0]->value();
-    outputNode()->setValue(out);
+    bool out_logic;// = inputList()[0]->value();
+    /*outputNode()->setValue(out);
     int i ;
     for ( i = 1 ; i< inputList().size() ; i++);
     {
@@ -259,7 +285,11 @@ void XorGate::calcOutput()
         else
             out = 1 ;
     }
-    outputNode()->setValue(out);
+    outputNode()->setValue(out);*/
+    out_logic = in1()->value() ^ in2()->value();
+    qDebug() << "calculate XOR called";
+    qDebug() << out_logic;
+    emit outputChanged(out_logic);
 }
 
 QString XorGate::imageUrl() const
@@ -296,8 +326,8 @@ XnorGate::XnorGate(const XnorGate &g)
 
 void XnorGate::calcOutput()
 {
-    bool out = inputList()[0]->value();
-    outputNode()->setValue(out);
+    bool out_logic;
+    /*outputNode()->setValue(out);
     int i ;
     for( i = 1 ; i< inputList().size() ; i++)
     {
@@ -306,7 +336,12 @@ void XnorGate::calcOutput()
         else
             out = 1 ;
     }
-    outputNode()->setValue(!out);
+    outputNode()->setValue(!out);*/
+    out_logic = in1()->value() || in2()->value();
+    out_logic = !out_logic;
+    qDebug() << "calculate XNOR called";
+    qDebug() << out_logic;
+    emit outputChanged(out_logic);
 }
 
 QString XnorGate::imageUrl() const

@@ -16,6 +16,13 @@ ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
 
     setLine(QLineF(m_in->centerPos(), m_out->centerPos()));
     setFlag(QGraphicsItem::ItemIsSelectable);
+
+    if(m_out && m_in)
+    {
+        connect(m_out, SIGNAL(changed(bool)),
+                m_in, SLOT(updatePinValue(bool)));
+        m_in->updatePinValue(m_out->value());
+    }
 }
 
 ConnectionLine::~ConnectionLine()

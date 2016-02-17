@@ -1,7 +1,6 @@
 #include <QtWidgets>
 #include "pin.h"
 #include "pin.h"
-#include "inouparts.h"
 #include "component.h"
 #include "inputoutputcomponents.h"
 
@@ -22,8 +21,7 @@ InputComponent::InputComponent()
     QGraphicsLineItem *Li = new QGraphicsLineItem(QLineF(0,0,10,0), m_pin);
     Li->setPos(-10,5);
 
-    pnode = new Node;
-    pnode->setValue(false);
+    m_pin->updatePinValue(false);
 
     setToolTip("Input Component");
 }
@@ -34,10 +32,7 @@ InputComponent::InputComponent(const InputComponent &g)
     Q_UNUSED(g);
 }
 
-InputComponent::~InputComponent()
-{
-    delete pnode;
-}
+InputComponent::~InputComponent(){}
 
 QRectF InputComponent::boundingRect() const
 {
@@ -48,11 +43,11 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 {
     painter->setRenderHint(QPainter::Antialiasing);
     Component::paint(painter, option, widget);
-    if(pnode->value() == true)
+    if(m_pin->value() == true)
     {
         painter->setBrush(QColor(0,255,0,180));
     }
-    else if(pnode->value() == false)
+    else if(m_pin->value() == false)
     {
         painter->setBrush(QColor(255,0,0,180));
     }
@@ -95,14 +90,14 @@ void InputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void InputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-
-    pnode->value() ? pnode->setValue(false) : pnode->setValue(true);
+qDebug() << "input component dbl click :: updating pin val";
+    m_pin->value() ? m_pin->updatePinValue(false) : m_pin->updatePinValue(true);
     update();
 
     qDebug()<<"Body clicked";
-    qDebug()<<"input changed to : "<<pnode->value();
+    qDebug()<<"input changed to : "<<m_pin->value();
 }
-
+/*
 Node* InputComponent::bodyNode()
 {
     return pnode;
@@ -111,11 +106,11 @@ void InputComponent::setBodyNode(Node *n)
 {
     pnode = n;
 }
-
+*/
 // ==============================================
 
 OutputComponent::OutputComponent()
-    : Component(Component::OutputComponent), pnode(0), m_pin(0)
+    : Component(Component::OutputComponent), m_pin(0)
 {
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -140,7 +135,6 @@ OutputComponent::OutputComponent(const OutputComponent &g): Component(Component:
 
 OutputComponent::~OutputComponent()
 {
-    delete pnode;
 }
 
 QRectF OutputComponent::boundingRect() const
@@ -152,20 +146,19 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 {
     painter->setRenderHint(QPainter::Antialiasing);
     Component::paint(painter, option, widget);
-    if(pnode != 0)
+    painter->setBrush(Qt::SolidPattern);
+    if(m_pin != 0)
     {
-        if(pnode->value() == true)
+        if(m_pin->value() == true)
         {
-            painter->setBrush(Qt::SolidPattern);
-            painter->setBrush(Qt::green);
+            painter->setBrush(QColor(0,255,0,200));
         }
-        else if(pnode->value() == false)
+        else if(m_pin->value() == false)
         {
-            painter->setBrush(Qt::SolidPattern);
-            painter->setBrush(Qt::red);
+            painter->setBrush(QColor(255,0,0,200));
         }
     }
-    painter->drawEllipse(0,0,30,30);
+    painter->drawRect(0,0,30,30);
 }
 
 QString OutputComponent::imageUrl() const
@@ -204,17 +197,8 @@ void OutputComponent::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void OutputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-    if(pnode != 0)
-        qDebug()<<"Body clicked"<<pnode->value();
-}
-
-Node* OutputComponent::bodyNode()
-{
-    return pnode;
-}
-void OutputComponent::setBodyNode(Node *n)
-{
-    pnode = n;
+    if(m_pin != 0)
+        qDebug()<<"Body clicked"<<m_pin->value();
 }
 
 } // namespace Logicsim
