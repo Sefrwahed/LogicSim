@@ -191,7 +191,8 @@ void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             d->mCanvasManager->selectComponent(component);
             d->mCanvasManager->movingComponent(component);
-            if(!d->mCanvasManager->isDropable(event->scenePos()))
+            if(!d->mCanvasManager->isDropable(event->scenePos())
+                    || d->mCanvasManager->isOutOfCanvas(event->scenePos()))
             {
                 d->view->setCursor(Qt::ForbiddenCursor);
             }
