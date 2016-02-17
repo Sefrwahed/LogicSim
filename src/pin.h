@@ -38,6 +38,8 @@ public:
     void updateConnectedLine();
     QList<ConnectionLine *> &connectedLines();
 
+    bool value();
+
     QPointF centerPos() const;
 
     int type() const;
@@ -50,11 +52,16 @@ public:
 
 public Q_SLOTS:
     void disconnectLine();
+    void updatePinValue(bool value);
+
+Q_SIGNALS:
+    void changed(bool v);
 
 private:
     Type m_type;
     QList<ConnectionLine*> m_lines;
     Component* m_parent;
+    bool m_value;
 };
 
 } // namespace Logicsim
