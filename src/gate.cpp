@@ -16,27 +16,23 @@ class Gate::Private
 {
 public:
     Private()
-        : output(0),
-          in1(0),
+        : in1(0),
           in2(0),
           out(0)
     {
     }
 
-    Node*           output;
     qint16          maxInput;
     Component::Type type;
     Pin*            in1;
     Pin*            in2;
     Pin*            out;
     int             metaTypeId;
-    QList<Node*>    input;
-};
+    };
 
 Gate::Gate(Type t)
     : Component(t), d(new Private)
 {
-    d->output = new Node;
     d->maxInput = 2;
 
     setFlag(QGraphicsItem::ItemIsMovable);
@@ -45,6 +41,15 @@ Gate::Gate(Type t)
     d->in1 = new Pin(Pin::Input, this);
     d->in2 = new Pin(Pin::Input, this);
     d->out = new Pin(Pin::Output, this);
+
+    connect(d->in1, SIGNAL(changed(bool)),
+            this, SLOT(calcOutput()));
+
+    connect(d->in2, SIGNAL(changed(bool)),
+            this, SLOT(calcOutput()));
+
+    connect(this, SIGNAL(outputChanged(bool)),
+            d->out, SLOT(updatePinValue(bool)));
 
     addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
 
@@ -59,6 +64,16 @@ Gate::Gate(Type t)
     Li1->setPos(10,5);
     Li2->setPos(10,5);
     Lo1->setPos(-10,5);
+}
+
+Pin * Gate::in1()
+{
+    return d->in1;
+}
+
+Pin * Gate::in2()
+{
+    return d->in2;
 }
 
 Gate::~Gate()
@@ -76,20 +91,7 @@ qint16 Gate::maxInput()
     return d->maxInput;
 }
 
-Node* Gate::outputNode()
-{
-    return d->output;
-}
 
-QList<Node*> Gate::inputList() const
-{
-    return d->input;
-}
-
-void Gate::setInput(QList<Node *> & n)
-{
-    d->input = n;
-}
 
 void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {

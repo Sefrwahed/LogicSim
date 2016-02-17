@@ -11,14 +11,11 @@ namespace Logicsim
 
 class Gate : public Component
 {
+    Q_OBJECT
 public:
     ~Gate();
 
     qint16 maxInput();
-    Node* outputNode();
-    void setInput(QList<Node*>& n);
-
-    virtual void calcOutput() = 0;
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -28,9 +25,14 @@ public:
 
 protected:
     Gate(Type t);
+    Pin * in1();
+    Pin * in2();
 
     void setMaxInput(qint16 mi);
-    QList<Node*> inputList() const;
+public Q_SLOTS:
+    virtual void calcOutput()=0;
+Q_SIGNALS:
+    void outputChanged(bool value);
 
 private:
     class Private;

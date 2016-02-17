@@ -73,6 +73,12 @@ QList<ConnectionLine *> &Pin::connectedLines()
     return m_lines;
 }
 
+bool Pin::value()
+{
+    return m_value;
+}
+
+
 QPointF Pin::centerPos() const
 {
     return QPointF(scenePos().x() + boundingRect().width()/2,
@@ -119,6 +125,14 @@ void Pin::disconnectLine()
 {
     qDebug() << "PIN LINE DISCONNECT";
     m_lines.removeOne(static_cast<ConnectionLine*>(sender()));
+}
+
+void Pin::updatePinValue(bool value)
+{
+    m_value = value;
+    m_parent->update();
+    qDebug() << "Update pin val: emitting signal";
+    emit changed(value);
 }
 
 void Pin::mousePressEvent(QGraphicsSceneMouseEvent *event)
