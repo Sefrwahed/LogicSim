@@ -199,7 +199,6 @@ void MainWindow::on_actionOpen_triggered()
     if(c)
     {
         c->setManager(cm);
-        cm->setCanvas(c);
         cm->populateLoadedComponents();
     }
 }

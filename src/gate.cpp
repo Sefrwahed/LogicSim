@@ -51,7 +51,10 @@ Gate::Gate(Type t)
     connect(this, SIGNAL(outputChanged(bool)),
             d->out, SLOT(updatePinValue(bool)));
 
-    addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
+    addPins(QList<Pin*>() << d->out << d->in1 << d->in2);
+    d->out->setNumber(0);
+    d->in1->setNumber(1);
+    d->in2->setNumber(2);
 
     QLineF line(0,0,10,0);
     QGraphicsLineItem *Li1 = new QGraphicsLineItem(line,d->in1);

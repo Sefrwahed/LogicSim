@@ -71,7 +71,10 @@ CanvasManager *Canvas::canvasManager()
 void Canvas::setManager(CanvasManager *manager)
 {
     if(manager)
+    {
         d->mCanvasManager = manager;
+        d->mCanvasManager->setCanvas(this);
+    }
 }
 
 bool Canvas::tabAboutToBeClosed(int index)

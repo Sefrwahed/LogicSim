@@ -17,7 +17,6 @@ SOURCES += src/main.cpp \
     src/component.cpp \
     src/canvasmanager.cpp \
     src/componentstab.cpp \
-    src/component.cpp \
     src/inputoutputcomponents.cpp \
     src/gate.cpp \
     src/gates.cpp \
@@ -30,7 +29,6 @@ HEADERS += src/mainwindow.h \
     src/componentstab.h \
     src/component.h \
     src/inputoutputcomponents.h \
-    src/component.h \
     src/canvasmanager.h \
     src/logicsim_global.h \
     src/gate.h \

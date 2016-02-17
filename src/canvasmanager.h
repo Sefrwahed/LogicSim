@@ -59,6 +59,7 @@ public:
     void setCanvas(QGraphicsScene* s);
 
     QList<Component *> components();
+    Component* componentById(quint32 id);
     void setComponents(QList<Component *> clist);
     int selectedComponentIndex();
     int selectedLineIndex();
@@ -75,9 +76,8 @@ public:
     void unSelectLine();
     void deleteLine(int index);
 
-    QSet<qint32> &acquiredSquares();
-    void setAcquiredSquares(QList<qint32> &list);
-
+    void pushDataToStream(QDataStream &stream);
+    void loadDataFromStream(QDataStream &stream);
     void populateLoadedComponents();
 
 private:
@@ -86,6 +86,7 @@ private:
     QList<Cell> alternativePlaces(Cell c) const;
     int calculateSquareNumber(Cell c) const;
     int selectedComponentSquare(int index) const;
+    void addLineToCanvas(ConnectionLine *line);
 
 public Q_SLOTS:
     void selectedFromWorkspace(int index);
@@ -101,6 +102,7 @@ Q_SIGNALS:
 private:
     class Private;
     Private* const d;
+    friend class QDataStream;
 };
 
 QDataStream &operator<<(QDataStream &out, CanvasManager * cm);

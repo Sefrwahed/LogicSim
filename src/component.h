@@ -37,10 +37,14 @@ public:
     Type componentType() const;
 
     QString name();
+    void setName(QString name);
     int metaTypeId() const;
+
+    quint32 uniqueId() const;
+    void setUniqueId(quint32 id);
+
     virtual QString imageUrl() const = 0;
     void setSelection(bool selection);
-    void setName(QString name);
 
     QRectF boundingRect() const;
     virtual void updateConnection() = 0;

@@ -12,7 +12,7 @@ namespace Logicsim
 {
 
 Pin::Pin(Type t, Component *parent)
-    : QGraphicsObject(parent)
+    : QGraphicsObject(parent), m_number(0)
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
     m_type = t;
@@ -46,6 +46,16 @@ void Pin::setConnected(ConnectionLine *line)
 
     connect(line, SIGNAL(lineDeleted()),
             this, SLOT(disconnectLine()));
+}
+
+void Pin::setNumber(quint32 n)
+{
+    m_number = n;
+}
+
+quint32 Pin::number() const
+{
+    return m_number;
 }
 
 void Pin::updateConnectedLine()

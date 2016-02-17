@@ -16,11 +16,16 @@ class Component::Private
 {
 public:
     Private()
+        : uniqueId(-1),
+          metaTypeId(-1),
+          selected(false)
+
     {}
 
+    quint32         uniqueId;
     int             metaTypeId;
-    Component::Type type;
     bool            selected;
+    Component::Type type;
     QString         name;
     QList<Pin*>     pins;
 };
@@ -50,6 +55,16 @@ void Component::addPins(QList<Pin *> &pins)
 int Component::metaTypeId() const
 {
     return d->metaTypeId;
+}
+
+quint32 Component::uniqueId() const
+{
+    return d->uniqueId;
+}
+
+void Component::setUniqueId(quint32 id)
+{
+    d->uniqueId = id;
 }
 
 Component::Type Component::componentType() const
@@ -107,7 +122,8 @@ void Component::setName(QString name)
 
 QDataStream &operator<<(QDataStream &out, Component * c)
 {
-    out << static_cast<qint32>(c->componentType())
+    out << c->uniqueId()
+        << static_cast<qint32>(c->componentType())
         << QPoint(c->pos().x(), c->pos().y())
         << c->name();
     return out;
@@ -115,10 +131,10 @@ QDataStream &operator<<(QDataStream &out, Component * c)
 
 QDataStream &operator>>(QDataStream &in, Component *& c)
 {
-    qint32 t;
+    qint32 id, t;
     QPoint pos;
     QString name;
-    in >> t >> pos >> name;
+    in >> id >> t >> pos >> name;
     switch(t)
     {
         case Component::AndGate:
@@ -148,6 +164,7 @@ QDataStream &operator>>(QDataStream &in, Component *& c)
             c = new OutputComponent();
             break;
     }
+    c->setUniqueId(id);
     c->setPos(pos);
     c->setName(name);
     return in;

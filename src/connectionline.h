@@ -19,7 +19,7 @@ class ConnectionLine : public QObject, public QGraphicsLineItem
 {
     Q_OBJECT
 public:
-    ConnectionLine(Pin* in, Pin* out, QGraphicsItem* parent=0);
+    ConnectionLine(Pin* out, Pin* in, QGraphicsItem* parent=0);
     ~ConnectionLine();
 
     Pin* input() const;
@@ -27,6 +27,9 @@ public:
 
     Pin* output() const;
     void setOutputPin(Pin * out);
+
+    void pushDataToStream(QDataStream &s);
+//    void loadDataFromStream(QDataStream &s);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

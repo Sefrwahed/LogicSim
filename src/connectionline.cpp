@@ -6,7 +6,7 @@
 namespace Logicsim
 {
 
-ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
+ConnectionLine::ConnectionLine(Pin *out, Pin *in, QGraphicsItem* parent)
     : QGraphicsLineItem(parent), m_out(out), m_in(in)
 {
     setAcceptHoverEvents(true);
@@ -17,12 +17,11 @@ ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
     setLine(QLineF(m_in->centerPos(), m_out->centerPos()));
     setFlag(QGraphicsItem::ItemIsSelectable);
 
-    if(m_out && m_in)
-    {
-        connect(m_out, SIGNAL(changed(bool)),
-                m_in, SLOT(updatePinValue(bool)));
-        m_in->updatePinValue(m_out->value());
-    }
+    connect(m_out, SIGNAL(changed(bool)),
+            m_in, SLOT(updatePinValue(bool)));
+    m_in->updatePinValue(m_out->value());
+    qDebug() << "Connection Line ctor::\n" << "out pin ::" << m_out->parentComponent()->componentType() << "\nin pin ::" << m_in->parentComponent()->componentType() ;
+
 }
 
 ConnectionLine::~ConnectionLine()
