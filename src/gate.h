@@ -32,7 +32,7 @@ protected:
 public Q_SLOTS:
     virtual void calcOutput()=0;
 Q_SIGNALS:
-    void outputChanged(bool value);
+    void outputChanged(Pin::Value value);
 
 private:
     class Private;

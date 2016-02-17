@@ -41,7 +41,7 @@ void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 void AndGate::calcOutput()
 {
-    bool out_logic = true;
+    Pin::Value out_logic;
     /*
     foreach (Node * n, inputList())
     {
@@ -50,10 +50,21 @@ void AndGate::calcOutput()
 
     //out_logic = d->
     //outputNode()->setValue(out);
-   out_logic = in1()->value() && in2()->value();
-   qDebug() << "calculate AND called";
-   qDebug() << out_logic;
-   emit outputChanged(out_logic);
+    if(in1()->value() == Pin::True && in2()->value() == Pin::True)
+    {
+        out_logic = Pin::True;
+    }
+    else if(in1()->value() == Pin::Undefined || in2()->value() == Pin::Undefined)
+    {
+        out_logic = Pin::Undefined;
+    }
+    else
+    {
+        out_logic = Pin::False;
+    }
+    qDebug() << "calculate AND called";
+    qDebug() << out_logic;
+    emit outputChanged(out_logic);
 }
 
 QString AndGate::imageUrl() const
@@ -78,12 +89,23 @@ OrGate::OrGate(const OrGate &g)
 
 void OrGate::calcOutput()
 {
-    bool out_logic = false;
+    Pin::Value out_logic;
     /*foreach (Node * n, inputList())
     {
         out_logic |= n->value();
     }*/
-    out_logic = in1()->value() || in2()->value();
+    if(in1()->value() == Pin::False && in2()->value() == Pin::False)
+    {
+        out_logic = Pin::False;
+    }
+    else if(in1()->value() == Pin::Undefined && in2()->value() == Pin::Undefined)
+    {
+        out_logic = Pin::Undefined;
+    }
+    else
+    {
+        out_logic = Pin::True;
+    }
     qDebug() << "calculate OR called";
     qDebug() << out_logic;
 
@@ -131,8 +153,19 @@ NotGate::NotGate(const NotGate &g)
 
 void NotGate::calcOutput()
 {
-    bool out_logic;
-    out_logic = !in1()->value();
+    Pin::Value out_logic;
+    if(in1()->value() == Pin::False)
+    {
+        out_logic = Pin::True;
+    }
+    else if(in1()->value() == Pin::True)
+    {
+        out_logic = Pin::False;
+    }
+    else
+    {
+        out_logic = Pin::Undefined;
+    }
     //bool out_logic = !(inputList()[0]->value());
     //outputNode()->setValue(!out);
     emit Gate::outputChanged(out_logic);
@@ -175,17 +208,38 @@ NandGate::NandGate(const NandGate &g)
 
 void NandGate::calcOutput()
 {
-    bool out_logic = true;
+    Pin::Value out_logic;
     /*foreach (Node * n, inputList())
     {
         out_logic &= n->value();
 
     }
     */
-    out_logic = in1()->value() && in2()->value();
+    if(in1()->value() == Pin::True && in2()->value() == Pin::True)
+    {
+        out_logic = Pin::True;
+    }
+    else if(in1()->value() == Pin::Undefined || in2()->value() == Pin::Undefined)
+    {
+        out_logic = Pin::Undefined;
+    }
+    else
+    {
+        out_logic = Pin::False;
+    }
     qDebug() << "calculate NAND called";
-
-    out_logic = !out_logic;
+    if(out_logic == Pin::False)
+    {
+        out_logic = Pin::True;
+    }
+    else if(out_logic == Pin::True)
+    {
+        out_logic = Pin::False;
+    }
+    else
+    {
+        out_logic = Pin::Undefined;
+    }
     qDebug() << out_logic;
     //outputNode()->setValue(!out);
     emit outputChanged(out_logic);
@@ -226,15 +280,37 @@ NorGate::NorGate(const NorGate &g)
 
 void NorGate::calcOutput()
 {
-    bool out_logic = false;
+    Pin::Value out_logic;
     /*foreach (Node * n, inputList())
     {
         out_logic |= n->value();
 
     }
     */
-    out_logic = in1()->value() || in2()->value();
-    out_logic = !out_logic;
+    if(in1()->value() == Pin::False && in2()->value() == Pin::False)
+    {
+        out_logic = Pin::False;
+    }
+    else if(in1()->value() == Pin::Undefined && in2()->value() == Pin::Undefined)
+    {
+        out_logic = Pin::Undefined;
+    }
+    else
+    {
+        out_logic = Pin::True;
+    }
+    if(out_logic == Pin::False)
+    {
+        out_logic = Pin::True;
+    }
+    else if(out_logic == Pin::True)
+    {
+        out_logic = Pin::False;
+    }
+    else
+    {
+        out_logic = Pin::Undefined;
+    }
     qDebug() << "calculate NOR called";
     qDebug() << out_logic;
 
@@ -276,7 +352,7 @@ XorGate::XorGate(const XorGate &g)
 
 void XorGate::calcOutput()
 {
-    bool out_logic;// = inputList()[0]->value();
+    Pin::Value out_logic;// = inputList()[0]->value();
     /*outputNode()->setValue(out);
     int i ;
     for ( i = 1 ; i< inputList().size() ; i++);
@@ -287,7 +363,26 @@ void XorGate::calcOutput()
             out = 1 ;
     }
     outputNode()->setValue(out);*/
-    out_logic = in1()->value() ^ in2()->value();
+    if(in1()->value() == Pin::False && in2()->value() == Pin::False)
+    {
+        out_logic = Pin::False;
+    }
+    else if(in1()->value() == Pin::True && in2()->value() == Pin::False)
+    {
+        out_logic = Pin::True;
+    }
+    else if(in1()->value() == Pin::False && in2()->value() == Pin::True)
+    {
+        out_logic = Pin::True;
+    }
+    else if(in1()->value() == Pin::True && in2()->value() == Pin::True)
+    {
+        out_logic = Pin::False;
+    }
+    else
+    {
+        out_logic = Pin::Undefined;
+    }
     qDebug() << "calculate XOR called";
     qDebug() << out_logic;
     emit outputChanged(out_logic);
@@ -327,7 +422,7 @@ XnorGate::XnorGate(const XnorGate &g)
 
 void XnorGate::calcOutput()
 {
-    bool out_logic;
+    Pin::Value out_logic;
     /*outputNode()->setValue(out);
     int i ;
     for( i = 1 ; i< inputList().size() ; i++)
@@ -338,8 +433,38 @@ void XnorGate::calcOutput()
             out = 1 ;
     }
     outputNode()->setValue(!out);*/
-    out_logic = in1()->value() || in2()->value();
-    out_logic = !out_logic;
+    if(in1()->value() == Pin::False && in2()->value() == Pin::False)
+    {
+        out_logic = Pin::False;
+    }
+    else if(in1()->value() == Pin::True && in2()->value() == Pin::False)
+    {
+        out_logic = Pin::True;
+    }
+    else if(in1()->value() == Pin::False && in2()->value() == Pin::True)
+    {
+        out_logic = Pin::True;
+    }
+    else if(in1()->value() == Pin::True && in2()->value() == Pin::True)
+    {
+        out_logic = Pin::False;
+    }
+    else
+    {
+        out_logic = Pin::Undefined;
+    }
+    if(out_logic == Pin::False)
+    {
+        out_logic = Pin::True;
+    }
+    else if(out_logic == Pin::True)
+    {
+        out_logic = Pin::False;
+    }
+    else
+    {
+        out_logic = Pin::Undefined;
+    }
     qDebug() << "calculate XNOR called";
     qDebug() << out_logic;
     emit outputChanged(out_logic);

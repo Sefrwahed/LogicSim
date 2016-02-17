@@ -47,14 +47,11 @@ Gate::Gate(Type t)
     d->in1 = new Pin(Pin::Input, this);
     d->out = new Pin(Pin::Output, this);
 
-    connect(d->in1, SIGNAL(changed(bool)),
+    connect(d->in1, SIGNAL(changed(Pin::Value)),
             this, SLOT(calcOutput()));
 
-    connect(d->in2, SIGNAL(changed(bool)),
-            this, SLOT(calcOutput()));
-
-    connect(this, SIGNAL(outputChanged(bool)),
-            d->out, SLOT(updatePinValue(bool)));
+    connect(this, SIGNAL(outputChanged(Pin::Value)),
+            d->out, SLOT(updatePinValue(Pin::Value)));
 
     QLineF line(0,0,10,0);
     QGraphicsLineItem *Li1 = new QGraphicsLineItem(line,d->in1);
@@ -72,6 +69,9 @@ Gate::Gate(Type t)
     {
         d->in2 = new Pin(Pin::Input, this);
         addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
+
+        connect(d->in2, SIGNAL(changed(Pin::Value)),
+                this, SLOT(calcOutput()));
 
         QGraphicsLineItem *Li2 = new QGraphicsLineItem(line,d->in2);
         d->in1->setPos(-20,5);

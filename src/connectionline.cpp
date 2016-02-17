@@ -19,8 +19,8 @@ ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
 
     if(m_out && m_in)
     {
-        connect(m_out, SIGNAL(changed(bool)),
-                m_in, SLOT(updatePinValue(bool)));
+        connect(m_out, SIGNAL(changed(Pin::Value)),
+                m_in, SLOT(updatePinValue(Pin::Value)));
         m_in->updatePinValue(m_out->value());
     }
 }
