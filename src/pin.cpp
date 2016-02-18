@@ -126,6 +126,7 @@ void Pin::disconnectLine()
 {
     qDebug() << "PIN LINE DISCONNECT";
     m_lines.removeOne(static_cast<ConnectionLine*>(sender()));
+    updatePinValue(Pin::Undefined);
 }
 
 void Pin::updatePinValue(Pin::Value value)
