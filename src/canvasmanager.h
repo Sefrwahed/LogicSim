@@ -80,6 +80,9 @@ public:
     void loadDataFromStream(QDataStream &stream);
     void populateLoadedComponents();
 
+    QString associatedFileName() const;
+    void setAssociatedFileName(QString &filename);
+
 private:
     Cell findSuitableCell(QPointF scenePos);
     void parkComponent(Component* g, Cell c);
@@ -102,7 +105,6 @@ Q_SIGNALS:
 private:
     class Private;
     Private* const d;
-    friend class QDataStream;
 };
 
 QDataStream &operator<<(QDataStream &out, CanvasManager * cm);

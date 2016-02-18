@@ -82,7 +82,7 @@ void Component::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->setBrush(QColor(255,255,255,200));
+    painter->setBrush(QColor(222,222,222,150));
 
     QPen p;
     p.setWidthF(2);

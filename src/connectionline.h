@@ -28,11 +28,11 @@ public:
     Pin* output() const;
     void setOutputPin(Pin * out);
 
-    void pushDataToStream(QDataStream &s);
-//    void loadDataFromStream(QDataStream &s);
-
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+public Q_SLOTS:
+    void updateColor();
 
 Q_SIGNALS:
     void lineSelected();

@@ -41,6 +41,7 @@ public:
     QSet<qint32>           acquiredSquares;
     QList<Component *>     mComponents;
     QList<ConnectionLine*> connectionLines;
+    QString                associatedFileName;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
@@ -445,12 +446,23 @@ void CanvasManager::populateLoadedComponents()
     foreach(Component* c, d->mComponents)
     {
         d->canvas->addItem(c);
-        foreach (ConnectionLine* l, d->connectionLines)
-        {
-            addLineToCanvas(l);
-        }
         emit componentAdded(d->componentCount++);
     }
+
+    foreach (ConnectionLine* l, d->connectionLines)
+    {
+        addLineToCanvas(l);
+    }
+}
+
+QString CanvasManager::associatedFileName() const
+{
+    return d->associatedFileName;
+}
+
+void CanvasManager::setAssociatedFileName(QString &filename)
+{
+    d->associatedFileName = filename;
 }
 
 CanvasManager::~CanvasManager()

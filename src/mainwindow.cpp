@@ -3,6 +3,7 @@
 // Qt includes
 
 #include <QDebug>
+#include <QFileDialog>
 
 // Local includes
 
@@ -130,6 +131,7 @@ Canvas* MainWindow::newFile()
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
     c->setTabIndex(tabIndex);
+    d->tabWidget->setCurrentIndex(tabIndex);
     setMainFrameDisabled(false);
     return c;
 }
@@ -179,8 +181,26 @@ void MainWindow::tabChanged(int index)
 void MainWindow::on_actionSave_triggered()
 {
     CanvasManager* c = d->canvases[d->activeTabIndex]->canvasManager();
-    QFile file("/home/tootis/file.dat");
-    file.open(QIODevice::WriteOnly);
+    QString fileName;
+
+    if( c->associatedFileName().isEmpty() )
+    {
+        fileName = QFileDialog::getSaveFileName(this,
+                tr("Save Circuit"), QDir::home().path(), tr("LogicSim Circuit (*.lsim)"));
+
+        if(fileName.indexOf(".lsim") == -1)
+            fileName.append(".lsim");
+
+        qDebug() << fileName;
+    }
+    else
+    {
+        fileName = c->associatedFileName();
+    }
+
+    qDebug() << "Saving to:" << fileName;
+    QFile file(fileName);
+    file.open(QIODevice::WriteOnly | QIODevice::Truncate);
     QDataStream out(&file);
     out << c;
     file.close();
@@ -188,18 +208,28 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    CanvasManager* cm;
-    QFile file("/home/tootis/file.dat");
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open Circuit"), QDir::home().path(), tr("LogicSim Circuit (*.lsim)"));
+
+    if(fileName.isEmpty())
+        return;
+
+    qDebug() << "Selected File: " << fileName;
+
+    QFile file(fileName);
     file.open(QIODevice::ReadOnly);
     QDataStream out(&file);
+    CanvasManager* cm;
     out >> cm;
     file.close();
+    cm->setAssociatedFileName(fileName);
 
     Canvas * c = newFile();
     if(c)
     {
         c->setManager(cm);
         cm->populateLoadedComponents();
+        emit d->tabWidget->currentChanged(c->tabIndex());
     }
 }
 

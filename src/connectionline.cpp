@@ -19,9 +19,11 @@ ConnectionLine::ConnectionLine(Pin *out, Pin *in, QGraphicsItem* parent)
 
     connect(m_out, SIGNAL(changed(bool)),
             m_in, SLOT(updatePinValue(bool)));
-    m_in->updatePinValue(m_out->value());
-    qDebug() << "Connection Line ctor::\n" << "out pin ::" << m_out->parentComponent()->componentType() << "\nin pin ::" << m_in->parentComponent()->componentType() ;
 
+    connect(m_out, SIGNAL(changed(bool)),
+            this, SLOT(updateColor()));
+
+    m_in->updatePinValue(m_out->value());
 }
 
 ConnectionLine::~ConnectionLine()
@@ -54,20 +56,26 @@ void ConnectionLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     QPen p;
     p.setWidthF(2);
-    p.setStyle(Qt::DashDotDotLine);
+    p.setStyle(Qt::DashLine);
     p.setCapStyle(Qt::RoundCap);
     p.setJoinStyle(Qt::MiterJoin);
 
     if(isSelected())
     {
         p.setColor(QColor(30,144,255));
-        setPen(p);
     }
     else
     {
-        p.setColor(Qt::black);
-        setPen(p);
+        if(m_out->value())
+        {
+            p.setColor(QColor(0,196,0));
+        }
+        else
+        {
+            p.setColor(Qt::red);
+        }
     }
+    setPen(p);
 
     QGraphicsLineItem::paint(painter, option, widget);
 }
@@ -78,6 +86,11 @@ void ConnectionLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "Line pressed bayn kedda";
 
     emit lineSelected();
+}
+
+void ConnectionLine::updateColor()
+{
+    update();
 }
 
 } // namespace Logicsim

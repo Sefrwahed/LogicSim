@@ -73,6 +73,7 @@ void Pin::updateConnectedLine()
             {
                 QLineF oldLine = l->line();
                 l->setLine(QLineF(oldLine.p1(), centerPos()));
+                l->update();
             }
         }
     }
@@ -141,7 +142,6 @@ void Pin::updatePinValue(bool value)
 {
     m_value = value;
     m_parent->update();
-    qDebug() << "Update pin val: emitting signal";
     emit changed(value);
 }
 

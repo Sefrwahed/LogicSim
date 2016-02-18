@@ -131,10 +131,10 @@ NotGate::NotGate(const NotGate &g)
 
 void NotGate::calcOutput()
 {
-    bool out_logic;
+//    bool out_logic;
     //bool out_logic = !(inputList()[0]->value());
     //outputNode()->setValue(!out);
-    emit Gate::outputChanged(out_logic);
+//    emit outputChanged(out_logic);
 }
 
 QString NotGate::imageUrl() const

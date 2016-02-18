@@ -32,7 +32,7 @@ public:
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
 public slots:
-    void calcOutput() override;
+    void calcOutput() ;//;//override;
 };
 
 // ===================== OrGate =================
@@ -55,7 +55,7 @@ public:
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
 public slots:
-    void calcOutput() override;
+    void calcOutput() ;//override;
 };
 
 // ===================== NotGate ================
@@ -76,7 +76,7 @@ public:
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
 public slots:
-    void calcOutput() override;
+    void calcOutput() ;//override;
 };
 
 // ===================== NandGate ================
@@ -98,7 +98,7 @@ public:
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
 public slots:
-    void calcOutput() override;
+    void calcOutput() ;//override;
 };
 
 // ===================== NorGate ================
@@ -117,7 +117,7 @@ public:
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
 public slots:
-    void calcOutput() override;
+    void calcOutput() ;//override;
 };
 
 // ===================== XorGate ================
@@ -136,7 +136,7 @@ public:
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
 public slots:
-    void calcOutput() override;
+    void calcOutput() ;//override;
 };
 
 // ===================== XnorGate ================
@@ -155,7 +155,7 @@ public:
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
 public slots:
-    void calcOutput() override;
+    void calcOutput() ;//override;
 };
 
 } // namespace Logicsim
