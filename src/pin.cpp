@@ -17,6 +17,7 @@ Pin::Pin(Type t, Component *parent)
     setFlag(QGraphicsItem::ItemIsSelectable);
     m_type = t;
     m_parent = parent;
+    m_value = Pin::Undefined;
 }
 
 Pin::~Pin()
@@ -84,11 +85,10 @@ QList<ConnectionLine *> &Pin::connectedLines()
     return m_lines;
 }
 
-bool Pin::value()
+Pin::Value Pin::value()
 {
     return m_value;
 }
-
 
 QPointF Pin::centerPos() const
 {
@@ -136,9 +136,11 @@ void Pin::disconnectLine()
 {
     qDebug() << "PIN LINE DISCONNECT";
     m_lines.removeOne(static_cast<ConnectionLine*>(sender()));
+    if(m_type == Pin::Input)
+        updatePinValue(Pin::Undefined);
 }
 
-void Pin::updatePinValue(bool value)
+void Pin::updatePinValue(Pin::Value value)
 {
     m_value = value;
     m_parent->update();

@@ -174,8 +174,7 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
     Cell newCell = findSuitableCell(scenePos);
     if(!newCell.isNull() &&
        calculateSquareNumber(newCell) != d->oldSquareNumberOfMovingComponent &&
-       scenePos.x() > 0 && scenePos.y() > 0 &&
-       scenePos.x() < CANVAS_WIDTH && scenePos.y() < CANVAS_HEIGHT)
+       !isOutOfCanvas(scenePos))
     {
         qDebug() << "Gate Moved";
         parkComponent(component, newCell);
@@ -353,6 +352,14 @@ int CanvasManager::selectedComponentSquare(int index) const
     return calculateSquareNumber(c);
 }
 
+void CanvasManager::updateComponents()
+{
+    foreach(Component* c, d->mComponents)
+    {
+        c->update();
+    }
+}
+
 void CanvasManager::selectedFromWorkspace(int index)
 {
     unSelectComponent();
@@ -392,6 +399,29 @@ void CanvasManager::deleteLine(int index)
     d->canvas->removeItem(l);
     d->connectionLines.removeAt(index);
     delete l;
+    updateComponents();
+}
+
+bool CanvasManager::isDropable(QPointF position)
+{
+    Cell c = findSuitableCell(position);
+    return (!c.isNull());
+}
+
+bool CanvasManager::isOutOfCanvas(QPointF position)
+{
+    int leftEdge = d->canvas->views().at(0)->horizontalScrollBar()->value();
+    int topEdge = d->canvas->views().at(0)->verticalScrollBar()->value();
+    int rightEdge = d->canvas->views().at(0)->size().width() + leftEdge;
+    int bottomEdge = d->canvas->views().at(0)->size().height() + topEdge;
+    if(position.rx() < leftEdge || position.ry() < topEdge || position.rx() > rightEdge || position.ry() > bottomEdge)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void CanvasManager::pushDataToStream(QDataStream &stream)
@@ -426,6 +456,8 @@ void CanvasManager::loadDataFromStream(QDataStream &stream)
 
         Component * outPinParentComp = componentById(outputPinParentComponentId);
         Component * inPinParentComp =  componentById(inputPinParentComponentId);
+
+        qDebug() << "Pins of in pin parent: " <<  inPinParentComp->pins().length();
 
         // Output pin always comes first in the list then comes the input pins
         ConnectionLine* cl = new ConnectionLine(outPinParentComp->pins().at(0),

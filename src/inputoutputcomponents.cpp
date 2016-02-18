@@ -21,7 +21,7 @@ InputComponent::InputComponent()
     QGraphicsLineItem *Li = new QGraphicsLineItem(QLineF(0,0,10,0), m_pin);
     Li->setPos(-10,5);
 
-    m_pin->updatePinValue(false);
+    m_pin->updatePinValue(Pin::False);
 
     setToolTip("Input Component");
 }
@@ -43,11 +43,11 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 {
     painter->setRenderHint(QPainter::Antialiasing);
     Component::paint(painter, option, widget);
-    if(m_pin->value() == true)
+    if(m_pin->value() == Pin::True)
     {
         painter->setBrush(QColor(0,255,0,180));
     }
-    else if(m_pin->value() == false)
+    else
     {
         painter->setBrush(QColor(255,0,0,180));
     }
@@ -91,7 +91,7 @@ void InputComponent::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
 qDebug() << "input component dbl click :: updating pin val";
-    m_pin->value() ? m_pin->updatePinValue(false) : m_pin->updatePinValue(true);
+    (m_pin->value() == Pin::True) ? m_pin->updatePinValue(Pin::False) : m_pin->updatePinValue(Pin::True);
     update();
 
     qDebug()<<"Body clicked";
@@ -149,11 +149,15 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     painter->setBrush(Qt::SolidPattern);
     if(m_pin != 0)
     {
-        if(m_pin->value() == true)
+        if(!m_pin->isConnected() || m_pin->value() == Pin::Undefined)
+        {
+            painter->setBrush(QColor(63,63,64,180));
+        }
+        else if(m_pin->value() == Pin::True)
         {
             painter->setBrush(QColor(0,255,0,200));
         }
-        else if(m_pin->value() == false)
+        else if(m_pin->value() == Pin::False)
         {
             painter->setBrush(QColor(255,0,0,200));
         }

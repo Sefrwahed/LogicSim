@@ -31,7 +31,7 @@ public:
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
-public slots:
+public Q_SLOTS:
     void calcOutput() ;//;//override;
 };
 
@@ -54,8 +54,8 @@ public:
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
-public slots:
-    void calcOutput() ;//override;
+public Q_SLOTS:
+    void calcOutput();
 };
 
 // ===================== NotGate ================
@@ -75,8 +75,11 @@ public:
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
-public slots:
-    void calcOutput() ;//override;
+public Q_SLOTS:
+    void calcOutput();
+
+private:
+    Pin * in2();
 };
 
 // ===================== NandGate ================
@@ -88,17 +91,14 @@ public:
     NandGate();
     NandGate(const NandGate& g);
 
-    // QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-
-//    void calcOutput();
     QString imageUrl() const;
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
-public slots:
-    void calcOutput() ;//override;
+public Q_SLOTS:
+    void calcOutput();
 };
 
 // ===================== NorGate ================
@@ -110,14 +110,13 @@ public:
     NorGate();
     NorGate(const NorGate& g);
 
-//    void calcOutput();
     QString imageUrl() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
-public slots:
-    void calcOutput() ;//override;
+public Q_SLOTS:
+    void calcOutput();
 };
 
 // ===================== XorGate ================
@@ -129,14 +128,13 @@ public:
     XorGate();
     XorGate(const XorGate& g);
 
-//    void calcOutput();
     QString imageUrl() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
-public slots:
-    void calcOutput() ;//override;
+public Q_SLOTS:
+    void calcOutput();
 };
 
 // ===================== XnorGate ================
@@ -148,14 +146,13 @@ public:
     XnorGate();
     XnorGate(const XnorGate& g);
 
-//    void calcOutput();
     QString imageUrl() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     inline void mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     { Gate::mouseMoveEvent(e); }
-public slots:
-    void calcOutput() ;//override;
+public Q_SLOTS:
+    void calcOutput();
 };
 
 } // namespace Logicsim

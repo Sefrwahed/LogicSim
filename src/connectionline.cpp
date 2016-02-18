@@ -17,17 +17,25 @@ ConnectionLine::ConnectionLine(Pin *out, Pin *in, QGraphicsItem* parent)
     setLine(QLineF(m_in->centerPos(), m_out->centerPos()));
     setFlag(QGraphicsItem::ItemIsSelectable);
 
-    connect(m_out, SIGNAL(changed(bool)),
-            m_in, SLOT(updatePinValue(bool)));
+    connect(m_out, SIGNAL(changed(Pin::Value)),
+            m_in, SLOT(updatePinValue(Pin::Value)));
 
-    connect(m_out, SIGNAL(changed(bool)),
+    connect(m_out, SIGNAL(changed(Pin::Value)),
             this, SLOT(updateColor()));
 
     m_in->updatePinValue(m_out->value());
+    qDebug() << "Line connected";
 }
 
 ConnectionLine::~ConnectionLine()
 {
+    disconnect(m_out, SIGNAL(changed(Pin::Value)),
+            m_in, SLOT(updatePinValue(Pin::Value)));
+
+    disconnect(m_out, SIGNAL(changed(Pin::Value)),
+            this, SLOT(updateColor()));
+
+    qDebug() << "Line deleted";
 }
 
 Pin *ConnectionLine::output() const
@@ -66,13 +74,17 @@ void ConnectionLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     }
     else
     {
-        if(m_out->value())
+        if(m_out->value() == Pin::True)
         {
             p.setColor(QColor(0,196,0));
         }
-        else
+        else if(m_out->value() == Pin::False)
         {
             p.setColor(Qt::red);
+        }
+        else
+        {
+            p.setColor(Qt::gray);
         }
     }
     setPen(p);

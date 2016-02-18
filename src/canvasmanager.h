@@ -83,6 +83,9 @@ public:
     QString associatedFileName() const;
     void setAssociatedFileName(QString &filename);
 
+    bool isDropable(QPointF position);
+    bool isOutOfCanvas(QPointF position);
+
 private:
     Cell findSuitableCell(QPointF scenePos);
     void parkComponent(Component* g, Cell c);
@@ -90,6 +93,7 @@ private:
     int calculateSquareNumber(Cell c) const;
     int selectedComponentSquare(int index) const;
     void addLineToCanvas(ConnectionLine *line);
+    void updateComponents();
 
 public Q_SLOTS:
     void selectedFromWorkspace(int index);
