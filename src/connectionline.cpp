@@ -23,18 +23,15 @@ ConnectionLine::ConnectionLine(Pin *out, Pin *in, QGraphicsItem* parent)
     connect(m_out, SIGNAL(changed(Pin::Value)),
             this, SLOT(updateColor()));
 
+    connect(this, SIGNAL(lineDeleted()),
+            this, SLOT(disconnectPins()));
+
     m_in->updatePinValue(m_out->value());
     qDebug() << "Line connected";
 }
 
 ConnectionLine::~ConnectionLine()
 {
-    disconnect(m_out, SIGNAL(changed(Pin::Value)),
-            m_in, SLOT(updatePinValue(Pin::Value)));
-
-    disconnect(m_out, SIGNAL(changed(Pin::Value)),
-            this, SLOT(updateColor()));
-
     qDebug() << "Line deleted";
 }
 
@@ -103,6 +100,15 @@ void ConnectionLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void ConnectionLine::updateColor()
 {
     update();
+}
+
+void ConnectionLine::disconnectPins()
+{
+    disconnect(m_out, SIGNAL(changed(Pin::Value)),
+            m_in, SLOT(updatePinValue(Pin::Value)));
+
+    disconnect(m_out, SIGNAL(changed(Pin::Value)),
+            this, SLOT(updateColor()));
 }
 
 } // namespace Logicsim

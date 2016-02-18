@@ -33,6 +33,7 @@ public:
 
 public Q_SLOTS:
     void updateColor();
+    void disconnectPins();
 
 Q_SIGNALS:
     void lineSelected();
