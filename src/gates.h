@@ -77,6 +77,9 @@ public:
     { Gate::mouseMoveEvent(e); }
 public slots:
     void calcOutput() override;
+
+private:
+    Pin * in2();
 };
 
 // ===================== NandGate ================

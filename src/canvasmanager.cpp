@@ -321,6 +321,14 @@ int CanvasManager::selectedComponentSquare(int index) const
     return calculateSquareNumber(c);
 }
 
+void CanvasManager::updateComponents()
+{
+    foreach(Component* c, d->mComponents)
+    {
+        c->update();
+    }
+}
+
 void CanvasManager::selectedFromWorkspace(int index)
 {
     unSelectComponent();
@@ -360,6 +368,7 @@ void CanvasManager::deleteLine(int index)
     d->canvas->removeItem(l);
     d->connectionLines.removeAt(index);
     delete l;
+    updateComponents();
 }
 
 bool CanvasManager::isDropable(QPointF position)

@@ -28,6 +28,12 @@ public:
         Output
     };
 
+    enum Value {
+        True,
+        False,
+        Undefined
+    };
+
 public:
     Pin(Type t, Component *parent = 0);
     ~Pin();
@@ -38,7 +44,7 @@ public:
     void updateConnectedLine();
     QList<ConnectionLine *> &connectedLines();
 
-    bool value();
+    Pin::Value value();
 
     QPointF centerPos() const;
 
@@ -52,16 +58,16 @@ public:
 
 public Q_SLOTS:
     void disconnectLine();
-    void updatePinValue(bool value);
+    void updatePinValue(Pin::Value value);
 
 Q_SIGNALS:
-    void changed(bool v);
+    void changed(Pin::Value v);
 
 private:
     Type m_type;
     QList<ConnectionLine*> m_lines;
     Component* m_parent;
-    bool m_value;
+    Pin::Value m_value;
 };
 
 } // namespace Logicsim
