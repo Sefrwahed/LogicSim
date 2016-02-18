@@ -21,6 +21,8 @@ InputComponent::InputComponent()
     QGraphicsLineItem *Li = new QGraphicsLineItem(QLineF(0,0,10,0), m_pin);
     Li->setPos(-10,5);
 
+    m_pin->updatePinValue(Pin::False);
+
     setToolTip("Input Component");
 }
 

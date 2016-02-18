@@ -98,13 +98,13 @@ void OrGate::calcOutput()
     {
         out_logic = Pin::False;
     }
-    else if(in1()->value() == Pin::Undefined && in2()->value() == Pin::Undefined)
+    else if(in1()->value() == Pin::True || in2()->value() == Pin::True)
     {
-        out_logic = Pin::Undefined;
+        out_logic = Pin::True;
     }
     else
     {
-        out_logic = Pin::True;
+        out_logic = Pin::Undefined;
     }
     qDebug() << "calculate OR called";
     qDebug() << out_logic;
@@ -291,13 +291,13 @@ void NorGate::calcOutput()
     {
         out_logic = Pin::False;
     }
-    else if(in1()->value() == Pin::Undefined && in2()->value() == Pin::Undefined)
+    else if(in1()->value() == Pin::True || in2()->value() == Pin::True)
     {
-        out_logic = Pin::Undefined;
+        out_logic = Pin::True;
     }
     else
     {
-        out_logic = Pin::True;
+        out_logic = Pin::Undefined;
     }
     if(out_logic == Pin::False)
     {
