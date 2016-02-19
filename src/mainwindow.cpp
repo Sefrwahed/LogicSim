@@ -60,12 +60,13 @@ MainWindow::MainWindow(QWidget *parent)
     setMainFrameDisabled(true);
     ui->frameGridLayout->addWidget(d->tabWidget);
     d->tabWidget->setTabsClosable(true);
-
+    /*
     ui->horizontalSlider->setRange(1,11);
     //ui->horizontalSlider->setSingleStep(1);
     ui->horizontalSlider->setFocusPolicy(Qt::StrongFocus);
     ui->horizontalSlider->setTickPosition(QSlider::TicksBothSides);
     ui->horizontalSlider->setTickInterval(1);
+*/
 
     // Connection
     connect(ui->actionNew, SIGNAL(triggered(bool)),
@@ -191,8 +192,13 @@ void MainWindow::changeManager(int index)
 void MainWindow::tabChanged(int index)
 {
     d->activeTabIndex = index;
-    connect(ui->horizontalSlider,SIGNAL(valueChanged(int)),
-            d->canvases[d->activeTabIndex],SLOT(Zoom(int)));
+    /*connect(ui->horizontalSlider,SIGNAL(valueChanged(int)),
+            d->canvases[d->activeTabIndex],SLOT(Zoom(int)));*/
+    connect(ui->Zoomout,SIGNAL(pressed()),
+                d->canvases[d->activeTabIndex],SLOT(ZoomOut()));
+    connect(ui->zoomin,SIGNAL(pressed()),
+                d->canvases[d->activeTabIndex],SLOT(ZoomIn()));
+
 }
 
 void MainWindow::tabAboutToBeClosed(int index)

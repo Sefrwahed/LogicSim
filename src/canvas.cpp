@@ -242,17 +242,21 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void Canvas::Zoom(int val)
+void Canvas::ZoomOut()
 {
-    qreal sf = 0.0;
-    if(val<6){
-    sf = 1.0 / val;
-    }
-    else{
-    sf = val - 5;
-    }
+    qreal sf = 0.5;
+
     d->view->matrix().reset();
     d->view->scale(sf,sf);
+}
+
+void Canvas::ZoomIn()
+{
+    qreal sf = 1.5;
+
+    d->view->matrix().reset();
+    d->view->scale(sf,sf);
+
 }
 
 } // namespace Logicsim

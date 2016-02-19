@@ -94,9 +94,16 @@
        </widget>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QPushButton" name="Zoomout">
+        <property name="text">
+         <string>Out</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="zoomin">
+        <property name="text">
+         <string>In </string>
         </property>
        </widget>
       </item>
