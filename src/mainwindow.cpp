@@ -61,6 +61,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->frameGridLayout->addWidget(d->tabWidget);
     d->tabWidget->setTabsClosable(true);
 
+    ui->horizontalSlider->setRange(1,11);
+    //ui->horizontalSlider->setSingleStep(1);
+    ui->horizontalSlider->setFocusPolicy(Qt::StrongFocus);
+    ui->horizontalSlider->setTickPosition(QSlider::TicksBothSides);
+
     // Connection
     connect(ui->actionNew, SIGNAL(triggered(bool)),
             this, SLOT(newFile()));
@@ -132,6 +137,7 @@ Canvas* MainWindow::newFile()
 
         connect(this, SIGNAL(notLastTabClosed(int)),
                 d->workspaceTab, SLOT(updateComponents()));
+
     }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
@@ -184,6 +190,8 @@ void MainWindow::changeManager(int index)
 void MainWindow::tabChanged(int index)
 {
     d->activeTabIndex = index;
+    connect(ui->horizontalSlider,SIGNAL(valueChanged(int)),
+            d->canvases[d->activeTabIndex],SLOT(Zoom(int)));
 }
 
 void MainWindow::tabAboutToBeClosed(int index)

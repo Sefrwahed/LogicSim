@@ -242,5 +242,18 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
     }
 }
 
+void Canvas::Zoom(int val)
+{
+    qreal sf = 0.0;
+    if(val<6){
+    sf = 1.0 / val;
+    }
+    else{
+    sf = val - 5;
+    }
+    d->view->matrix().reset();
+    d->view->scale(sf,sf);
+}
+
 } // namespace Logicsim
 
