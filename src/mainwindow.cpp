@@ -240,8 +240,15 @@ void MainWindow::on_actionSave_triggered()
         fileName = QFileDialog::getSaveFileName(this,
                 tr("Save Circuit"), QDir::home().path(), tr("LogicSim Circuit (*.lsim)"));
 
-        if(fileName.indexOf(".lsim") == -1)
-            fileName.append(".lsim");
+        fileName.replace(".lsim", "");
+        if(fileName.simplified().isEmpty())
+        {
+            QMessageBox::warning(this, "Save", "Circuit was not saved!");
+            return;
+        }
+
+
+        fileName.append(".lsim");
 
         qDebug() << fileName;
         c->setAssociatedFileName(fileName);

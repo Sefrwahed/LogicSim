@@ -374,8 +374,12 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
 {
     if(item->row() < d->componentCount)
     {
-        d->mComponents.at(item->row())->setName(item->text());
-        setDirty(true);
+        Component * c = d->mComponents.at(item->row());
+        if(c->name() != item->text())
+        {
+            c->setName(item->text());
+            setDirty(true);
+        }
     }
 }
 
