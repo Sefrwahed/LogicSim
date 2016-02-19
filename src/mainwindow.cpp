@@ -67,9 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(d->tabWidget, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
-
-//    connect(qApp, SIGNAL(aboutToQuit()),
-//            this, SLOT(appAboutToQuit()));
 }
 
 MainWindow::~MainWindow()
@@ -135,15 +132,6 @@ Canvas* MainWindow::newFile()
 
         connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
                 this, SLOT(tabAboutToBeClosed(int)));
-
-//        connect(c, SIGNAL(saveCanvasAndClose(int)),
-//                this, SLOT(slotSaveCanvasAndClose(int)));
-
-//        connect(c, SIGNAL(closeCanvas(int)),
-//                this, SLOT(closeTab(int)));
-
-//        connect(c, SIGNAL(setActiveTabIndex(int)),
-//                this, SLOT(setActiveTab(int)));
     }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");

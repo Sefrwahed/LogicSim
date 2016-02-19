@@ -32,18 +32,8 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
-        <widget class="QWidget" name="tab">
-         <attribute name="title">
-          <string>Project</string>
-         </attribute>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QGraphicsView" name="graphicsView_2"/>
-          </item>
-         </layout>
-        </widget>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
           <string>Components</string>
