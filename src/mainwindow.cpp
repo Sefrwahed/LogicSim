@@ -67,6 +67,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(d->tabWidget, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
+
+    connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
+            this, SLOT(tabAboutToBeClosed(int)));
 }
 
 MainWindow::~MainWindow()
@@ -129,9 +132,6 @@ Canvas* MainWindow::newFile()
 
         connect(this, SIGNAL(notLastTabClosed(int)),
                 d->workspaceTab, SLOT(updateComponents()));
-
-        connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
-                this, SLOT(tabAboutToBeClosed(int)));
     }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
