@@ -15,23 +15,22 @@ ComponentsTab::ComponentsTab(QWidget* parent)
     setShowGrid(false);
     setDragEnabled(true);
 
-    m_gates << new InputComponent() << new OutputComponent()
-            << new AndGate() << new OrGate() << new NotGate()
-            << new NandGate() << new NorGate() << new XorGate()
-            << new XnorGate();
+    m_componenets << new InputComponent() << new OutputComponent()
+                  << new AndGate() << new OrGate() << new NotGate()
+                  << new NandGate() << new NorGate() << new XorGate()
+                  << new XnorGate();
 
-
-    if(m_gates.length() % 2 != 0)
+    if(m_componenets.length() % 2 != 0)
     {
-        setRowCount(m_gates.length()/2 + 1);
+        setRowCount(m_componenets.length()/2 + 1);
     }
     else
     {
-        setRowCount(m_gates.length()/2);
+        setRowCount(m_componenets.length()/2);
     }
 
     int index = 0;
-    foreach (Component* g, m_gates)
+    foreach (Component* g, m_componenets)
     {
         QTableWidgetItem* item = new QTableWidgetItem(g->componentType());
         item->setData(QTableWidgetItem::UserType, g->metaTypeId());
@@ -51,7 +50,7 @@ ComponentsTab::ComponentsTab(QWidget* parent)
         index++;
     }
 
-    if(m_gates.length() % 2 != 0)
+    if(m_componenets.length() % 2 != 0)
     {
         //create a transperent pixmap and set it to the empty item
         QPixmap pixmap(16, 16);
@@ -60,12 +59,12 @@ ComponentsTab::ComponentsTab(QWidget* parent)
         emptySlot->setData(Qt::DecorationRole, pixmap);
         //make the item selectable which makes the pixmap not selectable
         emptySlot->setFlags(Qt::ItemIsSelectable);
-        setItem((m_gates.length())/2, 1,emptySlot);
+        setItem((m_componenets.length())/2, 1,emptySlot);
     }
 
     resizeRowsToContents();
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    setMinimumWidth(QPixmap(m_gates[0]->imageUrl()).width()*COLUMN_COUNT);
+    setMinimumWidth(QPixmap(m_componenets[0]->imageUrl()).width()*COLUMN_COUNT);
     setMaximumWidth(minimumWidth());
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
@@ -76,9 +75,14 @@ ComponentsTab::~ComponentsTab()
     foreach (QTableWidgetItem* const item, m_items)
     {
         delete item;
-        delete m_gates[i];
+        delete m_componenets[i];
         i++;
     }
+}
+
+QList<Component *> &ComponentsTab::componentsCollection()
+{
+    return m_componenets;
 }
 
 QMimeData* ComponentsTab::mimeData(const QList<QTableWidgetItem *> items) const

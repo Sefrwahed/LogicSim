@@ -12,7 +12,7 @@ namespace Logicsim
 {
 
 Pin::Pin(Type t, Component *parent)
-    : QGraphicsObject(parent)
+    : QGraphicsObject(parent), m_number(0)
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
     m_type = t;
@@ -49,6 +49,16 @@ void Pin::setConnected(ConnectionLine *line)
             this, SLOT(disconnectLine()));
 }
 
+void Pin::setNumber(quint32 n)
+{
+    m_number = n;
+}
+
+quint32 Pin::number() const
+{
+    return m_number;
+}
+
 void Pin::updateConnectedLine()
 {
     if(isConnected())
@@ -64,6 +74,7 @@ void Pin::updateConnectedLine()
             {
                 QLineF oldLine = l->line();
                 l->setLine(QLineF(oldLine.p1(), centerPos()));
+                l->update();
             }
         }
     }
@@ -78,7 +89,6 @@ Pin::Value Pin::value()
 {
     return m_value;
 }
-
 
 QPointF Pin::centerPos() const
 {
@@ -119,6 +129,22 @@ void Pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
         p.setColor(Qt::black);
         painter->setPen(p);
     }
+
+    if(isConnected())
+    {
+        if(m_value == Pin::True)
+        {
+            painter->setBrush(QBrush(QColor(0,196,0,200), Qt::SolidPattern));
+        }
+        else if(m_value == Pin::False)
+        {
+            painter->setBrush(QBrush(QColor(255,0,0,200), Qt::SolidPattern));
+        }
+        else
+        {
+            painter->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
+        }
+    }
     painter->drawEllipse(boundingRect());
 }
 
@@ -126,15 +152,14 @@ void Pin::disconnectLine()
 {
     qDebug() << "PIN LINE DISCONNECT";
     m_lines.removeOne(static_cast<ConnectionLine*>(sender()));
-    updatePinValue(Pin::Undefined);
+    if(m_type == Pin::Input)
+        updatePinValue(Pin::Undefined);
 }
 
 void Pin::updatePinValue(Pin::Value value)
 {
     m_value = value;
     m_parent->update();
-    qDebug() << m_value;
-    qDebug() << "Update pin val: emitting signal";
     emit changed(value);
 }
 

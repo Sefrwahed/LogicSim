@@ -14,9 +14,9 @@ TEMPLATE = app
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/canvas.cpp \
+    src/component.cpp \
     src/canvasmanager.cpp \
     src/componentstab.cpp \
-    src/component.cpp \
     src/inputoutputcomponents.cpp \
     src/gate.cpp \
     src/gates.cpp \

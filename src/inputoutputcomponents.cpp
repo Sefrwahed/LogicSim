@@ -47,13 +47,9 @@ void InputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     {
         painter->setBrush(QColor(0,255,0,180));
     }
-    else if(m_pin->value() == Pin::False)
+    else
     {
         painter->setBrush(QColor(255,0,0,180));
-    }
-    else if(m_pin->value() == Pin::Undefined)
-    {
-        painter->setBrush(QColor(Qt::gray));
     }
     painter->drawEllipse(0,0,30,30);
 }
@@ -155,7 +151,7 @@ void OutputComponent::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     {
         if(!m_pin->isConnected() || m_pin->value() == Pin::Undefined)
         {
-            painter->setBrush(QColor(Qt::gray));
+            painter->setBrush(QColor(63,63,64,180));
         }
         else if(m_pin->value() == Pin::True)
         {
