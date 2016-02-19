@@ -65,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->horizontalSlider->setSingleStep(1);
     ui->horizontalSlider->setFocusPolicy(Qt::StrongFocus);
     ui->horizontalSlider->setTickPosition(QSlider::TicksBothSides);
+    ui->horizontalSlider->setTickInterval(1);
 
     // Connection
     connect(ui->actionNew, SIGNAL(triggered(bool)),
