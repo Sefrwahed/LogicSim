@@ -77,20 +77,29 @@ void Canvas::setManager(CanvasManager *manager)
     }
 }
 
-bool Canvas::tabAboutToBeClosed(int index)
+void Canvas::tabAboutToBeClosed(int index)
 {
+    qDebug() << "slot tab about to be closed";
     if (index == d->tabIndex)
     {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(d->view, "Test", "Quit?",
-                                      QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::Yes)
+        if(d->mCanvasManager->isDirty())
         {
-            qDebug() << "Yes was clicked";
-            return true;
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(d->view, "Close Tab",
+                                          "Do you want to save before closing?",
+                                          QMessageBox::Yes|QMessageBox::Cancel|QMessageBox::No);
+            if (reply == QMessageBox::Yes)
+            {
+                qDebug() << "Yes was clicked";
+                emit saveCanvasAndClose(index);
+            }
+            else if(reply == QMessageBox::Cancel)
+            {
+                return;
+            }
         }
+        emit closeCanvas(index);
     }
-    return false;
 }
 
 

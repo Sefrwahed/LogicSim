@@ -65,12 +65,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionNew, SIGNAL(triggered(bool)),
             this, SLOT(newFile()));
 
-    connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
-            this, SLOT(closeTab(int)));
-
     connect(d->tabWidget, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
 
+//    connect(qApp, SIGNAL(aboutToQuit()),
+//            this, SLOT(appAboutToQuit()));
 }
 
 MainWindow::~MainWindow()
@@ -108,6 +107,12 @@ void MainWindow::setMainFrameDisabled(bool disabled)
     }
 }
 
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    appAboutToQuit();
+    e->accept();
+}
+
 Canvas* MainWindow::newFile()
 {
     if(d->tabsCount >= MAX_TAB_COUNT) return 0;
@@ -127,6 +132,15 @@ Canvas* MainWindow::newFile()
 
         connect(this, SIGNAL(notLastTabClosed(int)),
                 d->workspaceTab, SLOT(updateComponents()));
+
+        connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
+                c, SLOT(tabAboutToBeClosed(int)));
+
+        connect(c, SIGNAL(saveCanvasAndClose(int)),
+                this, SLOT(slotSaveCanvasAndClose(int)));
+
+        connect(c, SIGNAL(closeCanvas(int)),
+                this, SLOT(closeTab(int)));
     }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
@@ -145,10 +159,13 @@ void MainWindow::closeTab(int tabIndex)
     {
         disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
                    this, SLOT(changeManager(int)));
+
         disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
                    d->workspaceTab, SLOT(updateComponents()));
+
         disconnect(this, SIGNAL(notLastTabClosed(int)),
                    this, SLOT(changeManager(int)));
+
         disconnect(this, SIGNAL(notLastTabClosed(int)),
                    d->workspaceTab, SLOT(updateComponents()));
 
@@ -178,8 +195,20 @@ void MainWindow::tabChanged(int index)
     d->activeTabIndex = index;
 }
 
+void MainWindow::appAboutToQuit()
+{
+    foreach(Canvas* c, d->canvases)
+    {
+        d->tabWidget->setCurrentIndex(c->tabIndex());
+        c->tabAboutToBeClosed(c->tabIndex());
+    }
+}
+
 void MainWindow::on_actionSave_triggered()
 {
+    if(d->tabWidget->count() == 0)
+        return;
+
     CanvasManager* c = d->canvases[d->activeTabIndex]->canvasManager();
     QString fileName;
 
@@ -192,6 +221,7 @@ void MainWindow::on_actionSave_triggered()
             fileName.append(".lsim");
 
         qDebug() << fileName;
+        c->setAssociatedFileName(fileName);
     }
     else
     {
@@ -204,6 +234,8 @@ void MainWindow::on_actionSave_triggered()
     QDataStream out(&file);
     out << c;
     file.close();
+    c->setDirty(false);
+    d->tabWidget->setTabText(d->activeTabIndex, QFileInfo(file).baseName());
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -230,9 +262,17 @@ void MainWindow::on_actionOpen_triggered()
         c->setManager(cm);
         cm->populateLoadedComponents();
         emit d->tabWidget->currentChanged(c->tabIndex());
+        d->tabWidget->setTabText(c->tabIndex(), QFileInfo(file).baseName());
+        cm->setDirty(false);
     }
 }
 
+void MainWindow::slotSaveCanvasAndClose(int index)
+{
+    d->activeTabIndex = index;
+    on_actionSave_triggered();
+    closeTab(index);
+}
 
 } // namespace Logicsim
 

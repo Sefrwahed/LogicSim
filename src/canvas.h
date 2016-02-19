@@ -49,7 +49,11 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 public Q_SLOTS:
-    bool tabAboutToBeClosed(int index);
+    void tabAboutToBeClosed(int index);
+
+Q_SIGNALS:
+    void saveCanvasAndClose(int index);
+    void closeCanvas(int index);
 
 private:
     class Private;

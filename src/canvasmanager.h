@@ -86,6 +86,9 @@ public:
     bool isDropable(QPointF position);
     bool isOutOfCanvas(QPointF position);
 
+    bool isDirty() const;
+    void setDirty(bool dirty);
+
 private:
     Cell findSuitableCell(QPointF scenePos);
     void parkComponent(Component* g, Cell c);

@@ -151,6 +151,7 @@ QDataStream &operator>>(QDataStream &in, Component *& c)
             break;
         case Component::NorGate:
             c = new NorGate();
+            break;
         case Component::XorGate:
             c = new XorGate();
             break;

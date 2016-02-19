@@ -30,18 +30,21 @@ public:
     void initWorkspaceTab();
     void setMainFrameDisabled(bool disabled);
 
+private:
+    void closeEvent(QCloseEvent * e);
+
 public Q_SLOTS:
     Canvas *newFile();
     void closeTab(int tabIndex);
     void changeManager(int index);
     void tabChanged(int index);
+    void appAboutToQuit();
+    void on_actionSave_triggered();
+    void on_actionOpen_triggered();
+    void slotSaveCanvasAndClose(int index);
 
 Q_SIGNALS:
     void notLastTabClosed(int index);
-
-private slots:
-    void on_actionSave_triggered();
-    void on_actionOpen_triggered();
 
 private:
     Ui::MainWindow *ui;

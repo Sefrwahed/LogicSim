@@ -15,6 +15,7 @@ class CanvasManager::Private
 {
 public:
     Private() :
+        dirty(false),
         componentCount(0),
         selectedComponentIndex(-1),
         selectedLineIndex(-1),
@@ -27,6 +28,7 @@ public:
         selectedLine(0)
     {}
 
+    bool                   dirty;
     int                    componentCount;
     int                    selectedComponentIndex;
     int                    selectedLineIndex;
@@ -103,6 +105,7 @@ void CanvasManager::addComponent(Component *component, QPointF scenePos)
         d->canvas->addItem(component);
         d->componentCount++;
         d->mComponents << component;
+        setDirty(true);
         emit componentAdded(d->componentCount - 1);
     }
 }
@@ -180,6 +183,7 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
         parkComponent(component, newCell);
         d->acquiredSquares.remove(d->oldSquareNumberOfMovingComponent);
         d->acquiredSquares.insert(calculateSquareNumber(newCell));
+        setDirty(true);
     }
     else
     {
@@ -199,7 +203,7 @@ void CanvasManager::addLineToCanvas(ConnectionLine* line)
             this, SLOT(selectLine()));
 
     d->canvas->addItem(line);
-
+    setDirty(true);
     unSelectPins();
 }
 
@@ -371,6 +375,7 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
     if(item->row() < d->componentCount)
     {
         d->mComponents.at(item->row())->setName(item->text());
+        setDirty(true);
     }
 }
 
@@ -400,6 +405,7 @@ void CanvasManager::deleteLine(int index)
     d->connectionLines.removeAt(index);
     delete l;
     updateComponents();
+    setDirty(true);
 }
 
 bool CanvasManager::isDropable(QPointF position)
@@ -422,6 +428,17 @@ bool CanvasManager::isOutOfCanvas(QPointF position)
     {
         return false;
     }
+}
+
+bool CanvasManager::isDirty() const
+{
+    return d->dirty;
+}
+
+void CanvasManager::setDirty(bool dirty)
+{
+    qDebug() << "Dirty set to:" << dirty;
+    d->dirty = dirty;
 }
 
 void CanvasManager::pushDataToStream(QDataStream &stream)
@@ -456,8 +473,6 @@ void CanvasManager::loadDataFromStream(QDataStream &stream)
 
         Component * outPinParentComp = componentById(outputPinParentComponentId);
         Component * inPinParentComp =  componentById(inputPinParentComponentId);
-
-        qDebug() << "Pins of in pin parent: " <<  inPinParentComp->pins().length();
 
         // Output pin always comes first in the list then comes the input pins
         ConnectionLine* cl = new ConnectionLine(outPinParentComp->pins().at(0),
