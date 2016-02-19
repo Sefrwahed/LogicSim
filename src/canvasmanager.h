@@ -55,25 +55,39 @@ public:
     CanvasManager(QObject *parent = 0, QGraphicsScene *canvas = 0);
     ~CanvasManager();
 
-    QList<Component *> components();
     QGraphicsScene* canvas();
+    void setCanvas(QGraphicsScene* s);
+
+    QList<Component *> components();
+    Component* componentById(quint32 id);
+    void setComponents(QList<Component *> clist);
     int selectedComponentIndex();
     int selectedLineIndex();
-
     void addComponent(Component* gate, QPointF scenePos);
     void selectComponent(Component* gate);
     void unSelectComponent();
     void deleteComponent(int index);
     void movingComponent(Component* gate);
     void componentMoved(Component* gate, QPointF scenePos);
+
     void pinPressed(Pin* p);
     void unSelectPins();
 
     void unSelectLine();
     void deleteLine(int index);
 
+    void pushDataToStream(QDataStream &stream);
+    void loadDataFromStream(QDataStream &stream);
+    void populateLoadedComponents();
+
+    QString associatedFileName() const;
+    void setAssociatedFileName(QString &filename);
+
     bool isDropable(QPointF position);
     bool isOutOfCanvas(QPointF position);
+
+    bool isDirty() const;
+    void setDirty(bool dirty);
 
 private:
     Cell findSuitableCell(QPointF scenePos);
@@ -81,6 +95,7 @@ private:
     QList<Cell> alternativePlaces(Cell c) const;
     int calculateSquareNumber(Cell c) const;
     int selectedComponentSquare(int index) const;
+    void addLineToCanvas(ConnectionLine *line);
     void updateComponents();
 
 public Q_SLOTS:
@@ -98,6 +113,9 @@ private:
     class Private;
     Private* const d;
 };
+
+QDataStream &operator<<(QDataStream &out, CanvasManager * cm);
+QDataStream &operator>>(QDataStream &in, CanvasManager *& cm);
 
 }
 

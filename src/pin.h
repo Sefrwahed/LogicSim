@@ -41,6 +41,9 @@ public:
     bool isConnected();
     void setConnected(ConnectionLine* line);
 
+    void setNumber(quint32 n);
+    quint32 number() const;
+
     void updateConnectedLine();
     QList<ConnectionLine *> &connectedLines();
 
@@ -64,10 +67,11 @@ Q_SIGNALS:
     void changed(Pin::Value v);
 
 private:
-    Type m_type;
+    Value                  m_value;
+    quint32                m_number;
+    Type                   m_type;
+    Component*             m_parent;
     QList<ConnectionLine*> m_lines;
-    Component* m_parent;
-    Pin::Value m_value;
 };
 
 } // namespace Logicsim

@@ -166,9 +166,7 @@ void NotGate::calcOutput()
     {
         out_logic = Pin::Undefined;
     }
-    //bool out_logic = !(inputList()[0]->value());
-    //outputNode()->setValue(!out);
-    emit Gate::outputChanged(out_logic);
+    emit outputChanged(out_logic);
 }
 
 QString NotGate::imageUrl() const

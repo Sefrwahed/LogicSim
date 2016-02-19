@@ -6,7 +6,7 @@
 namespace Logicsim
 {
 
-ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
+ConnectionLine::ConnectionLine(Pin *out, Pin *in, QGraphicsItem* parent)
     : QGraphicsLineItem(parent), m_out(out), m_in(in)
 {
     setAcceptHoverEvents(true);
@@ -17,16 +17,22 @@ ConnectionLine::ConnectionLine(Pin *in, Pin *out, QGraphicsItem* parent)
     setLine(QLineF(m_in->centerPos(), m_out->centerPos()));
     setFlag(QGraphicsItem::ItemIsSelectable);
 
-    if(m_out && m_in)
-    {
-        connect(m_out, SIGNAL(changed(Pin::Value)),
-                m_in, SLOT(updatePinValue(Pin::Value)));
-        m_in->updatePinValue(m_out->value());
-    }
+    connect(m_out, SIGNAL(changed(Pin::Value)),
+            m_in, SLOT(updatePinValue(Pin::Value)));
+
+    connect(m_out, SIGNAL(changed(Pin::Value)),
+            this, SLOT(updateColor()));
+
+    connect(this, SIGNAL(lineDeleted()),
+            this, SLOT(disconnectPins()));
+
+    m_in->updatePinValue(m_out->value());
+    qDebug() << "Line connected";
 }
 
 ConnectionLine::~ConnectionLine()
 {
+    qDebug() << "Line deleted";
 }
 
 Pin *ConnectionLine::output() const
@@ -55,20 +61,30 @@ void ConnectionLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     QPen p;
     p.setWidthF(2);
-    p.setStyle(Qt::DashDotDotLine);
+    p.setStyle(Qt::DashLine);
     p.setCapStyle(Qt::RoundCap);
     p.setJoinStyle(Qt::MiterJoin);
 
     if(isSelected())
     {
         p.setColor(QColor(30,144,255));
-        setPen(p);
     }
     else
     {
-        p.setColor(Qt::black);
-        setPen(p);
+        if(m_out->value() == Pin::True)
+        {
+            p.setColor(QColor(0,196,0));
+        }
+        else if(m_out->value() == Pin::False)
+        {
+            p.setColor(Qt::red);
+        }
+        else
+        {
+            p.setColor(Qt::gray);
+        }
     }
+    setPen(p);
 
     QGraphicsLineItem::paint(painter, option, widget);
 }
@@ -79,6 +95,20 @@ void ConnectionLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
     qDebug() << "Line pressed bayn kedda";
 
     emit lineSelected();
+}
+
+void ConnectionLine::updateColor()
+{
+    update();
+}
+
+void ConnectionLine::disconnectPins()
+{
+    disconnect(m_out, SIGNAL(changed(Pin::Value)),
+            m_in, SLOT(updatePinValue(Pin::Value)));
+
+    disconnect(m_out, SIGNAL(changed(Pin::Value)),
+            this, SLOT(updateColor()));
 }
 
 } // namespace Logicsim
