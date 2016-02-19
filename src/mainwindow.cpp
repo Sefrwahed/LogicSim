@@ -3,6 +3,7 @@
 // Qt includes
 
 #include <QDebug>
+#include <QFileDialog>
 
 // Local includes
 
@@ -22,14 +23,17 @@ class MainWindow::Private
 public:
     Private() :
         tabsCount(0),
+        activeTabIndex(0),
         tabWidget(0),
-        compTab(0)
+        compTab(0),
+        workspaceTab(0)
     {}
 
     int            tabsCount;
+    int            activeTabIndex;
     QTabWidget*    tabWidget;
     ComponentsTab* compTab;
-    WorkspaceTab* workspaceTab;
+    WorkspaceTab*  workspaceTab;
     QList<Canvas*> canvases;
 
     ~Private()
@@ -61,9 +65,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionNew, SIGNAL(triggered(bool)),
             this, SLOT(newFile()));
 
-    connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
-            this, SLOT(closeTab(int)));
+    connect(d->tabWidget, SIGNAL(currentChanged(int)),
+            this, SLOT(tabChanged(int)));
 
+    connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
+            this, SLOT(tabAboutToBeClosed(int)));
 }
 
 MainWindow::~MainWindow()
@@ -101,9 +107,15 @@ void MainWindow::setMainFrameDisabled(bool disabled)
     }
 }
 
-void MainWindow::newFile()
+void MainWindow::closeEvent(QCloseEvent *e)
 {
-    if(d->tabsCount >= MAX_TAB_COUNT) return;
+    appAboutToQuit();
+    e->accept();
+}
+
+Canvas* MainWindow::newFile()
+{
+    if(d->tabsCount >= MAX_TAB_COUNT) return 0;
 
     Canvas* c = new Canvas(d->tabWidget);
     d->canvases << c;
@@ -111,17 +123,22 @@ void MainWindow::newFile()
     {
         connect(d->tabWidget, SIGNAL(currentChanged(int)),
                 this, SLOT(changeManager(int)));
+
         connect(d->tabWidget, SIGNAL(currentChanged(int)),
                 d->workspaceTab, SLOT(updateComponents()));
+
         connect(this, SIGNAL(notLastTabClosed(int)),
                 this, SLOT(changeManager(int)));
+
         connect(this, SIGNAL(notLastTabClosed(int)),
                 d->workspaceTab, SLOT(updateComponents()));
     }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
     c->setTabIndex(tabIndex);
+    d->tabWidget->setCurrentIndex(tabIndex);
     setMainFrameDisabled(false);
+    return c;
 }
 
 void MainWindow::closeTab(int tabIndex)
@@ -133,10 +150,13 @@ void MainWindow::closeTab(int tabIndex)
     {
         disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
                    this, SLOT(changeManager(int)));
+
         disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
                    d->workspaceTab, SLOT(updateComponents()));
+
         disconnect(this, SIGNAL(notLastTabClosed(int)),
                    this, SLOT(changeManager(int)));
+
         disconnect(this, SIGNAL(notLastTabClosed(int)),
                    d->workspaceTab, SLOT(updateComponents()));
 
@@ -161,4 +181,122 @@ void MainWindow::changeManager(int index)
     d->workspaceTab->setManager(d->canvases.at(index)->canvasManager());
 }
 
+void MainWindow::tabChanged(int index)
+{
+    d->activeTabIndex = index;
+}
+
+void MainWindow::tabAboutToBeClosed(int index)
+{
+    d->tabWidget->setCurrentIndex(index);
+    d->activeTabIndex = index;
+    Canvas * c = d->canvases[index];
+
+    if(c->canvasManager()->isDirty())
+    {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Close Tab",
+                                      "Do you want to save before closing?",
+                                      QMessageBox::Yes|QMessageBox::Cancel|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+        {
+            qDebug() << "Yes was clicked";
+            on_actionSave_triggered();
+        }
+        else if(reply == QMessageBox::Cancel)
+        {
+            return;
+        }
+    }
+
+    closeTab(index);
+    return;
+}
+
+void MainWindow::setActiveTab(int index)
+{
+    d->tabWidget->setCurrentIndex(index);
+    tabChanged(index);
+}
+
+void MainWindow::appAboutToQuit()
+{
+    foreach(Canvas* c, d->canvases)
+    {
+        tabAboutToBeClosed(c->tabIndex());
+    }
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    if(d->tabWidget->count() == 0)
+        return;
+
+    CanvasManager* c = d->canvases[d->activeTabIndex]->canvasManager();
+    QString fileName;
+
+    if( c->associatedFileName().isEmpty() )
+    {
+        fileName = QFileDialog::getSaveFileName(this,
+                tr("Save Circuit"), QDir::home().path(), tr("LogicSim Circuit (*.lsim)"));
+
+        fileName.replace(".lsim", "");
+        if(fileName.simplified().isEmpty())
+        {
+            QMessageBox::warning(this, "Save", "Circuit was not saved!");
+            return;
+        }
+
+
+        fileName.append(".lsim");
+
+        qDebug() << fileName;
+        c->setAssociatedFileName(fileName);
+    }
+    else
+    {
+        fileName = c->associatedFileName();
+    }
+
+    qDebug() << "Saving to:" << fileName;
+    QFile file(fileName);
+    file.open(QIODevice::WriteOnly | QIODevice::Truncate);
+    QDataStream out(&file);
+    out << c;
+    file.close();
+    c->setDirty(false);
+    d->tabWidget->setTabText(d->activeTabIndex, QFileInfo(file).baseName());
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open Circuit"), QDir::home().path(), tr("LogicSim Circuit (*.lsim)"));
+
+    if(fileName.isEmpty())
+        return;
+
+    qDebug() << "Selected File: " << fileName;
+
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
+    QDataStream out(&file);
+    CanvasManager* cm;
+    out >> cm;
+    file.close();
+    cm->setAssociatedFileName(fileName);
+
+    Canvas * c = newFile();
+    if(c)
+    {
+        c->setManager(cm);
+        cm->populateLoadedComponents();
+        emit d->tabWidget->currentChanged(c->tabIndex());
+        d->tabWidget->setTabText(c->tabIndex(), QFileInfo(file).baseName());
+        cm->setDirty(false);
+    }
+}
+
 } // namespace Logicsim
+
+

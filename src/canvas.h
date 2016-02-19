@@ -30,9 +30,11 @@ public:
 
     int tabIndex() const;
     void setTabIndex(int index);
+
     CanvasManager *canvasManager();
     void createUndoView();
     void pushInStack(QUndoCommand* command);
+    void setManager(CanvasManager* manager);
 
 protected:
     void dropEvent(QGraphicsSceneDragDropEvent * event);
@@ -47,9 +49,6 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
     void drawBackground(QPainter *painter, const QRectF &rect);
-
-public Q_SLOTS:
-    bool tabAboutToBeClosed(int index);
 
 private:
     class Private;

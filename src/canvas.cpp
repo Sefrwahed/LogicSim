@@ -47,6 +47,8 @@ Canvas::Canvas(QObject *parent)
     d->view->setSceneRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
     d->mCanvasManager = new CanvasManager(parent, this);
+    d->view->verticalScrollBar()->setValue(CANVAS_HEIGHT/3);
+    d->view->horizontalScrollBar()->setValue(CANVAS_WIDTH/3);
 }
 
 Canvas::~Canvas()
@@ -75,22 +77,14 @@ CanvasManager *Canvas::canvasManager()
     return d->mCanvasManager;
 }
 
-bool Canvas::tabAboutToBeClosed(int index)
+void Canvas::setManager(CanvasManager *manager)
 {
-    if (index == d->tabIndex)
+    if(manager)
     {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(d->view, "Test", "Quit?",
-                                      QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::Yes)
-        {
-            qDebug() << "Yes was clicked";
-            return true;
-        }
+        d->mCanvasManager = manager;
+        d->mCanvasManager->setCanvas(this);
     }
-    return false;
 }
-
 
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {

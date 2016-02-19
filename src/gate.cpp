@@ -50,6 +50,10 @@ Gate::Gate(Type t)
     connect(d->in1, SIGNAL(changed(Pin::Value)),
             this, SLOT(calcOutput()));
 
+    addPins(QList<Pin*>() << d->out << d->in1);
+    d->out->setNumber(0);
+    d->in1->setNumber(1);
+
     connect(this, SIGNAL(outputChanged(Pin::Value)),
             d->out, SLOT(updatePinValue(Pin::Value)));
 
@@ -59,7 +63,6 @@ Gate::Gate(Type t)
 
     if(d->maxInput == 1)
     {
-        addPins(QList<Pin*>() << d->in1 << d->out);
         d->in1->setPos(-20,22.5);
         d->out->setPos(50,22.5);
         Li1->setPos(10,5);
@@ -68,7 +71,8 @@ Gate::Gate(Type t)
     else
     {
         d->in2 = new Pin(Pin::Input, this);
-        addPins(QList<Pin*>() << d->in1 << d->in2 << d->out);
+        d->in2->setNumber(2);
+        addPins(QList<Pin*>() << d->in2);
 
         connect(d->in2, SIGNAL(changed(Pin::Value)),
                 this, SLOT(calcOutput()));

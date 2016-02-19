@@ -4,6 +4,10 @@
 
 #include <QtMath>
 
+// Local includes
+
+#include "component.h"
+
 namespace Logicsim
 {
 
@@ -11,6 +15,7 @@ class CanvasManager::Private
 {
 public:
     Private() :
+        dirty(false),
         componentCount(0),
         selectedComponentIndex(-1),
         selectedLineIndex(-1),
@@ -23,6 +28,7 @@ public:
         selectedLine(0)
     {}
 
+    bool                   dirty;
     int                    componentCount;
     int                    selectedComponentIndex;
     int                    selectedLineIndex;
@@ -32,11 +38,12 @@ public:
     QGraphicsScene*        canvas;
     Pin*                   selectedInput;
     Pin*                   selectedOutput;
+    ConnectionLine*        selectedLine;
     Cell                   oldCellOfMovingComponent;
-    QSet<int>              acquiredSquares;
+    QSet<qint32>           acquiredSquares;
     QList<Component *>     mComponents;
     QList<ConnectionLine*> connectionLines;
-    ConnectionLine*        selectedLine;
+    QString                associatedFileName;
 };
 
 CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
@@ -50,9 +57,29 @@ QList<Component *> CanvasManager::components()
     return d->mComponents;
 }
 
+Component *CanvasManager::componentById(quint32 id)
+{
+    foreach (Component* c, d->mComponents)
+    {
+        if(c->uniqueId() == id)
+                return c;
+    }
+    return 0;
+}
+
+void CanvasManager::setComponents(QList<Component *> clist)
+{
+    d->mComponents = clist;
+}
+
 QGraphicsScene *CanvasManager::canvas()
 {
     return d->canvas;
+}
+
+void CanvasManager::setCanvas(QGraphicsScene *s)
+{
+    d->canvas = s;
 }
 
 int CanvasManager::selectedComponentIndex()
@@ -73,10 +100,12 @@ void CanvasManager::addComponent(Component *component, QPointF scenePos)
         parkComponent(component, c);
         int squareNumber = calculateSquareNumber(c);
         d->acquiredSquares.insert(squareNumber);
-        component->setName("component " + QString::number(d->componentId++));
+        component->setUniqueId(d->componentId++);
+        component->setName("Component " + QString::number(component->uniqueId()));
         d->canvas->addItem(component);
         d->componentCount++;
         d->mComponents << component;
+        setDirty(true);
         emit componentAdded(d->componentCount - 1);
     }
 }
@@ -124,6 +153,7 @@ void CanvasManager::deleteComponent(int index)
     }
 
     emit componentDeleted(index);
+    setDirty(true);
     delete c;
 }
 
@@ -154,6 +184,7 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
         parkComponent(component, newCell);
         d->acquiredSquares.remove(d->oldSquareNumberOfMovingComponent);
         d->acquiredSquares.insert(calculateSquareNumber(newCell));
+        setDirty(true);
     }
     else
     {
@@ -163,6 +194,18 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
 
     d->oldCellOfMovingComponent.erase();
     d->oldSquareNumberOfMovingComponent = 0;
+}
+
+void CanvasManager::addLineToCanvas(ConnectionLine* line)
+{
+    line->setZValue(-1);
+
+    connect(line, SIGNAL(lineSelected()),
+            this, SLOT(selectLine()));
+
+    d->canvas->addItem(line);
+    setDirty(true);
+    unSelectPins();
 }
 
 void CanvasManager::pinPressed(Pin *p)
@@ -196,18 +239,11 @@ void CanvasManager::pinPressed(Pin *p)
     if(d->selectedInput && d->selectedOutput
             && d->selectedInput->parentComponent() != d->selectedOutput->parentComponent())
     {
-        ConnectionLine* line = new ConnectionLine(d->selectedInput, d->selectedOutput);
-        line->setZValue(-1);
+        ConnectionLine* line = new ConnectionLine(d->selectedOutput, d->selectedInput);
         d->selectedInput->setConnected(line);
         d->selectedOutput->setConnected(line);
-        d->connectionLines.append(line);
-
-        connect(line, SIGNAL(lineSelected()),
-                this, SLOT(selectLine()));
-
-        d->canvas->addItem(line);
-
-        unSelectPins();
+        d->connectionLines << line;
+        addLineToCanvas(line);
     }
     qDebug() << "Selected input: " << d->selectedInput;
     qDebug() << "Selected output: " << d->selectedOutput;
@@ -339,7 +375,12 @@ void CanvasManager::renameComponent(QTableWidgetItem *item)
 {
     if(item->row() < d->componentCount)
     {
-        d->mComponents.at(item->row())->setName(item->text());
+        Component * c = d->mComponents.at(item->row());
+        if(c->name() != item->text())
+        {
+            c->setName(item->text());
+            setDirty(true);
+        }
     }
 }
 
@@ -369,6 +410,7 @@ void CanvasManager::deleteLine(int index)
     d->connectionLines.removeAt(index);
     delete l;
     updateComponents();
+    setDirty(true);
 }
 
 bool CanvasManager::isDropable(QPointF position)
@@ -393,9 +435,105 @@ bool CanvasManager::isOutOfCanvas(QPointF position)
     }
 }
 
+bool CanvasManager::isDirty() const
+{
+    return d->dirty;
+}
+
+void CanvasManager::setDirty(bool dirty)
+{
+    qDebug() << "Dirty set to:" << dirty;
+    d->dirty = dirty;
+}
+
+void CanvasManager::pushDataToStream(QDataStream &stream)
+{
+    QList<qint32> acquiredSquares;
+
+    foreach (qint32 s, d->acquiredSquares)
+    {
+        acquiredSquares << s;
+    }
+
+    stream << acquiredSquares << d->mComponents;
+    foreach (ConnectionLine* cl, d->connectionLines)
+    {
+        stream << cl->output()->parentComponent()->uniqueId()
+               << cl->input()->parentComponent()->uniqueId()
+               <<cl->input()->number();
+    }
+}
+
+void CanvasManager::loadDataFromStream(QDataStream &stream)
+{
+    QList<quint32> squaresList;
+    stream >> squaresList >> d->mComponents ;
+
+    d->componentId = d->mComponents.last()->uniqueId() + 1;
+
+    while (!stream.atEnd())
+    {
+        quint32 outputPinParentComponentId, inputPinParentComponentId, inputPinNumber;
+        stream >> outputPinParentComponentId >> inputPinParentComponentId >> inputPinNumber;
+
+        Component * outPinParentComp = componentById(outputPinParentComponentId);
+        Component * inPinParentComp =  componentById(inputPinParentComponentId);
+
+        // Output pin always comes first in the list then comes the input pins
+        ConnectionLine* cl = new ConnectionLine(outPinParentComp->pins().at(0),
+                                                inPinParentComp->pins().at(inputPinNumber));
+        outPinParentComp->pins().at(0)->setConnected(cl);
+        inPinParentComp->pins().at(inputPinNumber)->setConnected(cl);
+        d->connectionLines << cl;
+    }
+
+    foreach(qint32 s, squaresList)
+    {
+        d->acquiredSquares.insert(s);
+    }
+}
+
+void CanvasManager::populateLoadedComponents()
+{
+    foreach(Component* c, d->mComponents)
+    {
+        d->canvas->addItem(c);
+        emit componentAdded(d->componentCount++);
+    }
+
+    foreach (ConnectionLine* l, d->connectionLines)
+    {
+        addLineToCanvas(l);
+    }
+}
+
+QString CanvasManager::associatedFileName() const
+{
+    return d->associatedFileName;
+}
+
+void CanvasManager::setAssociatedFileName(QString &filename)
+{
+    d->associatedFileName = filename;
+}
+
 CanvasManager::~CanvasManager()
 {
     delete d;
+}
+
+QDataStream &operator<<(QDataStream &out, CanvasManager * cm)
+{
+    cm->pushDataToStream(out);
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, CanvasManager *& cm)
+{
+    cm = new CanvasManager();
+    cm->loadDataFromStream(in);
+
+    return in;
 }
 
 } // namespace Logicsim
