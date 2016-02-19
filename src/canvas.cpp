@@ -252,7 +252,7 @@ void Canvas::ZoomOut()
 
 void Canvas::ZoomIn()
 {
-    qreal sf = 1.5;
+    qreal sf = 2.0;
 
     d->view->matrix().reset();
     d->view->scale(sf,sf);
