@@ -134,13 +134,16 @@ Canvas* MainWindow::newFile()
                 d->workspaceTab, SLOT(updateComponents()));
 
         connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
-                c, SLOT(tabAboutToBeClosed(int)));
+                this, SLOT(tabAboutToBeClosed(int)));
 
-        connect(c, SIGNAL(saveCanvasAndClose(int)),
-                this, SLOT(slotSaveCanvasAndClose(int)));
+//        connect(c, SIGNAL(saveCanvasAndClose(int)),
+//                this, SLOT(slotSaveCanvasAndClose(int)));
 
-        connect(c, SIGNAL(closeCanvas(int)),
-                this, SLOT(closeTab(int)));
+//        connect(c, SIGNAL(closeCanvas(int)),
+//                this, SLOT(closeTab(int)));
+
+//        connect(c, SIGNAL(setActiveTabIndex(int)),
+//                this, SLOT(setActiveTab(int)));
     }
     d->tabsCount++;
     int tabIndex = d->tabWidget->addTab(c->view(), "New Circuit");
@@ -195,12 +198,44 @@ void MainWindow::tabChanged(int index)
     d->activeTabIndex = index;
 }
 
+void MainWindow::tabAboutToBeClosed(int index)
+{
+    d->tabWidget->setCurrentIndex(index);
+    d->activeTabIndex = index;
+    Canvas * c = d->canvases[index];
+
+    if(c->canvasManager()->isDirty())
+    {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Close Tab",
+                                      "Do you want to save before closing?",
+                                      QMessageBox::Yes|QMessageBox::Cancel|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+        {
+            qDebug() << "Yes was clicked";
+            on_actionSave_triggered();
+        }
+        else if(reply == QMessageBox::Cancel)
+        {
+            return;
+        }
+    }
+
+    closeTab(index);
+    return;
+}
+
+void MainWindow::setActiveTab(int index)
+{
+    d->tabWidget->setCurrentIndex(index);
+    tabChanged(index);
+}
+
 void MainWindow::appAboutToQuit()
 {
     foreach(Canvas* c, d->canvases)
     {
-        d->tabWidget->setCurrentIndex(c->tabIndex());
-        c->tabAboutToBeClosed(c->tabIndex());
+        tabAboutToBeClosed(c->tabIndex());
     }
 }
 
@@ -265,13 +300,6 @@ void MainWindow::on_actionOpen_triggered()
         d->tabWidget->setTabText(c->tabIndex(), QFileInfo(file).baseName());
         cm->setDirty(false);
     }
-}
-
-void MainWindow::slotSaveCanvasAndClose(int index)
-{
-    d->activeTabIndex = index;
-    on_actionSave_triggered();
-    closeTab(index);
 }
 
 } // namespace Logicsim

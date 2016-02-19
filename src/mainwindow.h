@@ -38,10 +38,11 @@ public Q_SLOTS:
     void closeTab(int tabIndex);
     void changeManager(int index);
     void tabChanged(int index);
+    void tabAboutToBeClosed(int index);
+    void setActiveTab(int index);
     void appAboutToQuit();
     void on_actionSave_triggered();
     void on_actionOpen_triggered();
-    void slotSaveCanvasAndClose(int index);
 
 Q_SIGNALS:
     void notLastTabClosed(int index);
