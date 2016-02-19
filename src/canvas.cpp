@@ -8,6 +8,7 @@
 // Local includes
 
 #include "pin.h"
+#include "commands.h"
 #include "logicsim_global.h"
 
 namespace Logicsim
@@ -36,6 +37,12 @@ public:
 Canvas::Canvas(QObject *parent)
     : QGraphicsScene(parent), d(new Private)
 {
+    undoStack = new QUndoStack(this);
+    createUndoView();
+
+    connect(this, SIGNAL(itemMoved(Component*,QPointF)),this,SLOT(itemMovedS(Component*,QPointF)));
+    connect(this,SIGNAL(itemAdded(Component*,QPointF)),this,SLOT(itemAddedS(Component*,QPointF)));
+
     d->view = new QGraphicsView(this);
     d->view->setSceneRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
@@ -94,6 +101,7 @@ void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 
         Component* component = static_cast<Component*>(QMetaType::create(typeId));
         d->mCanvasManager->addComponent(component, event->scenePos());
+        emit itemAdded(component,component->pos());
     }
     else
     {
@@ -174,6 +182,12 @@ void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             d->mCanvasManager->pinPressed(p);
         }
+
+        Component *component = dynamic_cast<Component*>(mouseGrabberItem());
+        if(component)
+        {
+         oldpt = component->pos();
+        }
     }
     else
     {
@@ -215,6 +229,7 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             d->mCanvasManager->movingComponent(component);
             d->mCanvasManager->componentMoved(component, event->scenePos());
             d->view->setCursor(Qt::ArrowCursor);
+            emit itemMoved(component,component->pos());
         }
     }
     QGraphicsScene::mouseReleaseEvent(event);
@@ -246,6 +261,32 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
         x += step;
         painter->drawLine(x, rect.top(), x, rect.bottom());
     }
+}
+
+void Canvas::itemMovedS(Component *item, const QPointF &pos)
+{
+    Q_UNUSED(pos);
+    pushInStack(new MoveCommand(item,oldpt));
+    update();
+}
+
+void Canvas::itemAddedS(Component *addedItem, const QPointF &position)
+{
+    Q_UNUSED(position);
+    pushInStack(new AddCommand(addedItem,this));
+}
+
+void Canvas::pushInStack(QUndoCommand* command)
+{
+    undoStack->push(command);
+    qDebug()<<"..............pushed";
+}
+
+void Canvas::createUndoView()
+{
+    undoView = new QUndoView(undoStack);
+    undoView->show();
+    undoView->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 } // namespace Logicsim

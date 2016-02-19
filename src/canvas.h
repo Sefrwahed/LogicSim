@@ -31,6 +31,8 @@ public:
     int tabIndex() const;
     void setTabIndex(int index);
     CanvasManager *canvasManager();
+    void createUndoView();
+    void pushInStack(QUndoCommand* command);
 
 protected:
     void dropEvent(QGraphicsSceneDragDropEvent * event);
@@ -52,6 +54,18 @@ public Q_SLOTS:
 private:
     class Private;
     Private* const d;
+
+    QUndoStack *undoStack;
+    QUndoView *undoView;
+    QPointF oldpt;
+
+signals:
+    void itemMoved(Component *movedItem, const QPointF &movedFromPosition);
+    void itemAdded(Component *addedItem, const QPointF &position);
+
+private slots:
+    void itemMovedS(Component *item, const QPointF &pos);
+    void itemAddedS(Component *item, const QPointF &pos);
 };
 
 } // namespace Logicsim
