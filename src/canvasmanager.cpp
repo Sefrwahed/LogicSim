@@ -391,6 +391,16 @@ void CanvasManager::selectLine()
     d->selectedLineIndex = d->connectionLines.indexOf(d->selectedLine);
 }
 
+//void CanvasManager::ZoomOut()
+//{
+//    emit VZoomOut();
+//}
+
+//void CanvasManager::ZoomIn()
+//{
+//    emit VZoomIn();
+//}
+
 void CanvasManager::unSelectLine()
 {
     if(d->selectedLine != 0)

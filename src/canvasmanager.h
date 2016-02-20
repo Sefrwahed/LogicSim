@@ -102,6 +102,8 @@ public Q_SLOTS:
     void selectedFromWorkspace(int index);
     void renameComponent(QTableWidgetItem* item);
     void selectLine();
+    //void ZoomOut();
+    //void ZoomIn();
 
 Q_SIGNALS:
     void componentUpdated();

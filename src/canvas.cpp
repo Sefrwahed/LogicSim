@@ -242,7 +242,7 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void Canvas::ZoomOut()
+void Canvas::VZoomOut()
 {
     qreal sf = 0.5;
 
@@ -250,7 +250,7 @@ void Canvas::ZoomOut()
     d->view->scale(sf,sf);
 }
 
-void Canvas::ZoomIn()
+void Canvas::VZoomIn()
 {
     qreal sf = 2.0;
 

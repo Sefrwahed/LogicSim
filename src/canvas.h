@@ -49,8 +49,8 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 public Q_SLOTS:
-    void ZoomOut();
-    void ZoomIn();
+    void VZoomOut();
+    void VZoomIn();
 
 private:
     class Private;
