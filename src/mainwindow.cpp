@@ -196,22 +196,6 @@ void MainWindow::changeManager(int index)
 void MainWindow::tabChanged(int index)
 {
     d->activeTabIndex = index;
-    //disconnect zoom from all tabs on tab change
-    foreach (Canvas* c,d->canvases)
-    {
-        disconnect(ui->Zoomout,SIGNAL(pressed()),
-                    c->canvasManager(),SLOT(ZoomOut()));
-        disconnect(ui->zoomin,SIGNAL(pressed()),
-                    c->canvasManager(),SLOT(ZoomIn()));
-    }
-    //zoom connect on tab change
-    if(d->tabsCount != 0)
-    {
-    connect(ui->Zoomout,SIGNAL(pressed()),
-                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomOut()));
-    connect(ui->zoomin,SIGNAL(pressed()),
-                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomIn()));
-    }
 }
 
 void MainWindow::tabAboutToBeClosed(int index)
@@ -220,10 +204,10 @@ void MainWindow::tabAboutToBeClosed(int index)
     d->activeTabIndex = index;
     Canvas * c = d->canvases[index];
     //zoom disconnect on closing
-    disconnect(ui->Zoomout,SIGNAL(pressed()),
-                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomOut()));
-    disconnect(ui->zoomin,SIGNAL(pressed()),
-                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomIn()));
+    //disconnect(ui->Zoomout,SIGNAL(pressed()),
+    //            c->canvasManager(),SLOT(ZoomOut()));
+    //disconnect(ui->zoomin,SIGNAL(pressed()),
+    //            c->canvasManager(),SLOT(ZoomIn()));
 
 
     if(c->canvasManager()->isDirty())
@@ -249,8 +233,24 @@ void MainWindow::tabAboutToBeClosed(int index)
 
 void MainWindow::setActiveTab(int index)
 {
+    int leavingIndex = d->tabWidget->currentIndex();
     d->tabWidget->setCurrentIndex(index);
+
+    //disconnect zoom from all tabs on tab change
+        disconnect(ui->Zoomout,SIGNAL(pressed()),
+                    d->canvases.at(leavingIndex)->canvasManager(),SLOT(ZoomOut()));
+        disconnect(ui->zoomin,SIGNAL(pressed()),
+                    d->canvases.at(leavingIndex)->canvasManager(),SLOT(ZoomIn()));
+
+    //zoom connect on tab change
+
+    connect(ui->Zoomout,SIGNAL(pressed()),
+                d->canvases.at(index)->canvasManager(),SLOT(ZoomOut()));
+    connect(ui->zoomin,SIGNAL(pressed()),
+                d->canvases.at(index)->canvasManager(),SLOT(ZoomIn()));
+
     tabChanged(index);
+
 }
 
 void MainWindow::appAboutToQuit()
