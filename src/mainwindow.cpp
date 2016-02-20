@@ -158,6 +158,7 @@ void MainWindow::closeTab(int tabIndex)
     int tmp = tabIndex;
     if(d->canvases.length() == 1)
     {
+
         disconnect(d->tabWidget, SIGNAL(currentChanged(int)),
                    this, SLOT(changeManager(int)));
 
@@ -169,14 +170,9 @@ void MainWindow::closeTab(int tabIndex)
 
         disconnect(this, SIGNAL(notLastTabClosed(int)),
                    d->workspaceTab, SLOT(updateComponents()));
-
-        disconnect(ui->Zoomout,SIGNAL(pressed()),
-                    d->canvases[0]->canvasManager(),SLOT(ZoomOut()));
-        disconnect(ui->zoomin,SIGNAL(pressed()),
-                    d->canvases[0]->canvasManager(),SLOT(ZoomIn()));
-
 
     }
+
     d->tabWidget->removeTab(tabIndex);
 
     for (int i = tabIndex+1; i < d->canvases.length(); ++i)
@@ -201,7 +197,7 @@ void MainWindow::tabChanged(int index)
 {
     d->activeTabIndex = index;
     //disconnect zoom from all tabs on tab change
-    foreach (Canvas* c,d->canvases )
+    foreach (Canvas* c,d->canvases)
     {
         disconnect(ui->Zoomout,SIGNAL(pressed()),
                     c->canvasManager(),SLOT(ZoomOut()));
@@ -209,11 +205,13 @@ void MainWindow::tabChanged(int index)
                     c->canvasManager(),SLOT(ZoomIn()));
     }
     //zoom connect on tab change
+    if(d->tabsCount != 0)
+    {
     connect(ui->Zoomout,SIGNAL(pressed()),
                 d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomOut()));
     connect(ui->zoomin,SIGNAL(pressed()),
                 d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomIn()));
-
+    }
 }
 
 void MainWindow::tabAboutToBeClosed(int index)
