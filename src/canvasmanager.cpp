@@ -50,6 +50,10 @@ CanvasManager::CanvasManager(QObject *parent, QGraphicsScene *canvas)
     : QObject(parent), d(new Private)
 {
     d->canvas = canvas;
+    connect(this,SIGNAL(CZoomOut()),
+                this->canvas(),SLOT(VZoomOut()));
+    connect(this,SIGNAL(CZoomIn()),
+                this->canvas(),SLOT(VZoomIn()));
 }
 
 QList<Component *> CanvasManager::components()
@@ -391,15 +395,15 @@ void CanvasManager::selectLine()
     d->selectedLineIndex = d->connectionLines.indexOf(d->selectedLine);
 }
 
-//void CanvasManager::ZoomOut()
-//{
-//    emit VZoomOut();
-//}
+void CanvasManager::ZoomOut()
+{
+    emit CZoomOut();
+}
 
-//void CanvasManager::ZoomIn()
-//{
-//    emit VZoomIn();
-//}
+void CanvasManager::ZoomIn()
+{
+    emit CZoomIn();
+}
 
 void CanvasManager::unSelectLine()
 {
@@ -529,6 +533,10 @@ void CanvasManager::setAssociatedFileName(QString &filename)
 
 CanvasManager::~CanvasManager()
 {
+    disconnect(this,SIGNAL(CZoomOut()),
+               this->canvas(),SLOT(VZoomOut()));
+    disconnect(this,SIGNAL(CZoomIn()),
+                this->canvas(),SLOT(VZoomIn()));
     delete d;
 }
 

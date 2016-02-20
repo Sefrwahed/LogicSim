@@ -102,14 +102,16 @@ public Q_SLOTS:
     void selectedFromWorkspace(int index);
     void renameComponent(QTableWidgetItem* item);
     void selectLine();
-    //void ZoomOut();
-    //void ZoomIn();
+    void ZoomOut();
+    void ZoomIn();
 
 Q_SIGNALS:
     void componentUpdated();
     void componentDeleted(int index);
     void componentAdded(int index);
     void componentSelectedFromCanvas(int index);
+    void CZoomOut();
+    void CZoomIn();
 
 private:
     class Private;

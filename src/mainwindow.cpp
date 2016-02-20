@@ -170,6 +170,12 @@ void MainWindow::closeTab(int tabIndex)
         disconnect(this, SIGNAL(notLastTabClosed(int)),
                    d->workspaceTab, SLOT(updateComponents()));
 
+        disconnect(ui->Zoomout,SIGNAL(pressed()),
+                    d->canvases[0]->canvasManager(),SLOT(ZoomOut()));
+        disconnect(ui->zoomin,SIGNAL(pressed()),
+                    d->canvases[0]->canvasManager(),SLOT(ZoomIn()));
+
+
     }
     d->tabWidget->removeTab(tabIndex);
 
@@ -194,12 +200,19 @@ void MainWindow::changeManager(int index)
 void MainWindow::tabChanged(int index)
 {
     d->activeTabIndex = index;
-    /*connect(ui->horizontalSlider,SIGNAL(valueChanged(int)),
-            d->canvases[d->activeTabIndex],SLOT(Zoom(int)));*/
+    //disconnect zoom from all tabs on tab change
+    foreach (Canvas* c,d->canvases )
+    {
+        disconnect(ui->Zoomout,SIGNAL(pressed()),
+                    c->canvasManager(),SLOT(ZoomOut()));
+        disconnect(ui->zoomin,SIGNAL(pressed()),
+                    c->canvasManager(),SLOT(ZoomIn()));
+    }
+    //zoom connect on tab change
     connect(ui->Zoomout,SIGNAL(pressed()),
-                d->canvases[d->activeTabIndex],SLOT(ZoomOut()));
+                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomOut()));
     connect(ui->zoomin,SIGNAL(pressed()),
-                d->canvases[d->activeTabIndex],SLOT(ZoomIn()));
+                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomIn()));
 
 }
 
@@ -208,6 +221,12 @@ void MainWindow::tabAboutToBeClosed(int index)
     d->tabWidget->setCurrentIndex(index);
     d->activeTabIndex = index;
     Canvas * c = d->canvases[index];
+    //zoom disconnect on closing
+    disconnect(ui->Zoomout,SIGNAL(pressed()),
+                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomOut()));
+    disconnect(ui->zoomin,SIGNAL(pressed()),
+                d->canvases[d->activeTabIndex]->canvasManager(),SLOT(ZoomIn()));
+
 
     if(c->canvasManager()->isDirty())
     {
