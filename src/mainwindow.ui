@@ -101,6 +101,25 @@
        </widget>
       </item>
       <item>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="minimumSize">
+         <size>
+          <width>513</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>513</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="zoomin">
         <property name="text">
          <string>In </string>

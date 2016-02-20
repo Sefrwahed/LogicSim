@@ -67,6 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->horizontalSlider->setTickPosition(QSlider::TicksBothSides);
     ui->horizontalSlider->setTickInterval(1);
 */
+    ui->progressBar->setRange(-200,200);
+    ui->progressBar->setValue(0);
 
     // Connection
     connect(ui->actionNew, SIGNAL(triggered(bool)),
