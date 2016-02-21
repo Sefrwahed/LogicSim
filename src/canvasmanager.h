@@ -114,6 +114,7 @@ Q_SIGNALS:
     void componentSelectedFromCanvas(int index);
     void CZoomOut();
     void CZoomIn();
+    void zoomLevelChanged(int ZL);
 
 private:
     class Private;

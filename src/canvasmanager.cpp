@@ -403,6 +403,7 @@ void CanvasManager::ZoomOut()
     {
         d->zoomLevel--;
         emit CZoomOut();
+        emit zoomLevelChanged(d->zoomLevel);
     }
 }
 
@@ -412,6 +413,7 @@ void CanvasManager::ZoomIn()
     {
        d->zoomLevel++;
        emit CZoomIn();
+       emit zoomLevelChanged(d->zoomLevel);
     }
 }
 

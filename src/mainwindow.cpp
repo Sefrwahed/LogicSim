@@ -203,6 +203,8 @@ void MainWindow::changeManager(int index)
                 d->canvases.at(index)->canvasManager(),SLOT(ZoomOut()));
     connect(ui->zoomin,SIGNAL(pressed()),
                 d->canvases.at(index)->canvasManager(),SLOT(ZoomIn()));
+    connect(d->canvases.at(index)->canvasManager(), SIGNAL(zoomLevelChanged(int)),
+            ui->progressBar,SLOT(setValue(int)));
     ui->progressBar->setValue(d->canvases.at(index)->canvasManager()->zoomLevel());
     }
     d->workspaceTab->setManager(d->canvases.at(index)->canvasManager());
