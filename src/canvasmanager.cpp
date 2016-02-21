@@ -548,10 +548,6 @@ void CanvasManager::setAssociatedFileName(QString &filename)
 
 CanvasManager::~CanvasManager()
 {
-    disconnect(this,SIGNAL(CZoomOut()),
-               this->canvas(),SLOT(VZoomOut()));
-    disconnect(this,SIGNAL(CZoomIn()),
-                this->canvas(),SLOT(VZoomIn()));
     delete d;
 }
 
