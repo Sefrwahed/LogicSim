@@ -192,6 +192,13 @@ void MainWindow::changeManager(int index)
 {
     if(index != -1)
     {
+        foreach (Canvas* c, d->canvases)
+        {
+            disconnect(ui->Zoomout,SIGNAL(pressed()),
+                        c->canvasManager(),SLOT(ZoomOut()));
+            disconnect(ui->zoomin,SIGNAL(pressed()),
+                        c->canvasManager(),SLOT(ZoomIn()));
+        }
     connect(ui->Zoomout,SIGNAL(pressed()),
                 d->canvases.at(index)->canvasManager(),SLOT(ZoomOut()));
     connect(ui->zoomin,SIGNAL(pressed()),
@@ -210,11 +217,6 @@ void MainWindow::tabAboutToBeClosed(int index)
     d->tabWidget->setCurrentIndex(index);
     d->activeTabIndex = index;
     Canvas * c = d->canvases[index];
-    //zoom disconnect on closing
-    disconnect(ui->Zoomout,SIGNAL(pressed()),
-                c->canvasManager(),SLOT(ZoomOut()));
-    disconnect(ui->zoomin,SIGNAL(pressed()),
-                c->canvasManager(),SLOT(ZoomIn()));
 
 
     if(c->canvasManager()->isDirty())

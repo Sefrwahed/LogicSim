@@ -16,6 +16,7 @@ class CanvasManager::Private
 public:
     Private() :
         dirty(false),
+        zoomLevel(3),
         componentCount(0),
         selectedComponentIndex(-1),
         selectedLineIndex(-1),
@@ -29,6 +30,7 @@ public:
     {}
 
     bool                   dirty;
+    int                    zoomLevel;
     int                    componentCount;
     int                    selectedComponentIndex;
     int                    selectedLineIndex;
@@ -397,12 +399,20 @@ void CanvasManager::selectLine()
 
 void CanvasManager::ZoomOut()
 {
-    emit CZoomOut();
+    if(d->zoomLevel > 1)
+    {
+        d->zoomLevel--;
+        emit CZoomOut();
+    }
 }
 
 void CanvasManager::ZoomIn()
 {
-    emit CZoomIn();
+    if(d->zoomLevel < 5)
+    {
+       d->zoomLevel++;
+       emit CZoomIn();
+    }
 }
 
 void CanvasManager::unSelectLine()
