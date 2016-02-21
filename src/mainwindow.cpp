@@ -67,8 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->horizontalSlider->setTickPosition(QSlider::TicksBothSides);
     ui->horizontalSlider->setTickInterval(1);
 */
-    ui->progressBar->setRange(-200,200);
-    ui->progressBar->setValue(0);
+    ui->progressBar->setRange(1,5);
+    ui->progressBar->setValue(3);
 
     // Connection
     connect(ui->actionNew, SIGNAL(triggered(bool)),
@@ -203,8 +203,10 @@ void MainWindow::changeManager(int index)
                 d->canvases.at(index)->canvasManager(),SLOT(ZoomOut()));
     connect(ui->zoomin,SIGNAL(pressed()),
                 d->canvases.at(index)->canvasManager(),SLOT(ZoomIn()));
+    ui->progressBar->setValue(d->canvases.at(index)->canvasManager()->zoomLevel());
     }
     d->workspaceTab->setManager(d->canvases.at(index)->canvasManager());
+
 }
 
 void MainWindow::tabChanged(int index)

@@ -470,6 +470,11 @@ void CanvasManager::setDirty(bool dirty)
     d->dirty = dirty;
 }
 
+int CanvasManager::zoomLevel()
+{
+    return d->zoomLevel;
+}
+
 void CanvasManager::pushDataToStream(QDataStream &stream)
 {
     QList<qint32> acquiredSquares;

@@ -89,6 +89,8 @@ public:
     bool isDirty() const;
     void setDirty(bool dirty);
 
+    int zoomLevel();
+
 private:
     Cell findSuitableCell(QPointF scenePos);
     void parkComponent(Component* g, Cell c);
