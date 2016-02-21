@@ -7,6 +7,7 @@
 
 // Local includes
 
+#include "pin.h"
 #include "logicsim_global.h"
 
 namespace Logicsim
@@ -39,6 +40,8 @@ Canvas::Canvas(QObject *parent)
     d->view->setSceneRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
     d->mCanvasManager = new CanvasManager(parent, this);
+    d->view->verticalScrollBar()->setValue(CANVAS_HEIGHT/3);
+    d->view->horizontalScrollBar()->setValue(CANVAS_WIDTH/3);
 }
 
 Canvas::~Canvas()
@@ -67,22 +70,14 @@ CanvasManager *Canvas::canvasManager()
     return d->mCanvasManager;
 }
 
-bool Canvas::tabAboutToBeClosed(int index)
+void Canvas::setManager(CanvasManager *manager)
 {
-    if (index == d->tabIndex)
+    if(manager)
     {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(d->view, "Test", "Quit?",
-                                      QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::Yes)
-        {
-            qDebug() << "Yes was clicked";
-            return true;
-        }
+        d->mCanvasManager = manager;
+        d->mCanvasManager->setCanvas(this);
     }
-    return false;
 }
-
 
 void Canvas::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
@@ -115,7 +110,14 @@ void Canvas::dragMoveEvent(QGraphicsSceneDragDropEvent * event)
 {
     if(event->mimeData()->property("acceptable").toBool())
     {
-        event->acceptProposedAction();
+        if(d->mCanvasManager->isDropable(event->scenePos()))
+        {
+            event->acceptProposedAction();
+        }
+        else
+        {
+            event->setAccepted(false);
+        }
     }
     else
     {
@@ -135,6 +137,68 @@ void Canvas::dragLeaveEvent(QGraphicsSceneDragDropEvent * event)
     }
 }
 
+void Canvas::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+        case Qt::Key_Delete:
+        if(d->mCanvasManager->selectedComponentIndex() != -1)
+        {
+            qDebug() << "Delete Component";
+            d->mCanvasManager->deleteComponent(d->mCanvasManager->selectedComponentIndex());
+        }
+        else if(d->mCanvasManager->selectedLineIndex() != -1)
+        {
+            qDebug() << "Delete Line";
+            d->mCanvasManager->deleteLine(d->mCanvasManager->selectedLineIndex());
+        }
+        break;
+    }
+}
+
+void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsScene::mousePressEvent(event);
+    d->mCanvasManager->unSelectComponent();
+    d->mCanvasManager->unSelectLine();
+    if(mouseGrabberItem() != 0)
+    {
+        Pin* p = dynamic_cast<Pin*>(mouseGrabberItem());
+        if(p)
+        {
+            d->mCanvasManager->pinPressed(p);
+        }
+    }
+    else
+    {
+        d->mCanvasManager->unSelectPins();
+    }
+    Canvas::mouseMoveEvent(event);
+}
+
+void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(mouseGrabberItem() != 0)
+    {
+        Component *component = dynamic_cast<Component*>(mouseGrabberItem());
+        if(component)
+        {
+            d->mCanvasManager->selectComponent(component);
+            d->mCanvasManager->movingComponent(component);
+            if(!d->mCanvasManager->isDropable(event->scenePos())
+                    || d->mCanvasManager->isOutOfCanvas(event->scenePos()))
+            {
+                d->view->setCursor(Qt::ForbiddenCursor);
+            }
+            else
+            {
+                d->view->setCursor(Qt::ClosedHandCursor);
+            }
+        }
+    }
+    QGraphicsScene::mouseMoveEvent(event);
+}
+
 void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mouseGrabberItem() != 0)
@@ -144,23 +208,10 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         {
             d->mCanvasManager->movingComponent(component);
             d->mCanvasManager->componentMoved(component, event->scenePos());
+            d->view->setCursor(Qt::ArrowCursor);
         }
     }
     QGraphicsScene::mouseReleaseEvent(event);
-}
-
-void Canvas::keyPressEvent(QKeyEvent *event)
-{
-    switch (event->key())
-    {
-        case Qt::Key_Delete:
-        if(d->mCanvasManager->selectedComponentIndex() != -1)
-        {
-            qDebug() << "Delete";
-            d->mCanvasManager->deleteComponent(d->mCanvasManager->selectedComponentIndex());
-        }
-        break;
-    }
 }
 
 void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
@@ -189,27 +240,6 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
         x += step;
         painter->drawLine(x, rect.top(), x, rect.bottom());
     }
-}
-
-void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsScene::mousePressEvent(event);
-    d->mCanvasManager->unSelectComponent();
-    Canvas::mouseMoveEvent(event);
-}
-
-void Canvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(mouseGrabberItem() != 0)
-    {
-        Component *component = dynamic_cast<Component*>(mouseGrabberItem());
-        if(component)
-        {
-            d->mCanvasManager->selectComponent(component);
-            d->mCanvasManager->movingComponent(component);
-        }
-    }
-    QGraphicsScene::mouseMoveEvent(event);
 }
 
 } // namespace Logicsim

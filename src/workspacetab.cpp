@@ -27,7 +27,6 @@ WorkspaceTab::WorkspaceTab(QWidget *parent) : QTableWidget(parent), d(new Privat
     setShowGrid(false);
 
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    //setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 WorkspaceTab::~WorkspaceTab()
@@ -38,7 +37,7 @@ WorkspaceTab::~WorkspaceTab()
 
 void WorkspaceTab::setManager(CanvasManager *canvasManager)
 {
-    if(d->currentCanvasManager != NULL)
+    if(d->currentCanvasManager != 0)
     {
         disconnect(this, SIGNAL(itemChanged(QTableWidgetItem*)),
                    d->currentCanvasManager, SLOT(renameComponent(QTableWidgetItem*)));
@@ -67,7 +66,7 @@ void WorkspaceTab::setManager(CanvasManager *canvasManager)
 void WorkspaceTab::updateComponents()
 {
     clear();
-    if(d->currentCanvasManager != NULL)
+    if(d->currentCanvasManager != 0)
     {
         d->componentsCount = d->currentCanvasManager->components().length();
         setRowCount(d->componentsCount);
@@ -116,8 +115,8 @@ void WorkspaceTab::keyPressEvent(QKeyEvent *event)
 void WorkspaceTab::mousePressEvent(QMouseEvent *event)
 {
     QTableWidget::mousePressEvent(event);
-
-    emit componentSelectedFromWorkspace(selectedItems().at(0)->row());
+    if(selectedItems().length() == 1)
+        emit componentSelectedFromWorkspace(selectedItems().at(0)->row());\
 }
 
 }

@@ -24,12 +24,14 @@ public:
     ComponentsTab(QWidget* parent = 0);
     ~ComponentsTab();
 
+    QList<Component *> &componentsCollection();
+
 protected:
     QMimeData* mimeData(const QList<QTableWidgetItem *> items) const;
 
 private:
     QList<QTableWidgetItem*> m_items;
-    QList<Component*> m_gates;
+    QList<Component*> m_componenets;
 };
 
 } // namespace Logicsim

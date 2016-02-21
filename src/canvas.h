@@ -10,7 +10,7 @@
 #include <QKeyEvent>
 
 // Local includes
-#include "gateparts.h"
+#include "pin.h"
 #include "gates.h"
 #include "componentstab.h"
 #include "canvasmanager.h"
@@ -30,7 +30,9 @@ public:
 
     int tabIndex() const;
     void setTabIndex(int index);
+
     CanvasManager *canvasManager();
+    void setManager(CanvasManager* manager);
 
 protected:
     void dropEvent(QGraphicsSceneDragDropEvent * event);
@@ -45,9 +47,6 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
     void drawBackground(QPainter *painter, const QRectF &rect);
-
-public Q_SLOTS:
-    bool tabAboutToBeClosed(int index);
 
 private:
     class Private;
