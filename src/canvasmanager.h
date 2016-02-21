@@ -109,6 +109,10 @@ Q_SIGNALS:
     void componentAdded(int index);
     void componentSelectedFromCanvas(int index);
 
+signals:
+    void itemMoved(Component *movedItem);
+    void itemDeleted(Component* component);
+
 private:
     class Private;
     Private* const d;

@@ -39,14 +39,16 @@ private:
 class DeleteCommand : public QUndoCommand
 {
 public:
-    explicit DeleteCommand(Component* component,Canvas *workingCanvas, QUndoCommand *parent = 0);
+    explicit DeleteCommand(Component *item,Canvas *workingCanvas, QUndoCommand *parent = 0);
 
     void undo() Q_DECL_OVERRIDE;
     void redo() Q_DECL_OVERRIDE;
 
 private:
     Component *deletedComponent;
+    Component::Type deletedComponentType;
     Canvas *canvas;
+    QPointF returnPosition;
 };
 
 QString createCommandString(Component *item, const QPointF &point);

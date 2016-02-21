@@ -138,6 +138,7 @@ void CanvasManager::deleteComponent(int index)
 {
     unSelectComponent();
     Component* c = d->mComponents.at(index);
+    emit itemDeleted(c);
     d->canvas->removeItem(c);
     d->acquiredSquares.remove(selectedComponentSquare(index));
     d->mComponents.removeAt(index);
@@ -185,6 +186,7 @@ void CanvasManager::componentMoved(Component* component, QPointF scenePos)
         d->acquiredSquares.remove(d->oldSquareNumberOfMovingComponent);
         d->acquiredSquares.insert(calculateSquareNumber(newCell));
         setDirty(true);
+        emit itemMoved(component);
     }
     else
     {

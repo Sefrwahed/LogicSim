@@ -55,6 +55,35 @@ void AddCommand::redo()
     canvas->update();
 }
 
+DeleteCommand::DeleteCommand(Component *item,Canvas *workingCanvas, QUndoCommand *parent) : QUndoCommand(parent)
+{
+    //deletedComponent = component;
+    qDebug()<<"before";
+    deletedComponent = item;
+    deletedComponentType = item->componentType();
+    canvas = workingCanvas;
+    returnPosition = item->pos();
+    //Component* component = static_cast<Component*>(QMetaType::create(deletedComponentType));
+    //setText(QObject::tr("Delete %1").arg(createCommandString(component, returnPosition)));
+    qDebug()<<"after";
+}
+
+void DeleteCommand::undo()
+{
+    qDebug()<<"undo";
+//    Component* component = static_cast<Component*>(QMetaType::create(typeId));
+//    d->mCanvasManager->addComponent(component, event->scenePos());
+    //canvas->canvasManager()->addComponent(deletedComponent,returnPosition);
+    //Component* component = static_cast<Component*>(QMetaType::create(deletedComponentType));
+    //canvas->canvasManager()->addComponent(component,returnPosition);
+}
+
+void DeleteCommand::redo()
+{
+    //canvas->canvasManager()->deleteComponent();
+    //canvas->canvasManager()->deleteComponent();
+}
+
 QString createCommandString(Component *item, const QPointF &pos)
 {
     return QObject::tr("%2, %3").arg(pos.x()).arg(pos.y());

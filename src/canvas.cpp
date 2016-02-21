@@ -40,8 +40,8 @@ Canvas::Canvas(QObject *parent)
     undoStack = new QUndoStack(this);
     createUndoView();
 
-    connect(this, SIGNAL(itemMoved(Component*,QPointF)),this,SLOT(itemMovedS(Component*,QPointF)));
     connect(this,SIGNAL(itemAdded(Component*,QPointF)),this,SLOT(itemAddedS(Component*,QPointF)));
+    //connect(this,SIGNAL(itemDeleted(Component::Type,QPointF)),this,SLOT(itemDeletedS(Component::Type,QPointF)));
 
     d->view = new QGraphicsView(this);
     d->view->setSceneRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
@@ -49,6 +49,9 @@ Canvas::Canvas(QObject *parent)
     d->mCanvasManager = new CanvasManager(parent, this);
     d->view->verticalScrollBar()->setValue(CANVAS_HEIGHT/3);
     d->view->horizontalScrollBar()->setValue(CANVAS_WIDTH/3);
+
+    connect(d->mCanvasManager,SIGNAL(itemMoved(Component*)),this,SLOT(itemMovedS(Component*)));
+    connect(d->mCanvasManager,SIGNAL(itemDeleted(Component*)),this,SLOT(itemDeletedS(Component*)));
 }
 
 Canvas::~Canvas()
@@ -153,6 +156,12 @@ void Canvas::keyPressEvent(QKeyEvent *event)
         if(d->mCanvasManager->selectedComponentIndex() != -1)
         {
             qDebug() << "Delete Component";
+
+            Component::Type type = d->mCanvasManager->componentById(d->mCanvasManager->selectedComponentIndex())->componentType();
+            QPointF position = d->mCanvasManager->componentById(d->mCanvasManager->selectedComponentIndex())->pos();
+
+            //emit itemDeleted(type,position);
+
             d->mCanvasManager->deleteComponent(d->mCanvasManager->selectedComponentIndex());
         }
         else if(d->mCanvasManager->selectedLineIndex() != -1)
@@ -223,7 +232,7 @@ void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             d->mCanvasManager->movingComponent(component);
             d->mCanvasManager->componentMoved(component, event->scenePos());
             d->view->setCursor(Qt::ArrowCursor);
-            emit itemMoved(component,component->pos());
+            //emit itemMoved(component,component->pos());
         }
     }
     QGraphicsScene::mouseReleaseEvent(event);
@@ -257,9 +266,8 @@ void Canvas::drawBackground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void Canvas::itemMovedS(Component *item, const QPointF &pos)
+void Canvas::itemMovedS(Component *item)
 {
-    Q_UNUSED(pos);
     pushInStack(new MoveCommand(item,oldpt));
     update();
 }
@@ -268,6 +276,11 @@ void Canvas::itemAddedS(Component *addedItem, const QPointF &position)
 {
     Q_UNUSED(position);
     pushInStack(new AddCommand(addedItem,this));
+}
+
+void Canvas::itemDeletedS(Component *item)
+{
+    pushInStack(new DeleteCommand(item,this));
 }
 
 void Canvas::pushInStack(QUndoCommand* command)

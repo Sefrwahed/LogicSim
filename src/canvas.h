@@ -59,12 +59,14 @@ private:
     QPointF oldpt;
 
 signals:
-    void itemMoved(Component *movedItem, const QPointF &movedFromPosition);
+//    void itemMoved(Component *movedItem, const QPointF &movedFromPosition);
     void itemAdded(Component *addedItem, const QPointF &position);
+//    void itemDeleted(Component::Type type, const QPointF &pos);
 
 private slots:
-    void itemMovedS(Component *item, const QPointF &pos);
+    void itemMovedS(Component *item);
     void itemAddedS(Component *item, const QPointF &pos);
+    void itemDeletedS(Component *item);
 };
 
 } // namespace Logicsim
