@@ -170,8 +170,8 @@ void CanvasManager::movingComponent(Component *component)
     if (d->oldSquareNumberOfMovingComponent != 0)
         return;
 
-    qreal x = component->pos().x() + (component->boundingRect().width()*d->scaleFactor)/2;
-    qreal y = component->pos().y() + (component->boundingRect().height()*d->scaleFactor)/2;
+    qreal x = component->pos().x() + (component->boundingRect().width())/2;
+    qreal y = component->pos().y() + (component->boundingRect().height())/2;
 
 
 
@@ -307,8 +307,8 @@ void CanvasManager::parkComponent(Component * component, Cell c)
     qreal x = (c.col() - 1) * (GRID_STEP *d->scaleFactor ) + (GRID_STEP *d->scaleFactor)/2;
     qreal y = (c.row() - 1) * (GRID_STEP *d->scaleFactor) + (GRID_STEP *d->scaleFactor)/2;
 
-    component->setPos((x) - (component->boundingRect().width()*d->scaleFactor)/2,
-              (y) - (component->boundingRect().height()*d->scaleFactor)/2);
+    component->setPos((x) - (component->boundingRect().width())/2,
+              (y) - (component->boundingRect().height())/2);
     component->updateConnection();
 }
 
