@@ -90,6 +90,8 @@ public:
     void setDirty(bool dirty);
 
     int zoomLevel();
+    void setScaleFactor();
+    qreal scaleFactor();
 
 private:
     Cell findSuitableCell(QPointF scenePos);

@@ -13,6 +13,7 @@ namespace Logicsim
 {
 
 /* Drawing constants */
+
 const int GATE_X_MARGIN = 20;
 const int GATE_Y_MARGIN = 5;
 const int CANVAS_WIDTH = 2250;

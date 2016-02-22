@@ -22,6 +22,7 @@ public:
         selectedLineIndex(-1),
         componentId(0),
         oldSquareNumberOfMovingComponent(0),
+        scaleFactor(1.0),
         selectedComponent(0),
         canvas(0),
         selectedInput(0),
@@ -36,6 +37,7 @@ public:
     int                    selectedLineIndex;
     int                    componentId;
     int                    oldSquareNumberOfMovingComponent;
+    qreal                  scaleFactor;
     Component*             selectedComponent;
     QGraphicsScene*        canvas;
     Pin*                   selectedInput;
@@ -168,11 +170,13 @@ void CanvasManager::movingComponent(Component *component)
     if (d->oldSquareNumberOfMovingComponent != 0)
         return;
 
-    qreal x = component->pos().x() + component->boundingRect().width()/2;
-    qreal y = component->pos().y() + component->boundingRect().height()/2;
+    qreal x = component->pos().x() + (component->boundingRect().width()*d->scaleFactor)/2;
+    qreal y = component->pos().y() + (component->boundingRect().height()*d->scaleFactor)/2;
 
-    int col = ((x - GRID_STEP/2) / GRID_STEP) + 1;
-    int row = ((y - GRID_STEP/2) / GRID_STEP) + 1;
+
+
+    int col = ((x - (GRID_STEP*d->scaleFactor)/2) / (GRID_STEP*d->scaleFactor)) + 1;
+    int row = ((y - (GRID_STEP*d->scaleFactor)/2) / (GRID_STEP*d->scaleFactor)) + 1;
 
     d->oldCellOfMovingComponent.setCol(col);
     d->oldCellOfMovingComponent.setRow(row);
@@ -271,8 +275,8 @@ void CanvasManager::unSelectPins()
 
 Cell CanvasManager::findSuitableCell(QPointF scenePos)
 {
-    int col = qCeil(scenePos.x() / GRID_STEP);
-    int row = qCeil(scenePos.y() / GRID_STEP);
+    int col = qCeil(scenePos.x() / (GRID_STEP *d->scaleFactor));
+    int row = qCeil(scenePos.y() / (GRID_STEP *d->scaleFactor));
     Cell c(col, row);
     int squareNumber = calculateSquareNumber(c);
 
@@ -300,11 +304,11 @@ Cell CanvasManager::findSuitableCell(QPointF scenePos)
 
 void CanvasManager::parkComponent(Component * component, Cell c)
 {
-    qreal x = (c.col() - 1) * GRID_STEP + GRID_STEP/2;
-    qreal y = (c.row() - 1) * GRID_STEP + GRID_STEP/2;
+    qreal x = (c.col() - 1) * (GRID_STEP *d->scaleFactor ) + (GRID_STEP *d->scaleFactor)/2;
+    qreal y = (c.row() - 1) * (GRID_STEP *d->scaleFactor) + (GRID_STEP *d->scaleFactor)/2;
 
-    component->setPos(x - component->boundingRect().width()/2,
-              y - component->boundingRect().height()/2);
+    component->setPos(x - (component->boundingRect().width()*d->scaleFactor)/2,
+              y - (component->boundingRect().height()*d->scaleFactor)/2);
     component->updateConnection();
 }
 
@@ -357,8 +361,8 @@ int CanvasManager::calculateSquareNumber(Cell c) const
 int CanvasManager::selectedComponentSquare(int index) const
 {
     QPointF position = d->mComponents.at(index)->pos();
-    int col = qCeil(position.x() / GRID_STEP);
-    int row = qCeil(position.y() / GRID_STEP);
+    int col = qCeil((position.x()) / (GRID_STEP*d->scaleFactor));
+    int row = qCeil((position.y()) / (GRID_STEP*d->scaleFactor));
     Cell c(col, row);
     return calculateSquareNumber(c);
 }
@@ -475,6 +479,35 @@ void CanvasManager::setDirty(bool dirty)
 int CanvasManager::zoomLevel()
 {
     return d->zoomLevel;
+}
+
+void CanvasManager::setScaleFactor()
+{
+    if(d->zoomLevel == 3)
+    {
+        d->scaleFactor = 1.0;
+    }
+    else if(d->zoomLevel == 2)
+    {
+        d->scaleFactor = 0.75;
+    }
+    else if(d->zoomLevel == 1)
+    {
+        d->scaleFactor = 0.56;
+    }
+    else if(d->zoomLevel == 4)
+    {
+        d->scaleFactor = 1.33;
+    }
+    else if(d->zoomLevel == 5)
+    {
+        d->scaleFactor = 1.77;
+    }
+}
+
+qreal CanvasManager::scaleFactor()
+{
+    return d->scaleFactor;
 }
 
 void CanvasManager::pushDataToStream(QDataStream &stream)

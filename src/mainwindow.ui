@@ -175,7 +175,6 @@
    <addaction name="actionSimulate"/>
    <addaction name="actionKMap_Turth_table"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
    <property name="icon">
     <iconset resource="../logicsim.qrc">
