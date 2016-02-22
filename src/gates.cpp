@@ -5,6 +5,7 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QTimer>
 
 namespace Logicsim
 {
@@ -16,6 +17,7 @@ AndGate::AndGate()
 {
     setMetaTypeId(qRegisterMetaType<AndGate>("AndGate"));
     setToolTip("And Gate");
+    delay = 0;
 }
 
 AndGate::AndGate(const AndGate &g)
@@ -64,12 +66,18 @@ void AndGate::calcOutput()
     }
     qDebug() << "calculate AND called";
     qDebug() << out_logic;
-    emit outputChanged(out_logic);
+    //emit outputChanged(out_logic);
+    QTimer::singleShot(delay,this,SLOT(outputCalculated(out_logic)));
 }
 
 QString AndGate::imageUrl() const
 {
     return QString(":/gates/and");
+}
+
+void AndGate::setDelay(int d)
+{
+    delay = d;
 }
 
 // ===================== OrGate ===================

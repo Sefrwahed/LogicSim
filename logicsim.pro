@@ -22,7 +22,9 @@ SOURCES += src/main.cpp \
     src/gates.cpp \
     src/connectionline.cpp \
     src/workspacetab.cpp \
-    src/pin.cpp
+    src/pin.cpp \
+    src/delaysdialog.cpp \
+    src/delaymanager.cpp
 
 HEADERS += src/mainwindow.h \
     src/canvas.h \
@@ -35,9 +37,12 @@ HEADERS += src/mainwindow.h \
     src/connectionline.h \
     src/gates.h \
     src/workspacetab.h \
-    src/pin.h
+    src/pin.h \
+    src/delaysdialog.h \
+    src/delaymanager.h
 
-FORMS += src/mainwindow.ui
+FORMS += src/mainwindow.ui \
+    src/delaysdialog.ui
 
 RESOURCES += \
     logicsim.qrc

@@ -43,9 +43,19 @@ public Q_SLOTS:
     void appAboutToQuit();
     void on_actionSave_triggered();
     void on_actionOpen_triggered();
+    void on_actiondelays_triggered();
+
+private slots:
+    void getDelays(int delay);
+    
+signals:
+    void delaysForCanvas(int delay);
+
+
 
 Q_SIGNALS:
     void notLastTabClosed(int index);
+    void actiondelaysTriggered();
 
 private:
     Ui::MainWindow *ui;

@@ -34,6 +34,9 @@ public Q_SLOTS:
 Q_SIGNALS:
     void outputChanged(Pin::Value value);
 
+private slots:
+    void outputCalculated(Pin::Value val);
+
 private:
     class Private;
     Private* const d;

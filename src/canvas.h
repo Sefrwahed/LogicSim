@@ -51,6 +51,9 @@ protected:
 private:
     class Private;
     Private* const d;
+    
+private slots:
+    void getCanvasDelays(int delay);
 };
 
 } // namespace Logicsim

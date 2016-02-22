@@ -11,6 +11,7 @@
 #include "ui_mainwindow.h"
 #include "canvas.h"
 #include "gates.h"
+#include "delaysdialog.h"
 
 namespace Logicsim
 {
@@ -297,6 +298,27 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 
+
+void MainWindow::on_actiondelays_triggered()
+{
+//    delaysDialog* dialog = new delaysDialog(this);
+//    connect(dialog,SIGNAL(sendDelays(int)),this,SLOT(getDelays(int)));
+//    foreach (Canvas c, d->canvases)
+//    {
+//        connect(this,SIGNAL(delaysForCanvas(int)),c,SLOT()
+//    }
+//    if (!dialog->exec()) return;
+    emit actiondelaysTriggered();
+
+}
+
+void MainWindow::getDelays(int delay)
+{
+    qDebug()<<delay;
+    emit delaysForCanvas(delay);
+}
+
 } // namespace Logicsim
+
 
 

@@ -33,6 +33,10 @@ public:
     { Gate::mouseMoveEvent(e); }
 public Q_SLOTS:
     void calcOutput() ;//;//override;
+    void setDelay(int d);
+
+private:
+    int delay;
 };
 
 // ===================== OrGate =================
