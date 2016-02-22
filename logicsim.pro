@@ -22,7 +22,8 @@ SOURCES += src/main.cpp \
     src/gates.cpp \
     src/connectionline.cpp \
     src/workspacetab.cpp \
-    src/pin.cpp
+    src/pin.cpp \
+    src/drawingconstants.cpp
 
 HEADERS += src/mainwindow.h \
     src/canvas.h \
@@ -35,7 +36,8 @@ HEADERS += src/mainwindow.h \
     src/connectionline.h \
     src/gates.h \
     src/workspacetab.h \
-    src/pin.h
+    src/pin.h \
+    src/drawingconstants.h
 
 FORMS += src/mainwindow.ui
 
