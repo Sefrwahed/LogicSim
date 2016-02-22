@@ -53,7 +53,7 @@ private:
     Private* const d;
     
 private slots:
-    void getCanvasDelays(int delay);
+    //void getCanvasDelays(int delay);
 };
 
 } // namespace Logicsim

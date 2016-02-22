@@ -7,6 +7,10 @@
 #include <QPainter>
 #include <QTimer>
 
+// Local includes
+
+#include "delaysdialog.h"
+
 namespace Logicsim
 {
 
@@ -17,7 +21,6 @@ AndGate::AndGate()
 {
     setMetaTypeId(qRegisterMetaType<AndGate>("AndGate"));
     setToolTip("And Gate");
-    delay = 0;
 }
 
 AndGate::AndGate(const AndGate &g)
@@ -43,7 +46,7 @@ void AndGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 void AndGate::calcOutput()
 {
-    Pin::Value out_logic;
+//    Pin::Value out_logic;
     /*
     foreach (Node * n, inputList())
     {
@@ -67,17 +70,14 @@ void AndGate::calcOutput()
     qDebug() << "calculate AND called";
     qDebug() << out_logic;
     //emit outputChanged(out_logic);
-    QTimer::singleShot(delay,this,SLOT(outputCalculated(out_logic)));
+    QTimer::singleShot(DelaysDialog::instance()->gateDelay(componentType()),
+                       this,
+                       SLOT(outputCalculated()));
 }
 
 QString AndGate::imageUrl() const
 {
     return QString(":/gates/and");
-}
-
-void AndGate::setDelay(int d)
-{
-    delay = d;
 }
 
 // ===================== OrGate ===================

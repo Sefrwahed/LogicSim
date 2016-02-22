@@ -71,6 +71,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(d->tabWidget, SIGNAL(tabCloseRequested(int)),
             this, SLOT(tabAboutToBeClosed(int)));
+
+    connect(this,SIGNAL(actiondelaysTriggered()),
+            DelaysDialog::instance(),SLOT(showDialog()));
 }
 
 MainWindow::~MainWindow()
@@ -307,9 +310,8 @@ void MainWindow::on_actiondelays_triggered()
 //    {
 //        connect(this,SIGNAL(delaysForCanvas(int)),c,SLOT()
 //    }
-//    if (!dialog->exec()) return;
+  //  if (!dialog->exec()) return;
     emit actiondelaysTriggered();
-
 }
 
 void MainWindow::getDelays(int delay)

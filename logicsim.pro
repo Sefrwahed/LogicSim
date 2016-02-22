@@ -23,8 +23,7 @@ SOURCES += src/main.cpp \
     src/connectionline.cpp \
     src/workspacetab.cpp \
     src/pin.cpp \
-    src/delaysdialog.cpp \
-    src/delaymanager.cpp
+    src/delaysdialog.cpp
 
 HEADERS += src/mainwindow.h \
     src/canvas.h \
@@ -38,8 +37,7 @@ HEADERS += src/mainwindow.h \
     src/gates.h \
     src/workspacetab.h \
     src/pin.h \
-    src/delaysdialog.h \
-    src/delaymanager.h
+    src/delaysdialog.h
 
 FORMS += src/mainwindow.ui \
     src/delaysdialog.ui

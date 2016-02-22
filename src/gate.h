@@ -29,13 +29,13 @@ protected:
     Pin * in2();
 
     void setMaxInput(qint16 mi);
+    Pin::Value out_logic;
 public Q_SLOTS:
     virtual void calcOutput()=0;
+    void outputCalculated();
+
 Q_SIGNALS:
     void outputChanged(Pin::Value value);
-
-private slots:
-    void outputCalculated(Pin::Value val);
 
 private:
     class Private;

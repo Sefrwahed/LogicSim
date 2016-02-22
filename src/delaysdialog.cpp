@@ -1,32 +1,69 @@
 #include "delaysdialog.h"
 #include "ui_delaysdialog.h"
 
-delaysDialog::delaysDialog(QWidget *parent) :
-    QDialog(parent),
+
+namespace Logicsim
+{
+DelaysDialog* DelaysDialog::m_instance = 0;
+
+DelaysDialog::DelaysDialog() :
+    QDialog(0),
     ui(new Ui::delaysDialog)
 {
+    m_delays[Component::AndGate] = 800;
+    m_delays[Component::OrGate] = 15;
+    m_delays[Component::NotGate] = 0;
+    m_delays[Component::XorGate] = 0;
+    m_delays[Component::XnorGate] = 0;
+    m_delays[Component::NandGate] = 0;
+    m_delays[Component::NorGate] = 0;
+
     ui->setupUi(this);
-    andDelay = 0;
-    orDelay = 0;
 
     ui->spinBox_and->setRange(0,1000000);
     ui->spinBox_and->setSingleStep(100);
+    ui->spinBox_and->setValue(m_delays[Component::AndGate]);
 
     ui->spinBox_or->setRange(0,1000000);
     ui->spinBox_or->setSingleStep(100);
+    ui->spinBox_or->setValue(m_delays[Component::OrGate]);
 }
 
-delaysDialog::~delaysDialog()
+DelaysDialog *DelaysDialog::instance()
+{
+    if(m_instance == 0)
+        m_instance = new DelaysDialog();
+
+    return m_instance;
+}
+
+DelaysDialog::~DelaysDialog()
 {
     delete ui;
 }
 
-void delaysDialog::on_spinBox_and_valueChanged(int arg1)
+int DelaysDialog::gateDelay(Component::Type t)
 {
-    andDelay = arg1;
+    return m_delays[t];
 }
 
-void delaysDialog::on_buttonBox_accepted()
+void DelaysDialog::showDialog()
 {
-    emit sendDelays(andDelay);
+    this->exec();
+}
+
+void DelaysDialog::on_spinBox_and_valueChanged(int arg1)
+{
+
+}
+
+void DelaysDialog::on_buttonBox_accepted()
+{
+
+}
+
+void DelaysDialog::on_spinBox_or_valueChanged(int arg1)
+{
+
+}
 }

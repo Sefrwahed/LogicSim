@@ -154,9 +154,10 @@ void Gate::updateConnection()
     if(maxInput() > 1)
         d->in2->updateConnectedLine();
 }
-void Gate::outputCalculated(Pin::Value val)
+void Gate::outputCalculated()
  {
-   emit outputChanged(val);
+    qDebug() << "OUTPUTOISDHFAISD OAUSDFO ";
+   emit outputChanged(out_logic);
  }
 
 } // namespace Logicsim
